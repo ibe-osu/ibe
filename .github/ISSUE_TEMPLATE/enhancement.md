@@ -1,5 +1,5 @@
 ---
-name: "🚀➕ Enhancement Request"
+name: "🚀➕ Enhancement"
 about: "Suggest an enhancement for this project. Improve an existing feature"
 title: ""
 labels: "Type: Enhancement"
@@ -8,7 +8,7 @@ assignees: RHThree
 
 # **🚀 Enhancement Request**
 
-## **Is your enhancement request related to a problem? Please describe.**
+## **Is your enhancement related to a problem? Please describe.**
 
 <!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...] -->
 

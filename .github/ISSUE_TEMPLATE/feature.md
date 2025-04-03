@@ -1,5 +1,5 @@
 ---
-name: "🚀🆕 Feature Request"
+name: "🚀🆕 Feature"
 about: "Suggest an idea or possible new feature for this project."
 title: ""
 labels: "Type: Feature"
@@ -8,7 +8,7 @@ assignees: RHThree
 
 # **🚀 Feature Request**
 
-## **Is your feature request related to a problem? Please describe.**
+## **Is your feature related to a problem? Please describe.**
 
 <!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...] -->
 
