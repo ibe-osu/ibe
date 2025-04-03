@@ -3,12 +3,12 @@ name: "🚀🆕 Feature"
 about: "Suggest an idea or possible new feature for this project."
 title: ""
 labels: "Type: Feature"
-assignees: RHThree
+assignees:
 ---
 
-# **🚀 Feature Request**
+# **🚀 Feature **
 
-## **Is your feature related to a problem? Please describe.**
+## **Describe the Feature**
 
 <!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...] -->
 
@@ -31,12 +31,3 @@ assignees: RHThree
 <!-- Add any other context or additional information about the problem here.-->
 
 -
-
-<!--📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛
-
-Oh, hi there! 😄
-
-To expedite issue processing, please search open and closed issues before submitting a new one.
-Please read our Rules of Conduct at this repository's `.github/CODE_OF_CONDUCT.md`
-
-📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛📛-->
