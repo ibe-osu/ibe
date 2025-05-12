@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { PT_Serif_Caption } from "next/font/google";
 import "./globals.css";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import theme from "@/theme";
+import { ThemeProvider } from "../theme/ThemeProvider";
 
 const ptSerifCaption = PT_Serif_Caption({
   weight: "400",
@@ -23,10 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ptSerifCaption.variable}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
