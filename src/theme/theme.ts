@@ -35,7 +35,8 @@ const theme = createTheme({
     },
     secondary: {
       main: "#fff",
-      contrastText: "#000",
+      light: "#646A6E",
+      dark: "#000",
     },
     grey: {
       100: "#f5f5f5",
@@ -47,6 +48,30 @@ const theme = createTheme({
       700: "#616161",
       800: "#424242",
       900: "#212121",
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        variant: "contained",
+      },
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          fontSize: "1rem",
+          borderRadius: "0px",
+          boxShadow: "none",
+          padding: "0.5rem 1rem",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#fff",
+          color: "#646A6E",
+        },
+      },
     },
   },
 });
