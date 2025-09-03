@@ -1,19 +1,19 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-const theme = createTheme({
+let theme = createTheme({
   typography: {
     fontFamily: `PT Serif Caption, serif`,
     h1: {
-      fontSize: "4rem",
+      fontSize: "8rem",
     },
     h2: {
-      fontSize: "3rem",
+      fontSize: "5rem",
     },
     h3: {
-      fontSize: "2.5rem",
+      fontSize: "3rem",
     },
     h4: {
-      fontSize: "2rem",
+      fontSize: "2.25rem",
     },
     h5: {
       fontSize: "1.5rem",
@@ -75,5 +75,7 @@ const theme = createTheme({
     },
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;
