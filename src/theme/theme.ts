@@ -7,13 +7,13 @@ let theme = createTheme({
       fontSize: "8rem",
     },
     h2: {
-      fontSize: "5rem",
+      fontSize: "6rem",
     },
     h3: {
       fontSize: "3rem",
     },
     h4: {
-      fontSize: "2.25rem",
+      fontSize: "2.5rem",
     },
     h5: {
       fontSize: "1.5rem",
@@ -48,6 +48,10 @@ let theme = createTheme({
       700: "#616161",
       800: "#424242",
       900: "#212121",
+    },
+    text: {
+      primary: "#000",
+      secondary: "#646A6E",
     },
   },
   components: {
