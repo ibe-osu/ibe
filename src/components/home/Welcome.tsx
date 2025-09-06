@@ -51,7 +51,7 @@ export default function Welcome() {
         <Typography
           variant="h1"
           sx={{
-            color: theme.palette.secondary.main,
+            color: "Secondary.main",
             textAlign: "center",
             // marginBottom: 2, // Add spacing between elements
           }}
@@ -62,7 +62,7 @@ export default function Welcome() {
           <Box
             sx={{
               height: "0.25rem",
-              backgroundColor: theme.palette.secondary.main,
+              backgroundColor: "secondary.main",
               marginTop: "0.5rem", // Add spacing above the line
               marginBottom: "1rem", // Add spacing below the line
             }}
@@ -70,7 +70,7 @@ export default function Welcome() {
           <Typography
             variant="h4"
             sx={{
-              color: theme.palette.secondary.main,
+              color: "secondary.main",
               textAlign: "center",
               padding: { xl: "0 2rem", lg: "0 1rem", md: "0" }, // Add horizontal padding for better readability
             }}

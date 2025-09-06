@@ -249,7 +249,7 @@ export default function IBECompare() {
               bottom: 0,
               left: 0,
               width: 3,
-              bgcolor: theme.palette.secondary.main,
+              bgcolor: "secondary.main",
               opacity: 0.5,
             }}
           />
@@ -260,7 +260,7 @@ export default function IBECompare() {
               bottom: 0,
               right: 0,
               width: 3,
-              bgcolor: theme.palette.primary.main,
+              bgcolor: "primary.main",
               opacity: 0.5,
             }}
           />
