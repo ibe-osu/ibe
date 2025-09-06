@@ -51,7 +51,7 @@ export default function Welcome() {
         <Typography
           variant="h1"
           sx={{
-            color: "Secondary.main",
+            color: "secondary.main",
             textAlign: "center",
             // marginBottom: 2, // Add spacing between elements
           }}
