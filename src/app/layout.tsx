@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "../theme/ThemeProvider";
 import Header from "../components/general/Header";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import Footer from "@/components/general/Footer";
 
 const ptSerifCaption = PT_Serif_Caption({
   weight: "400",
@@ -28,6 +29,7 @@ export default function RootLayout({
           <ThemeProvider>
             <Header />
             {children}
+            <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
