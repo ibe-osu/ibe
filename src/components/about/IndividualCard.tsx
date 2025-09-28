@@ -13,9 +13,17 @@ export default function IndividualCard(props: IndividualCardProps) {
   const condensedName = name.replace(/\s+/g, "").toLowerCase();
 
   return (
-    <Box>
+    <Box
+      sx={{
+        py: { xs: "0rem", sm: "1rem" },
+        px: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <Image
-        src={`/people/${condensedName}.png`}
+        src={`/people/${condensedName}.jpeg`}
         alt={name}
         width={167}
         height={200}

@@ -59,7 +59,7 @@ export default function AboutUs() {
           About Us
         </Typography>
         <Typography
-          variant="h5"
+          variant="h6"
           sx={{
             width: { xs: "85%", sm: "65%" },
             color: "secondary.main",
