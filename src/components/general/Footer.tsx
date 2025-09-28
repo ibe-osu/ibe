@@ -28,7 +28,11 @@ const PageLink = (props: PageLinkProps) => {
     <Button
       variant="text"
       color="inherit"
-      sx={{ p: "0.375rem 0.75rem", borderRadius: 1 }}
+      sx={{
+        p: "0.375rem 0.75rem",
+        borderRadius: 1,
+        fontSize: { xs: "0.875rem", sm: "1rem" },
+      }}
     >
       <Link href={`/${props.to}`}>{props.text}</Link>
     </Button>
@@ -60,7 +64,7 @@ export default function Footer() {
 
       <Stack
         direction="row"
-        spacing={1}
+        spacing={0.5}
         sx={{ justifyContent: "center", alignItems: "center" }}
         divider={<CircleIcon sx={{ fontSize: "0.25rem" }} />}
       >
