@@ -3,6 +3,8 @@ import { Box, Typography } from "@mui/material";
 
 export default function StudentLife() {
   return (
+    // Full-bleed wrapper: offsetting the container by half the viewport width
+    // lets the hero stretch edge-to-edge while the rest of the app stays centered.
     <Box
       sx={{
         display: "flex",
