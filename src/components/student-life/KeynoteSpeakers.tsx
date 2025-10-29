@@ -5,6 +5,7 @@ export default function KeynoteSpeakers() {
   return (
     // Full-width background that inherits the page margin hack from the hero to
     // guarantee the keynote section shares the same edge-to-edge treatment.
+    // This component absorbs leftover height to fill the viewport even when the carousel is still under construction.
     <Box
       sx={{
         display: "flex",
@@ -19,7 +20,8 @@ export default function KeynoteSpeakers() {
         // borderBottom: `4px solid ${theme.palette.primary.main}`,
         pt: { xs: 4, md: 5 },
         pb: { xs: 4, md: 5 },
-        height: "100%",
+        minHeight: "calc(100vh - 64px - 400px)", // Subtract header height and approximate StudentLife height
+        flexGrow: 1,
       }}
     >
       {/* Inner container stays centered so the speaker content aligns with the rest of the site grid. */}
