@@ -99,7 +99,6 @@ export default function RecruitmentHero() {
         </Box>
       </Box>
       </Box>
-      {/* Full-width learn-more banner that stretches across the viewport */}
     <Box
       sx={{
         width: "100vw",

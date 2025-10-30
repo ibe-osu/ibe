@@ -15,7 +15,6 @@ export default function InfoCard({
   description,
   imageSrc,
   imageAlt = "",
-  // default to the theme primary color (red) so recruitment cards show the red band
   bandColor = "primary.main",
 }: InfoCardProps) {
   return (
@@ -28,7 +27,6 @@ export default function InfoCard({
         boxShadow: 2,
       }}
     >
-      {/* White square image area */}
       <Box sx={{ bgcolor: "common.white", p: 2, display: "flex", justifyContent: "center" }}>
         <Box sx={{ width: "100%", maxWidth: 420, aspectRatio: "4/3", position: "relative" }}>
           <Image
@@ -41,7 +39,6 @@ export default function InfoCard({
         </Box>
       </Box>
 
-      {/* Colored band with header + description */}
       <Box sx={{ bgcolor: bandColor, color: "common.white", textAlign: "center", p: 3 }}>
         <Typography
           variant="h4"

@@ -47,6 +47,7 @@ export default function FAQSection() {
             >
               <Typography sx={{ fontWeight: 600 }}>{it.q}</Typography>
             </AccordionSummary>
+            
             <AccordionDetails sx={{ px: 3, pt: 2.5, pb: 3 }}>
               <Typography>{it.a}</Typography>
             </AccordionDetails>
