@@ -50,10 +50,10 @@ export default function OurStats() {
         Our Statistics:
       </Typography>
       <Grid container justifyContent="space-evenly" alignItems="center">
-        <Stat value="3.77" label="Average GPA" />
+        <Stat value="3.8" label="Average GPA" />
         <Stat value="34" label="Average ACT" />
         <Stat value="100%" label="Job Placement" />
-        <Stat value="$93k" label="Avg. Starting Salary" />
+        <Stat value="$96k" label="Avg. Starting Salary" />
       </Grid>
     </Box>
   );
