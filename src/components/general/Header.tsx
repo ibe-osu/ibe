@@ -32,7 +32,7 @@ export default function Header() {
           }}
         >
           <NavButton href="/about">About</NavButton>
-          <NavButton href="/prospective-students">Join Us</NavButton>
+          <NavButton href="/recruitment">Join Us</NavButton>
           <NavButton href="/alumni">Alumni</NavButton>
           <NavButton href="/student-life">Student Life</NavButton>
           <LoginButton />
