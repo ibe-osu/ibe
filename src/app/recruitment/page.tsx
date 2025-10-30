@@ -1,5 +1,6 @@
 import RecruitmentHero from "@/components/recruitment/RecruitmentHero";
 import InfoCardSection from "@/components/recruitment/InfoCardSection";
+import TimelineIllustration from "@/components/recruitment/Timeline";
 import FAQSection from "@/components/recruitment/FAQSection";
 
 export default function Recruitment() {
@@ -7,8 +8,8 @@ export default function Recruitment() {
     <>
       <RecruitmentHero />
       <InfoCardSection />
-  <FAQSection />
-      {/* Additional recruitment sections can be added here as separate components, mirroring the About page structure. */}
+      <TimelineIllustration />
+      <FAQSection />
     </>
   );
 }
