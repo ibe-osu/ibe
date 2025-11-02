@@ -1,5 +1,24 @@
 import { Box, Typography, Divider } from "@mui/material";
 import theme from "@/theme/theme";
+import PhotoCarousel, { Photo } from "./PhotoCarousel";
+
+// Date Party Photos
+const datePartyPhotos: Photo[] = [
+  { url: "/happenings/date-party-1.jpg", alt: "IBE Date Party - Photo 1" },
+  { url: "/happenings/date-party-2.jpg", alt: "IBE Date Party - Photo 2" },
+  { url: "/happenings/date-party-3.jpg", alt: "IBE Date Party - Photo 3" },
+  { url: "/happenings/date-party-4.jpg", alt: "IBE Date Party - Photo 4" },
+  { url: "/happenings/date-party-5.jpg", alt: "IBE Date Party - Photo 5" },
+];
+
+// Cleveland Trip Photos
+const clevelandPhotos: Photo[] = [
+  { url: "/happenings/cleveland-1.jpg", alt: "IBE Cleveland Trip - Photo 1" },
+  { url: "/happenings/cleveland-2.jpg", alt: "IBE Cleveland Trip - Photo 2" },
+  { url: "/happenings/cleveland-3.jpg", alt: "IBE Cleveland Trip - Photo 3" },
+  { url: "/happenings/cleveland-4.jpg", alt: "IBE Cleveland Trip - Photo 4" },
+  { url: "/happenings/cleveland-5.jpg", alt: "IBE Cleveland Trip - Photo 5" },
+];
 
 export default function Happenings() {
   return (
@@ -93,21 +112,13 @@ export default function Happenings() {
             </Typography>
           </Box>
 
-          {/* Right Side: Photo Gallery Placeholder */}
+          {/* Right Side: Photo Carousel */}
           <Box
             sx={{
               flex: { xs: "1", md: "0 0 50%" },
-              backgroundColor: theme.palette.grey[300],
-              borderRadius: 2,
-              minHeight: { xs: 250, md: 300 },
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
             }}
           >
-            <Typography variant="body2" sx={{ color: theme.palette.grey[600] }}>
-              Photo Gallery Placeholder
-            </Typography>
+            <PhotoCarousel photos={datePartyPhotos} />
           </Box>
         </Box>
 
@@ -128,22 +139,14 @@ export default function Happenings() {
             gap: { xs: 3, md: 4 },
           }}
         >
-          {/* Left Side: Photo Gallery Placeholder */}
+          {/* Left Side: Photo Carousel */}
           <Box
             sx={{
               flex: { xs: "1", md: "0 0 50%" },
-              backgroundColor: theme.palette.grey[300],
-              borderRadius: 2,
-              minHeight: { xs: 250, md: 300 },
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
               order: { xs: 2, md: 1 },
             }}
           >
-            <Typography variant="body2" sx={{ color: theme.palette.grey[600] }}>
-              Photo Gallery Placeholder
-            </Typography>
+            <PhotoCarousel photos={clevelandPhotos} />
           </Box>
 
           {/* Right Side: Text Content */}
