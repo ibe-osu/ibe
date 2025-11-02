@@ -1,5 +1,46 @@
 import theme from "@/theme/theme";
 import { Box, Typography } from "@mui/material";
+import SpeakerCarousel from "./SpeakerCarousel";
+import { Speaker } from "./SpeakerCard";
+
+// Keynote Speakers Data
+const speakers: Speaker[] = [
+  {
+    name: "Speaker Name 1",
+    position: "Managing Director at Company",
+    company: "Company Name",
+    bio: "Brief bio about the speaker's experience and what they shared with IBE students during their keynote presentation.",
+    imageUrl: "/speakers/speaker-1.jpg",
+  },
+  {
+    name: "Speaker Name 2",
+    position: "CEO at Innovation Firm",
+    company: "Innovation Firm",
+    bio: "Description of the speaker's background and insights they provided to IBE students.",
+    imageUrl: "/speakers/speaker-2.jpg",
+  },
+  {
+    name: "Speaker Name 3",
+    position: "VP of Strategy at Tech Corp",
+    company: "Tech Corp",
+    bio: "Overview of the speaker's career and key takeaways from their talk with IBE students.",
+    imageUrl: "/speakers/speaker-3.jpg",
+  },
+  {
+    name: "Speaker Name 4",
+    position: "Entrepreneur & Investor",
+    company: "Venture Capital",
+    bio: "Summary of the speaker's entrepreneurial journey and advice shared with IBE students.",
+    imageUrl: "/speakers/speaker-4.jpg",
+  },
+  {
+    name: "Speaker Name 5",
+    position: "Chief Innovation Officer",
+    company: "Fortune 500",
+    bio: "Details about the speaker's role and valuable insights provided to IBE students.",
+    imageUrl: "/speakers/speaker-5.jpg",
+  },
+];
 
 export default function KeynoteSpeakers() {
   return (
@@ -72,24 +113,19 @@ export default function KeynoteSpeakers() {
         </Box>
       </Box>
 
-      {/* Inner content area remains centered for the upcoming speaker cards. */}
+      {/* Speaker Carousel */}
       <Box
         sx={{
-          maxWidth: "1200px",
+          maxWidth: "1400px",
           width: "100%",
           mx: "auto",
           px: { xs: 3, md: 6 },
           flexGrow: 1,
           display: "flex",
+          alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            flexGrow: 1,
-            border: `1px dashed ${theme.palette.grey[400]}`,
-            minHeight: { xs: 200, md: 320 },
-          }}
-        />
+        <SpeakerCarousel speakers={speakers} />
       </Box>
     </Box>
   );
