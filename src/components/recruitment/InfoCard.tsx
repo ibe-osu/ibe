@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Image from "next/image";
+import { Ref } from "react";
 
 interface InfoCardProps {
   header: string;
@@ -8,6 +9,10 @@ interface InfoCardProps {
   imageSrc: string;
   imageAlt?: string;
   bandColor?: string;
+  // optional ref to the band element so parent can measure
+  bandRef?: Ref<HTMLDivElement>;
+  // optional uniform band height (pixels)
+  bandHeight?: number | null;
 }
 
 export default function InfoCard({
@@ -16,18 +21,23 @@ export default function InfoCard({
   imageSrc,
   imageAlt = "",
   bandColor = "primary.main",
+  bandRef,
+  bandHeight = null,
 }: InfoCardProps) {
   return (
     <Box
       sx={{
-        width: { xs: "100%", sm: "20rem", md: "22rem" },
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
         borderRadius: 1,
         overflow: "hidden",
         bgcolor: "background.paper",
         boxShadow: 2,
       }}
     >
-      <Box sx={{ bgcolor: "common.white", p: 2, display: "flex", justifyContent: "center" }}>
+      <Box sx={{ bgcolor: "common.white", p: 2, display: "flex", justifyContent: "center", flex: 1 }}>
         <Box sx={{ width: "100%", maxWidth: 420, aspectRatio: "4/3", position: "relative" }}>
           <Image
             src={imageSrc}
@@ -38,8 +48,20 @@ export default function InfoCard({
           />
         </Box>
       </Box>
-
-      <Box sx={{ bgcolor: bandColor, color: "common.white", textAlign: "center", p: 3 }}>
+      <Box
+        ref={bandRef}
+        sx={{
+          bgcolor: bandColor,
+          color: "common.white",
+          textAlign: "center",
+          p: 3,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          // if parent provides a measured height, respect it
+          minHeight: bandHeight ? `${bandHeight}px` : undefined,
+        }}
+      >
         <Typography
           variant="h4"
           component="h3"
