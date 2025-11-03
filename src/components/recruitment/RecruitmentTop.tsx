@@ -4,112 +4,143 @@ import theme from "@/theme/theme";
 
 export default function RecruitmentHero() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 6,
-        alignItems: "flex-start",
-        overflow: "visible",
-        px: { xs: 2, md: 10 },
-        py: { xs: 4, md: 8 },
-        flexDirection: { xs: "column", md: "row" },
-      }}
-    >
-      <Box sx={{ flex: 1, maxWidth: { md: "60ch" } }}>
-        <Typography
-          variant="h2"
-          sx={{ mb: 2, fontSize: { xs: "2.5rem", sm: "3rem", md: "3.5rem" }, lineHeight: { xs: 1.15 } }}
-        >
-          Recruitment
-        </Typography>
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 6,
+          alignItems: "flex-start",
+          overflow: "visible",
+          px: { xs: 4, md: 10 },
+          py: { xs: 4, md: 8 },
+          flexDirection: { xs: "column", md: "row" },
+        }}
+      >
+        <Box sx={{ flex: 1, maxWidth: { md: "60ch" } }}>
+          <Typography variant="h2" sx={{ mb: 2 }}>
+            Recruitment
+          </Typography>
 
-        <Typography variant="body1" sx={{ mb: 3 }}>
-          Application to the IBE program is open to prospective students
-          previously admitted into the Ohio State University Max M. Fisher
-          College of Business or College of Engineering Honors programs. From
-          this group of talented individuals, we select a class of up to 72
-          (36 per focus area) students. Our two-stage admission process allows
-          us to focus on selectively admitting talented individuals.
-        </Typography>
+          <Typography variant="body1" sx={{ color: "text.secondary", mb: 3 }}>
+            Application to the IBE program is open to prospective students
+            previously admitted into the Ohio State University Max M. Fisher
+            College of Business or College of Engineering Honors programs. From
+            this group of talented individuals, we select a class of up to 72
+            (36 per focus area) students. Our two-stage admission process allows
+            us to focus on selectively admitting talented individuals.
+          </Typography>
+
+          <Box
+            sx={{
+              borderTop: "4px solid",
+              borderColor: theme.palette.common.black,
+              mt: 3,
+              mb: 3,
+            }}
+          />
+
+          <Typography
+            variant="h4"
+            sx={{ color: theme.palette.primary.main, mb: 2, fontWeight: 700 }}
+          >
+            Fall 2025 Applications are Now Open!
+          </Typography>
+
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            Application to the IBE Honors Program is restricted to incoming
+            first-year business & engineering students previously admitted to
+            University Honors in the Fisher College of Business or College of
+            Engineering. Please access the application at the links below:
+          </Typography>
+
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 2 }}>
+            <Button
+              href="#"
+              variant="contained"
+              sx={{
+                bgcolor: theme.palette.primary.main,
+                color: "common.white",
+                px: 3,
+                py: 1,
+                textTransform: "none",
+                boxShadow: 4,
+                "&:hover": { bgcolor: theme.palette.primary.light },
+              }}
+            >
+              Engineering Application
+            </Button>
+
+            <Button
+              href="#"
+              variant="contained"
+              sx={{
+                bgcolor: theme.palette.primary.main,
+                color: "common.white",
+                px: 3,
+                py: 1,
+                textTransform: "none",
+                boxShadow: 4,
+                "&:hover": { bgcolor: theme.palette.primary.light },
+              }}
+            >
+              Business Application
+            </Button>
+          </Box>
+        </Box>
 
         <Box
           sx={{
-            width: "100%",
-            maxWidth: { xs: 600, sm: 480, md: 600 },
-            aspectRatio: "4/3",
-            position: "relative",
-            mx: "auto",
-            mb: { xs: 3, md: 0 },
-            display: { xs: "block", md: "none" },
+            flex: { xs: "none", md: "0 0 48%" },
+            display: "flex",
+            justifyContent: "center",
+            alignSelf: { md: "center" },
+            transform: { md: "translateX(6rem)" },
+            overflow: "visible",
           }}
         >
-          <Image
-            src="/recruitment/welcome.jpeg"
-            alt="Recruitment"
-            fill
-            style={{ objectFit: "cover" }}
-            sizes="(max-width:900px) 100vw, 600px"
-          />
-        </Box>
-
-        <Box sx={{ borderTop: "4px solid", borderColor: theme.palette.common.black, mt: 3, mb: 3 }} />
-
-        <Typography
-          variant="h4"
-          sx={{ mb: 2, fontWeight: 700, color: theme.palette.primary.main }}
-        >
-          Fall 2025 Applications are Now Open!
-        </Typography>
-
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          Application to the IBE Honors Program is restricted to incoming
-          first-year business & engineering students previously admitted to
-          University Honors in the Fisher College of Business or College of
-          Engineering. Please access the application at the links below:
-        </Typography>
-
-        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 2 }}>
-          <Button
-            href="#"
-            variant="contained"
-            sx={{ px: 3, py: 1, textTransform: "none", boxShadow: 4 }}
+          <Box
+            sx={{
+              width: { xs: "100%", md: 600 },
+              maxWidth: { md: 800 },
+              aspectRatio: "4/3",
+              position: "relative",
+            }}
           >
-            Engineering Application
-          </Button>
-
-          <Button
-            href="#"
-            variant="contained"
-            sx={{ px: 3, py: 1, textTransform: "none", boxShadow: 4 }}
-          >
-            Business Application
-          </Button>
+            <Image
+              src="/recruitment/welcome.jpeg"
+              alt="Recruitment"
+              fill
+              style={{ objectFit: "cover" }}
+              sizes="(max-width:600px) 100vw, 480px"
+            />
+          </Box>
         </Box>
       </Box>
-
       <Box
         sx={{
-          width: "100%",
-          maxWidth: { xs: 600, sm: 480, md: 600 },
-          aspectRatio: "4/3",
+          width: "100vw",
           position: "relative",
-          mx: "auto",
-          mb: { xs: 3, md: 0 },
-          display: { xs: "none", md: "flex" },
-          flex: { xs: "none", md: "0 0 48%" },
-          justifyContent: { md: "center" },
-          alignSelf: { md: "center" },
-          overflow: "visible",
+          left: "50%",
+          right: "50%",
+          marginLeft: "-50vw",
+          marginRight: "-50vw",
+          bgcolor: "primary.main",
+          color: "common.white",
+          textAlign: "center",
+          py: { xs: 4, md: 6 },
+          mt: 6,
         }}
       >
-        <Image
-          src="/recruitment/welcome.jpeg"
-          alt="Recruitment"
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="(max-width:900px) 100vw, 600px"
-        />
+        <Typography
+          variant="h3"
+          sx={{
+            fontFamily: theme.typography.fontFamily,
+            color: "common.white",
+          }}
+        >
+          Learn More About IBE
+        </Typography>
       </Box>
-    </Box>
+    </>
   );
 }
