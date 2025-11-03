@@ -9,9 +9,7 @@ interface InfoCardProps {
   imageSrc: string;
   imageAlt?: string;
   bandColor?: string;
-  // optional ref to the band element so parent can measure
   bandRef?: Ref<HTMLDivElement>;
-  // optional uniform band height (pixels)
   bandHeight?: number | null;
 }
 
@@ -58,7 +56,6 @@ export default function InfoCard({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          // if parent provides a measured height, respect it
           minHeight: bandHeight ? `${bandHeight}px` : undefined,
         }}
       >

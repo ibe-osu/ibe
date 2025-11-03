@@ -34,7 +34,6 @@ export default function InfoCardSection() {
       setBandHeight(max || null);
     };
 
-    // initial measure after layout
     const id = window.setTimeout(measure, 80);
     window.addEventListener("resize", measure);
     window.addEventListener("load", measure);
@@ -44,7 +43,6 @@ export default function InfoCardSection() {
       window.removeEventListener("resize", measure);
       window.removeEventListener("load", measure);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -56,7 +54,7 @@ export default function InfoCardSection() {
             gap: 4,
             flexWrap: "wrap",
             justifyContent: "center",
-            alignItems: "stretch", // allow children to stretch to the tallest
+            alignItems: "stretch",
           }}
         >
           {cards.map((c, idx) => (
