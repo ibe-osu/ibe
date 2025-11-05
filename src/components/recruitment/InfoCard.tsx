@@ -56,7 +56,8 @@ export default function InfoCard({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          minHeight: bandHeight ? `${bandHeight}px` : undefined,
+            height: { xs: 140, sm: 140, md: 160 },
+            flex: "0 0 auto",
         }}
       >
         <Typography
