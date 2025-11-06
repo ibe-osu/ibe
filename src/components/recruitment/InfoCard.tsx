@@ -10,7 +10,6 @@ interface InfoCardProps {
   imageAlt?: string;
   bandColor?: string;
   bandRef?: Ref<HTMLDivElement>;
-  bandHeight?: number | null;
 }
 
 export default function InfoCard({
@@ -20,7 +19,6 @@ export default function InfoCard({
   imageAlt = "",
   bandColor = "primary.main",
   bandRef,
-  bandHeight = null,
 }: InfoCardProps) {
   return (
     <Box
@@ -35,8 +33,23 @@ export default function InfoCard({
         boxShadow: 2,
       }}
     >
-      <Box sx={{ bgcolor: "common.white", p: 2, display: "flex", justifyContent: "center", flex: 1 }}>
-        <Box sx={{ width: "100%", maxWidth: 420, aspectRatio: "4/3", position: "relative" }}>
+      <Box
+        sx={{
+          bgcolor: "common.white",
+          p: 2,
+          display: "flex",
+          justifyContent: "center",
+          flex: 1,
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: 420,
+            aspectRatio: "4/3",
+            position: "relative",
+          }}
+        >
           <Image
             src={imageSrc}
             alt={imageAlt || header}
@@ -56,8 +69,8 @@ export default function InfoCard({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-            height: { xs: 140, sm: 140, md: 160 },
-            flex: "0 0 auto",
+          height: { xs: 140, sm: 140, md: 160 },
+          flex: "0 0 auto",
         }}
       >
         <Typography
