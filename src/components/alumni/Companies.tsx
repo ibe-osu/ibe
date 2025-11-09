@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import CompanyScroller from "./CompanyScroller";
 
 export default function Companies() {
   return (
@@ -19,6 +20,7 @@ export default function Companies() {
           Silicon Valley, New York City, and Sydney), and industries (including
           tech, consulting, finance, industrial goods, and healthcare)
         </Typography>
+        <CompanyScroller />
       </Box>
     </>
   );
