@@ -1,4 +1,3 @@
-import theme from "@/theme/theme";
 import { Box, Typography } from "@mui/material";
 
 export default function StudentLife() {
@@ -14,14 +13,15 @@ export default function StudentLife() {
         width: "100vw",
         ml: "-50vw",
         mr: "-50vw",
-        border: `4px solid ${theme.palette.primary.main}`,
+        border: "4px solid",
+        borderColor: "primary.main",
       }}
     >
       <Box
         sx={{
           flexBasis: { xs: "100%", md: "60%" },
-          backgroundColor: theme.palette.primary.main,
-          color: theme.palette.secondary.main,
+          backgroundColor: "primary.main",
+          color: "secondary.main",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -36,10 +36,12 @@ export default function StudentLife() {
       <Box
         sx={{
           flexBasis: { xs: "100%", md: "40%" },
-          backgroundColor: theme.palette.secondary.main,
-          color: theme.palette.text.primary,
-          borderLeft: { md: `4px solid ${theme.palette.primary.main}` },
-          borderTop: { xs: `4px solid ${theme.palette.primary.main}`, md: "none" },
+          backgroundColor: "secondary.main",
+          color: "text.primary",
+          borderLeft: { md: "4px solid" },
+          borderLeftColor: { md: "primary.main" },
+          borderTop: { xs: "4px solid", md: "none" },
+          borderTopColor: { xs: "primary.main" },
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

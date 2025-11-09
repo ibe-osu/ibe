@@ -1,23 +1,59 @@
 import { Box, Typography, Divider } from "@mui/material";
-import theme from "@/theme/theme";
 import PhotoCarousel, { Photo } from "./PhotoCarousel";
+import React from "react";
 
-// Date Party Photos
-const datePartyPhotos: Photo[] = [
-  { url: "/happenings/date-party-1.jpg", alt: "IBE Date Party - Photo 1" },
-  { url: "/happenings/date-party-2.jpg", alt: "IBE Date Party - Photo 2" },
-  { url: "/happenings/date-party-3.jpg", alt: "IBE Date Party - Photo 3" },
-  { url: "/happenings/date-party-4.jpg", alt: "IBE Date Party - Photo 4" },
-  { url: "/happenings/date-party-5.jpg", alt: "IBE Date Party - Photo 5" },
-];
+// Event data structure
+interface Event {
+  title: string;
+  date: string;
+  descriptions: React.ReactNode[];
+  photos: Photo[];
+}
 
-// Cleveland Trip Photos
-const clevelandPhotos: Photo[] = [
-  { url: "/happenings/cleveland-1.jpg", alt: "IBE Cleveland Trip - Photo 1" },
-  { url: "/happenings/cleveland-2.jpg", alt: "IBE Cleveland Trip - Photo 2" },
-  { url: "/happenings/cleveland-3.jpg", alt: "IBE Cleveland Trip - Photo 3" },
-  { url: "/happenings/cleveland-4.jpg", alt: "IBE Cleveland Trip - Photo 4" },
-  { url: "/happenings/cleveland-5.jpg", alt: "IBE Cleveland Trip - Photo 5" },
+// Events content
+const events: Event[] = [
+  {
+    title: "IBE Date Party!",
+    date: "4/11/25",
+    descriptions: [
+      "IBE certainly made our Date Party one to remember! From the great music and dancing to the amazing energy and unforgettable moments, the night was a huge success. Until next time, keep the memories alive and the good vibes going! Thanks to Buckeye Undergraduate Consulting Club, Students Consulting for Nonprofit Organizations, and Ohio State Business Builders for partnering with us on this exciting event!",
+    ],
+    photos: [
+      { url: "/happenings/date-party-1.jpg", alt: "IBE Date Party - Photo 1" },
+      { url: "/happenings/date-party-2.jpg", alt: "IBE Date Party - Photo 2" },
+      { url: "/happenings/date-party-3.jpg", alt: "IBE Date Party - Photo 3" },
+      { url: "/happenings/date-party-4.jpg", alt: "IBE Date Party - Photo 4" },
+      { url: "/happenings/date-party-5.jpg", alt: "IBE Date Party - Photo 5" },
+    ],
+  },
+  {
+    title: "IBE Goes to Cleveland!",
+    date: "3/5/25 - 3/7/25",
+    descriptions: [
+      "IBE students recently took a trek to Cleveland, where we met with Deloitte, Sherwin-Williams, and Encore Venture Labs. The trip included a networking event with industry professionals and alumni, plus an exciting chance to see the Cavaliers secure a big win!",
+      <>
+        Huge thank-you to IBE alum{" "}
+        <Box
+          component="span"
+          sx={{
+            color: "primary.main",
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
+        >
+          Collin Aldrich
+        </Box>{" "}
+        at Deloitte!
+      </>,
+    ],
+    photos: [
+      { url: "/happenings/cleveland-1.jpg", alt: "IBE Cleveland Trip - Photo 1" },
+      { url: "/happenings/cleveland-2.jpg", alt: "IBE Cleveland Trip - Photo 2" },
+      { url: "/happenings/cleveland-3.jpg", alt: "IBE Cleveland Trip - Photo 3" },
+      { url: "/happenings/cleveland-4.jpg", alt: "IBE Cleveland Trip - Photo 4" },
+      { url: "/happenings/cleveland-5.jpg", alt: "IBE Cleveland Trip - Photo 5" },
+    ],
+  },
 ];
 
 export default function Happenings() {
@@ -29,14 +65,14 @@ export default function Happenings() {
         width: "100vw",
         ml: "-50vw",
         mr: "-50vw",
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: "background.paper",
       }}
     >
       {/* Header Banner */}
       <Box
         sx={{
-          backgroundColor: theme.palette.primary.main,
-          color: theme.palette.secondary.main,
+          backgroundColor: "primary.main",
+          color: "secondary.main",
           py: { xs: 3, md: 4 },
           textAlign: "center",
         }}
@@ -55,162 +91,102 @@ export default function Happenings() {
           py: { xs: 4, md: 6 },
         }}
       >
-        {/* Event 1: IBE Date Party */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: { xs: 3, md: 4 },
-            mb: { xs: 4, md: 6 },
-          }}
-        >
-          {/* Left Side: Text Content */}
-          <Box
-            sx={{
-              flex: { xs: "1", md: "0 0 45%" },
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              textAlign: "right",
-            }}
-          >
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: "bold",
-                color: theme.palette.text.primary,
-                textAlign: "right",
-              }}
-            >
-              IBE Date Party!
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                color: theme.palette.text.secondary,
-                fontStyle: "italic",
-                textAlign: "right",
-              }}
-            >
-              4/11/25
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                lineHeight: 1.7,
-                color: theme.palette.text.primary,
-                textAlign: "right",
-              }}
-            >
-              IBE certainly made our Date Party one to remember! From the great
-              music and dancing to the amazing energy and unforgettable moments,
-              the night was a huge success. Until next time, keep the memories
-              alive and the good vibes going! Thanks to Buckeye Undergraduate
-              Consulting Club, Students Consulting for Nonprofit Organizations,
-              and Ohio State Business Builders for partnering with us on this
-              exciting event!
-            </Typography>
-          </Box>
+        {events.map((event, index) => {
+          // Alternate layout: even indices have photo on right, odd indices have photo on left
+          const isPhotoOnLeft = index % 2 !== 0;
+          const textAlign = isPhotoOnLeft ? "left" : "right";
 
-          {/* Right Side: Photo Carousel */}
-          <Box
-            sx={{
-              flex: { xs: "1", md: "0 0 50%" },
-            }}
-          >
-            <PhotoCarousel photos={datePartyPhotos} />
-          </Box>
-        </Box>
-
-        {/* Horizontal Divider */}
-        <Divider
-          sx={{
-            my: { xs: 4, md: 6 },
-            borderColor: theme.palette.grey[400],
-            borderWidth: 1,
-          }}
-        />
-
-        {/* Event 2: IBE Goes to Cleveland */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: { xs: 3, md: 4 },
-          }}
-        >
-          {/* Left Side: Photo Carousel */}
-          <Box
-            sx={{
-              flex: { xs: "1", md: "0 0 50%" },
-              order: { xs: 2, md: 1 },
-            }}
-          >
-            <PhotoCarousel photos={clevelandPhotos} />
-          </Box>
-
-          {/* Right Side: Text Content */}
-          <Box
-            sx={{
-              flex: { xs: "1", md: "0 0 45%" },
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              order: { xs: 1, md: 2 },
-            }}
-          >
-            <Typography
-              variant="h4"
+          const textContent = (
+            <Box
               sx={{
-                fontWeight: "bold",
-                color: theme.palette.text.primary,
+                flex: { xs: "1", md: "0 0 45%" },
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                textAlign: textAlign,
+                order: { xs: 1, md: isPhotoOnLeft ? 2 : 1 },
               }}
             >
-              IBE Goes to Cleveland!
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                color: theme.palette.text.secondary,
-                fontStyle: "italic",
-              }}
-            >
-              3/5/25 - 3/7/25
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                lineHeight: 1.7,
-                color: theme.palette.text.primary,
-              }}
-            >
-              IBE students recently took a trek to Cleveland, where we met with
-              Deloitte, Sherwin-Williams, and Encore Venture Labs. The trip
-              included a networking event with industry professionals and alumni,
-              plus an exciting chance to see the Cavaliers secure a big win!
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                lineHeight: 1.7,
-                color: theme.palette.text.primary,
-              }}
-            >
-              Huge thank-you to IBE alum{" "}
-              <Box
-                component="span"
+              <Typography
+                variant="h4"
                 sx={{
-                  color: theme.palette.primary.main,
-                  textDecoration: "underline",
-                  cursor: "pointer",
+                  fontWeight: "bold",
+                  color: "text.primary",
+                  textAlign: textAlign,
                 }}
               >
-                Collin Aldrich
-              </Box>{" "}
-              at Deloitte!
-            </Typography>
-          </Box>
-        </Box>
+                {event.title}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  fontStyle: "italic",
+                  textAlign: textAlign,
+                }}
+              >
+                {event.date}
+              </Typography>
+              {event.descriptions.map((description, descIndex) => (
+                <Typography
+                  key={descIndex}
+                  variant="body1"
+                  sx={{
+                    lineHeight: 1.7,
+                    color: "text.primary",
+                    textAlign: textAlign,
+                  }}
+                >
+                  {description}
+                </Typography>
+              ))}
+            </Box>
+          );
+
+          const photoContent = (
+            <Box
+              sx={{
+                flex: { xs: "1", md: "0 0 50%" },
+                order: { xs: 2, md: isPhotoOnLeft ? 1 : 2 },
+              }}
+            >
+              <PhotoCarousel photos={event.photos} />
+            </Box>
+          );
+
+          return (
+            <React.Fragment key={index}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
+                  gap: { xs: 3, md: 4 },
+                }}
+              >
+                {isPhotoOnLeft ? (
+                  <>
+                    {photoContent}
+                    {textContent}
+                  </>
+                ) : (
+                  <>
+                    {textContent}
+                    {photoContent}
+                  </>
+                )}
+              </Box>
+              {index < events.length - 1 && (
+                <Divider
+                  sx={{
+                    my: { xs: 4, md: 6 },
+                    borderColor: "grey.400",
+                    borderWidth: 1,
+                  }}
+                />
+              )}
+            </React.Fragment>
+          );
+        })}
       </Box>
     </Box>
   );

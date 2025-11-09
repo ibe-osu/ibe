@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import theme from "@/theme/theme";
 
 export interface Speaker {
   name: string;
@@ -72,7 +71,7 @@ export default function SpeakerCard(props: IProps) {
           variant="h6"
           sx={{
             fontWeight: "bold",
-            color: theme.palette.primary.main,
+            color: "primary.main",
             mb: 1,
           }}
         >
@@ -82,7 +81,7 @@ export default function SpeakerCard(props: IProps) {
           variant="body2"
           sx={{
             fontWeight: "bold",
-            color: theme.palette.text.primary,
+            color: "text.primary",
             mb: 2,
           }}
         >
@@ -91,7 +90,7 @@ export default function SpeakerCard(props: IProps) {
         <Typography
           variant="body2"
           sx={{
-            color: theme.palette.text.secondary,
+            color: "text.secondary",
             lineHeight: 1.5,
             fontSize: "0.875rem",
           }}

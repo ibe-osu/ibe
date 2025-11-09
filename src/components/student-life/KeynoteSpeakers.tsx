@@ -1,4 +1,3 @@
-import theme from "@/theme/theme";
 import { Box, Typography } from "@mui/material";
 import SpeakerCarousel from "./SpeakerCarousel";
 import { Speaker } from "./SpeakerCard";
@@ -56,9 +55,11 @@ export default function KeynoteSpeakers() {
         width: "100vw",
         ml: "-50vw",
         mr: "-50vw",
-        backgroundColor: theme.palette.grey[200],
-        // borderTop: `4px solid ${theme.palette.primary.main}`,
-        // borderBottom: `4px solid ${theme.palette.primary.main}`,
+        backgroundColor: "grey.200",
+        // borderTop: "4px solid",
+        // borderTopColor: "primary.main",
+        // borderBottom: "4px solid",
+        // borderBottomColor: "primary.main",
         pt: { xs: 4, md: 5 },
         pb: { xs: 4, md: 5 },
         minHeight: "calc(100vh - 64px - 400px)", // Subtract header height and approximate StudentLife height
@@ -95,8 +96,8 @@ export default function KeynoteSpeakers() {
         <Box
           sx={{
             flexBasis: { xs: "100%", md: "65%" },
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.secondary.main,
+            backgroundColor: "primary.main",
+            color: "secondary.main",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

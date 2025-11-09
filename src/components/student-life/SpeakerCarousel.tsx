@@ -13,6 +13,7 @@ interface IProps {
 export default function SpeakerCarousel(props: IProps) {
   const { speakers } = props;
   const [startIndex, setStartIndex] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
   
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -23,11 +24,19 @@ export default function SpeakerCarousel(props: IProps) {
   const cardsToShow = isMobile ? 1 : isTablet ? 2 : isSmallDesktop ? 3 : 4;
 
   const next = () => {
-    setStartIndex((prev) => (prev + 1) % speakers.length);
+    setFadeIn(false);
+    setTimeout(() => {
+      setStartIndex((prev) => (prev + 1) % speakers.length);
+      setFadeIn(true);
+    }, 300);
   };
 
   const prev = () => {
-    setStartIndex((prev) => (prev === 0 ? speakers.length - 1 : prev - 1));
+    setFadeIn(false);
+    setTimeout(() => {
+      setStartIndex((prev) => (prev === 0 ? speakers.length - 1 : prev - 1));
+      setFadeIn(true);
+    }, 300);
   };
 
   // Create a circular array view showing only the cards we need
@@ -67,7 +76,6 @@ export default function SpeakerCarousel(props: IProps) {
       <Box
         sx={{
           flex: 1,
-          overflow: "hidden",
           px: 1,
         }}
       >
@@ -81,7 +89,8 @@ export default function SpeakerCarousel(props: IProps) {
               lg: "repeat(4, 1fr)", // 4 cards on large desktop
             },
             gap: 3,
-            transition: "transform 0.5s ease",
+            opacity: fadeIn ? 1 : 0,
+            transition: "opacity 0.3s ease",
           }}
         >
           {visibleSpeakers.map((speaker, idx) => (
