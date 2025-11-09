@@ -9,6 +9,7 @@ const logos = [
   "/companies/bain.svg",
   "/companies/bcg.svg",
   "/companies/boeing.svg",
+  "/companies/capital-one.svg",
   "/companies/cisco.svg",
   "/companies/citi.svg",
   "/companies/deloitte.svg",
