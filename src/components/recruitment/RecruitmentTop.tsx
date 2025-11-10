@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import theme from "@/theme/theme";
+import Link from "next/link";
 
 export default function RecruitmentHero() {
   return (
@@ -13,23 +14,26 @@ export default function RecruitmentHero() {
           overflow: "visible",
           px: { xs: 2, sm: 3, md: 10 },
           py: { xs: 3, md: 8 },
+          pb: { xs: 1, md: 8 },
           flexDirection: { xs: "column", sm: "column", md: "row" },
         }}
       >
-        <Box sx={{
-          flex: 1,
-          minWidth: { xs: 0, md: 320, lg: 400 },
-          maxWidth: { xs: '100%', sm: '90%', md: '60ch' },
-          mx: { xs: 'auto', md: 0 },
-          flexShrink: 0,
-        }}>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: { xs: 0, md: 320, lg: 400 },
+            maxWidth: { xs: "100%", sm: "90%", md: "60ch" },
+            mx: { xs: "auto", md: 0 },
+            flexShrink: 0,
+          }}
+        >
           <Typography
             variant="h2"
             sx={{
               mb: 2,
               fontSize: { xs: "2rem", sm: "2.4rem", md: "3.2rem" },
               lineHeight: 1.1,
-              maxWidth: { xs: '100%', sm: '90%', md: '60ch' },
+              maxWidth: { xs: "100%", sm: "90%", md: "60ch" },
             }}
           >
             Recruitment
@@ -41,14 +45,14 @@ export default function RecruitmentHero() {
               mb: 2,
               fontSize: { xs: "1rem", sm: "1.1rem", md: "1.15rem" },
               lineHeight: 1.5,
-              maxWidth: { xs: '100%', sm: '90%', md: '60ch' },
+              maxWidth: { xs: "100%", sm: "90%", md: "60ch" },
             }}
           >
             Application to the IBE program is open to prospective students
             previously admitted into the Ohio State University Max M. Fisher
             College of Business or College of Engineering Honors programs. From
             this group of talented individuals, we select a class of up to 72
-            (36 per focus area) students. Our two-stage admission process allows
+            (36 per IBE and IBE-SI track) students. Our admission process allows
             us to focus on selectively admitting talented individuals.
           </Typography>
 
@@ -56,7 +60,7 @@ export default function RecruitmentHero() {
           <Box
             sx={{
               display: { xs: "block", md: "none" },
-              width: { xs: '100%', sm: '90%', md: 480 },
+              width: { xs: "100%", sm: "90%", md: 480 },
               maxWidth: 600,
               aspectRatio: "4/3",
               position: "relative",
@@ -110,10 +114,19 @@ export default function RecruitmentHero() {
             Application to the IBE Honors Program is restricted to incoming
             first-year business & engineering students previously admitted to
             University Honors in the Fisher College of Business or College of
-            Engineering. Please access the application at the links below:
+            Engineering. Please fill out interest form to receive more
+            information:
           </Typography>
 
-          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 2, width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              flexWrap: "wrap",
+              mt: 2,
+              width: "100%",
+            }}
+          >
             <Button
               href="#"
               variant="contained"
@@ -127,10 +140,12 @@ export default function RecruitmentHero() {
                 "&:hover": { bgcolor: theme.palette.primary.light },
               }}
             >
-              Engineering Application
+              <Link href="https://forms.gle/hbkbG9sRqqBhPeag8" target="_blank">
+                IBE Interest Form
+              </Link>
             </Button>
 
-            <Button
+            {/* <Button
               href="#"
               variant="contained"
               sx={{
@@ -144,7 +159,7 @@ export default function RecruitmentHero() {
               }}
             >
               Business Application
-            </Button>
+            </Button> */}
           </Box>
         </Box>
 

@@ -10,16 +10,38 @@ const faqItems = [
     q: "What do you need to be eligible for the IBE Program?",
     a: "Placeholder answer — replace this with the real eligibility details.",
   },
-  { q: "I am already at OSU. Can I apply to join IBE?", a: "Placeholder answer." },
-  { q: "Are you allowed to switch your major when in IBE?", a: "Placeholder answer." },
-  { q: "I applied to Scholars instead of Honors. Can I apply to join IBE?", a: "Placeholder answer." },
-  { q: "Does the IBE Program allow students to go on Co-op?", a: "Placeholder answer." },
-  { q: "How many students are admitted into the IBE Program each year?", a: "Placeholder answer." },
+  {
+    q: "I am already at OSU. Can I apply to join IBE?",
+    a: "Placeholder answer.",
+  },
+  {
+    q: "Are you allowed to switch your major when in IBE?",
+    a: "Placeholder answer.",
+  },
+  {
+    q: "I applied to Scholars instead of Honors. Can I apply to join IBE?",
+    a: "Placeholder answer.",
+  },
+  {
+    q: "Does the IBE Program allow students to go on Co-op?",
+    a: "Placeholder answer.",
+  },
+  {
+    q: "How many students are admitted into the IBE Program each year?",
+    a: "Placeholder answer.",
+  },
 ];
 
 export default function FAQSection() {
   return (
-    <Box sx={{ py: { xs: 4, md: 8 }, px: { xs: 2, md: 10 }, maxWidth: 1100, mx: "auto" }}>
+    <Box
+      sx={{
+        py: { xs: 4, md: 8 },
+        px: { xs: 2, md: 10 },
+        maxWidth: 1100,
+        mx: "auto",
+      }}
+    >
       <Typography variant="h4" align="center" sx={{ mb: 3 }}>
         FAQ
       </Typography>
@@ -29,27 +51,34 @@ export default function FAQSection() {
           <Accordion
             key={it.q}
             sx={{
-              bgcolor: "primary.light",
+              color: "secondary.main",
+              bgcolor: "primary.main",
               boxShadow: 0,
               borderRadius: 0,
               "&.Mui-expanded": { margin: 0 },
             }}
           >
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />}
               sx={{
                 px: 3,
                 minHeight: 54,
                 display: "flex",
                 alignItems: "center",
-                "& .MuiAccordionSummary-content": { minHeight: 54, display: "flex", alignItems: "center" },
+                "& .MuiAccordionSummary-content": {
+                  minHeight: 54,
+                  display: "flex",
+                  alignItems: "center",
+                },
               }}
             >
-              <Typography sx={{ fontWeight: 600 }}>{it.q}</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                {it.q}
+              </Typography>
             </AccordionSummary>
-            
+
             <AccordionDetails sx={{ px: 3, pt: 2.5, pb: 3 }}>
-              <Typography>{it.a}</Typography>
+              <Typography variant="body1">{it.a}</Typography>
             </AccordionDetails>
           </Accordion>
         ))}
