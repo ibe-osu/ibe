@@ -1,8 +1,9 @@
 import { AppBar, Box, Toolbar } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
-import LoginButton from "./LoginButton";
+// import LoginButton from "./LoginButton";
 import NavButton from "./NavButton";
+import MobileMenuButton from "./MobileMenuButton";
 
 export default function Header() {
   return (
@@ -23,10 +24,10 @@ export default function Header() {
           </Link>
         </Box>
 
-        {/* Navigation Links & Login Button */}
+        {/* Desktop Nav */}
         <Box
           sx={{
-            display: "flex",
+            display: { xs: "none", sm: "flex" },
             alignItems: "center",
             gap: { xs: 0, md: 4 },
           }}
@@ -35,7 +36,12 @@ export default function Header() {
           <NavButton href="/prospective-students">Join Us</NavButton>
           <NavButton href="/alumni">Alumni</NavButton>
           <NavButton href="/student-life">Student Life</NavButton>
-          <LoginButton />
+          {/* <LoginButton /> */}
+        </Box>
+
+        {/* Mobile Menu Button */}
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
+          <MobileMenuButton />
         </Box>
       </Toolbar>
     </AppBar>
