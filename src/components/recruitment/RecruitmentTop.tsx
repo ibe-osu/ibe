@@ -128,7 +128,6 @@ export default function RecruitmentHero() {
             }}
           >
             <Button
-              href="#"
               variant="contained"
               sx={{
                 bgcolor: theme.palette.primary.main,
