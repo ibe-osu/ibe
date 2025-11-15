@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Box, IconButton, useTheme, useMediaQuery } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -12,44 +12,62 @@ interface IProps {
 
 export default function SpeakerCarousel(props: IProps) {
   const { speakers } = props;
-  const [startIndex, setStartIndex] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
-  
+  const [startIndex, setStartIndex] = useState(speakers.length); // Start at first "real" copy
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isSmallDesktop = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  
+
   // Determine how many cards to show based on screen size
   const cardsToShow = isMobile ? 1 : isTablet ? 2 : isSmallDesktop ? 3 : 4;
 
+  // Calculate the card width percentage based on how many cards are visible
+  const cardWidthPercentage = 100 / cardsToShow;
+
+  // Create triple array: [original, original, original] for infinite loop
+  const extendedSpeakers = [...speakers, ...speakers, ...speakers];
+
   const next = () => {
-    setFadeIn(false);
-    setTimeout(() => {
-      setStartIndex((prev) => (prev + 1) % speakers.length);
-      setFadeIn(true);
-    }, 300);
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setStartIndex((prev) => prev + 1);
   };
 
   const prev = () => {
-    setFadeIn(false);
-    setTimeout(() => {
-      setStartIndex((prev) => (prev === 0 ? speakers.length - 1 : prev - 1));
-      setFadeIn(true);
-    }, 300);
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setStartIndex((prev) => prev - 1);
   };
 
-  // Create a circular array view showing only the cards we need
-  const getVisibleSpeakers = () => {
-    const visible = [];
-    for (let i = 0; i < cardsToShow; i++) {
-      const index = (startIndex + i) % speakers.length;
-      visible.push(speakers[index]);
+  useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-    return visible;
-  };
 
-  const visibleSpeakers = getVisibleSpeakers();
+    if (isTransitioning) {
+      timeoutRef.current = setTimeout(() => {
+        setIsTransitioning(false);
+
+        // If we've gone past the second copy, jump back to first copy (no animation)
+        if (startIndex >= speakers.length * 2) {
+          setStartIndex(startIndex - speakers.length);
+        }
+        // If we've gone before the first copy, jump to second copy (no animation)
+        else if (startIndex < speakers.length) {
+          setStartIndex(startIndex + speakers.length);
+        }
+      }, 600); // Match transition duration
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [startIndex, isTransitioning, speakers.length]);
 
   return (
     <Box
@@ -72,29 +90,37 @@ export default function SpeakerCarousel(props: IProps) {
         <ArrowBackIosNewIcon />
       </IconButton>
 
-      {/* Cards Container */}
+      {/* Cards Container with overflow hidden for sliding effect */}
       <Box
         sx={{
           flex: 1,
           px: 1,
+          overflow: "hidden",
+          py: 1, // Add vertical padding to prevent cutting off cards
         }}
       >
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(1, 1fr)", // 1 card on mobile
-              sm: "repeat(2, 1fr)", // 2 cards on tablet
-              md: "repeat(3, 1fr)", // 3 cards on small desktop
-              lg: "repeat(4, 1fr)", // 4 cards on large desktop
-            },
-            gap: 3,
-            opacity: fadeIn ? 1 : 0,
-            transition: "opacity 0.3s ease",
+            display: "flex",
+            transition: isTransitioning ? "transform 0.6s ease" : "none",
+            transform: `translateX(-${startIndex * cardWidthPercentage}%)`,
           }}
         >
-          {visibleSpeakers.map((speaker, idx) => (
-            <SpeakerCard key={`${speaker.name}-${startIndex}-${idx}`} speaker={speaker} />
+          {extendedSpeakers.map((speaker, idx) => (
+            <Box
+              key={`${speaker.name}-${idx}`}
+              sx={{
+                minWidth: {
+                  xs: "100%", // 1 card on mobile
+                  sm: "50%",  // 2 cards on tablet
+                  md: "33.333%", // 3 cards on small desktop
+                  lg: "25%",  // 4 cards on large desktop
+                },
+                px: 1.5, // Half of the gap for spacing
+              }}
+            >
+              <SpeakerCard speaker={speaker} />
+            </Box>
           ))}
         </Box>
       </Box>
