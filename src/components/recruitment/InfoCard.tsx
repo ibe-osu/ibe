@@ -69,7 +69,7 @@ export default function InfoCard({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          height: { xs: 140, sm: 140, md: 160 },
+          height: { xs: 240, sm: 240, md: 240 },
           flex: "0 0 auto",
         }}
       >
