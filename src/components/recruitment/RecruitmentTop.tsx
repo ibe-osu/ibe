@@ -48,12 +48,27 @@ export default function RecruitmentHero() {
               maxWidth: { xs: "100%", sm: "90%", md: "60ch" },
             }}
           >
-            Application to the IBE program is open to prospective students
-            previously admitted into the Ohio State University Max M. Fisher
-            College of Business or College of Engineering Honors programs. From
-            this group of talented individuals, we select a class of up to 72
-            (36 per IBE and IBE-SI track) students. Our admission process allows
-            us to focus on selectively admitting talented individuals.
+            Application to the IBE Program is open to prospective students
+            previously accepted into the Ohio State University Honors Program
+            and either the Max M. Fisher College of Business or College of
+            Engineering. From this pool of talented candidates, IBE admits a
+            cohort of 72 total students (36 within the IBE Traditional Track and
+            36 within the IBE Software Innovation Track).
+            <br />
+            <br />
+            The application process will begin shortly after an individual has
+            been accepted into the University Honors Program and the school
+            pertaining to their respective major. Invitations to apply to IBE
+            will be emailed to prospective students in waves starting in
+            January. Please be advised that sometimes these emails can land in
+            junk mail. Please be certain to double check your junk mail folder.
+            <br />
+            <br />
+            IBE admission offers will be sent in waves beginning in early March.
+            The IBE Application Deadline will be April 3, 2026. Please fill out
+            the interest form linked below to receive more information regarding
+            IBE, invitations to Virtual Information Sessions, and reminders
+            about important deadlines.
           </Typography>
 
           {/* In-line image for mobile/tablet */}
@@ -80,7 +95,7 @@ export default function RecruitmentHero() {
             />
           </Box>
 
-          <Box
+          {/* <Box
             sx={{
               borderTop: "4px solid",
               borderColor: theme.palette.common.black,
@@ -116,7 +131,7 @@ export default function RecruitmentHero() {
             University Honors in the Fisher College of Business or College of
             Engineering. Please fill out interest form to receive more
             information:
-          </Typography>
+          </Typography> */}
 
           <Box
             sx={{
@@ -125,6 +140,8 @@ export default function RecruitmentHero() {
               flexWrap: "wrap",
               mt: 2,
               width: "100%",
+              justifyContent: { xs: "center", sm: "center", md: "flex-start" },
+              alignItems: "center",
             }}
           >
             <Button
@@ -143,22 +160,6 @@ export default function RecruitmentHero() {
                 IBE Interest Form
               </Link>
             </Button>
-
-            {/* <Button
-              href="#"
-              variant="contained"
-              sx={{
-                bgcolor: theme.palette.primary.main,
-                color: "common.white",
-                px: 3,
-                py: 1,
-                textTransform: "none",
-                boxShadow: 4,
-                "&:hover": { bgcolor: theme.palette.primary.light },
-              }}
-            >
-              Business Application
-            </Button> */}
           </Box>
         </Box>
 
