@@ -15,18 +15,31 @@ export default function Welcome() {
         overflow: "hidden",
       }}
     >
-      <Image
-        src="/welcome.png"
-        alt="Welcome"
-        width={1920}
-        height={947}
+      <picture
         style={{
-          objectFit: "cover",
-          pointerEvents: "none",
-          width: "100%",
-          height: "100%",
+          display: "block", // Ensure the picture element behaves as a block-level element
+          width: "100%", // Fill the width of the parent box
+          height: "100%", // Fill the height of the parent box
         }}
-      />
+      >
+        <source
+          media="(max-width:800px)"
+          srcSet="/welcome-vertical.jpeg"
+          sizes="(max-width: 800px) 100vw, 100vh" // Ensure it fills the parent box
+        />
+        <Image
+          src="/welcome.jpeg"
+          alt="Welcome"
+          width={1920}
+          height={1080}
+          style={{
+            objectFit: "cover", // Ensures the image covers the parent box
+            pointerEvents: "none",
+            width: "100%", // Fills the width of the parent box
+            height: "100%", // Fills the height of the parent box
+          }}
+        />
+      </picture>
       <Box
         sx={{
           position: "absolute",
@@ -46,6 +59,7 @@ export default function Welcome() {
           alignItems: "center",
           width: "100%",
           height: "100%",
+          pb: { xs: "4.5rem", sm: "0rem" },
         }}
       >
         <Typography
@@ -64,7 +78,7 @@ export default function Welcome() {
               height: "0.25rem",
               backgroundColor: "secondary.main",
               marginTop: "0.5rem", // Add spacing above the line
-              marginBottom: "1rem", // Add spacing below the line
+              marginBottom: { xs: "5rem", sm: "1rem" }, // Add spacing below the line
             }}
           />
           <Typography

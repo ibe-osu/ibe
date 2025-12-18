@@ -15,13 +15,13 @@ export default function AboutUs() {
       }}
     >
       <Image
-        src="/about.png"
+        src="/about.jpg"
         alt="About Us"
         width={1920}
-        height={947}
+        height={1366}
         style={{
           objectFit: "cover",
-          objectPosition: "top",
+          objectPosition: "center",
           pointerEvents: "none",
           width: "100%",
           height: "100%",
