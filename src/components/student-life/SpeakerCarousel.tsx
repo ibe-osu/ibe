@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Box, IconButton, useTheme, useMediaQuery } from "@mui/material";
+import { Box, IconButton, useTheme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import SpeakerCard, { Speaker } from "./SpeakerCard";
@@ -17,9 +18,9 @@ export default function SpeakerCarousel(props: IProps) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isSmallDesktop = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isSmallDesktop = useMediaQuery(theme.breakpoints.between("md", "lg"));
 
   // Determine how many cards to show based on screen size
   const cardsToShow = isMobile ? 1 : isTablet ? 2 : isSmallDesktop ? 3 : 4;
@@ -112,9 +113,9 @@ export default function SpeakerCarousel(props: IProps) {
               sx={{
                 minWidth: {
                   xs: "100%", // 1 card on mobile
-                  sm: "50%",  // 2 cards on tablet
+                  sm: "50%", // 2 cards on tablet
                   md: "33.333%", // 3 cards on small desktop
-                  lg: "25%",  // 4 cards on large desktop
+                  lg: "25%", // 4 cards on large desktop
                 },
                 px: 1.5, // Half of the gap for spacing
               }}
