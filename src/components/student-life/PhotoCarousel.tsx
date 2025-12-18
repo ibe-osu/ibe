@@ -64,6 +64,7 @@ export default function PhotoCarousel(props: IProps) {
         position: "relative",
         borderRadius: 2,
         overflow: "hidden",
+        isolation: "isolate",
       }}
     >
       {/* Slide Container */}
@@ -71,6 +72,7 @@ export default function PhotoCarousel(props: IProps) {
         {...handlers}
         sx={{
           display: "flex",
+          width: "100%",
           transition: "transform 0.6s ease",
           transform: `translateX(-${index * 100}%)`,
           cursor: "grab",
@@ -83,20 +85,18 @@ export default function PhotoCarousel(props: IProps) {
           <Box
             key={i}
             sx={{
-              minWidth: "100%",
-              aspectRatio: "16 / 9",
+              flex: "0 0 100%",
               position: "relative",
-              backgroundColor: "grey.300",
+              width: "100%",
+              pt: "56.25%", // 16:9
             }}
           >
             <Image
               src={photo.url}
               alt={photo.alt}
               fill
-              style={{
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
+              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: "cover", objectPosition: "center" }}
             />
           </Box>
         ))}
@@ -159,7 +159,9 @@ export default function PhotoCarousel(props: IProps) {
               borderRadius: "50%",
               cursor: "pointer",
               backgroundColor:
-                i === index ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.5)",
+                i === index
+                  ? "rgba(255, 255, 255, 0.9)"
+                  : "rgba(255, 255, 255, 0.5)",
               transition: "background-color .3s",
               border: "1px solid rgba(0, 0, 0, 0.2)",
             }}

@@ -42,6 +42,7 @@ export default function SpeakerCard(props: IProps) {
         src={speaker.imageUrl}
         alt={speaker.name}
         fill
+        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
         style={{
           objectFit: "cover",
           objectPosition: "center",

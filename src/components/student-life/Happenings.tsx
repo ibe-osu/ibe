@@ -14,16 +14,23 @@ interface Event {
 const events: Event[] = [
   {
     title: "IBE Date Party!",
-    date: "4/11/25",
+    date: "11/14/25",
     descriptions: [
-      "IBE certainly made our Date Party one to remember! From the great music and dancing to the amazing energy and unforgettable moments, the night was a huge success. Until next time, keep the memories alive and the good vibes going! Thanks to Buckeye Undergraduate Consulting Club, Students Consulting for Nonprofit Organizations, and Ohio State Business Builders for partnering with us on this exciting event!",
+      "IBE certainly made our Date Party one to remember! From the great music and dancing to the amazing energy and unforgettable moments, the night was a huge success. Until next time, keep the memories alive and the good vibes going! Thanks to Buckeye Undergraduate Consulting Club, Students Consulting for Nonprofit Organizations, Women in Business, and Scarlet Investment Group for partnering with us on this exciting event!",
     ],
     photos: [
-      { url: "/happenings/date-party-1.jpg", alt: "IBE Date Party - Photo 1" },
-      { url: "/happenings/date-party-2.jpg", alt: "IBE Date Party - Photo 2" },
-      { url: "/happenings/date-party-3.jpg", alt: "IBE Date Party - Photo 3" },
-      { url: "/happenings/date-party-4.jpg", alt: "IBE Date Party - Photo 4" },
-      { url: "/happenings/date-party-5.jpg", alt: "IBE Date Party - Photo 5" },
+      {
+        url: "/happenings/11-25-date-party-1.jpeg",
+        alt: "IBE Date Party - Photo 1",
+      },
+      {
+        url: "/happenings/11-25-date-party-2.jpeg",
+        alt: "IBE Date Party - Photo 2",
+      },
+      {
+        url: "/happenings/11-25-date-party-3.jpeg",
+        alt: "IBE Date Party - Photo 3",
+      },
     ],
   },
   {
@@ -34,7 +41,10 @@ const events: Event[] = [
       <>
         Huge thank-you to IBE alum{" "}
         <Box
-          component="span"
+          component="a"
+          href="https://www.linkedin.com/in/collin-aldrich-b17108164/"
+          target="_blank"
+          rel="noopener noreferrer"
           sx={{
             color: "primary.main",
             textDecoration: "underline",
@@ -47,11 +57,22 @@ const events: Event[] = [
       </>,
     ],
     photos: [
-      { url: "/happenings/cleveland-1.jpg", alt: "IBE Cleveland Trip - Photo 1" },
-      { url: "/happenings/cleveland-2.jpg", alt: "IBE Cleveland Trip - Photo 2" },
-      { url: "/happenings/cleveland-3.jpg", alt: "IBE Cleveland Trip - Photo 3" },
-      { url: "/happenings/cleveland-4.jpg", alt: "IBE Cleveland Trip - Photo 4" },
-      { url: "/happenings/cleveland-5.jpg", alt: "IBE Cleveland Trip - Photo 5" },
+      {
+        url: "/happenings/cleveland-1.jpeg",
+        alt: "IBE Cleveland Trip - Photo 1",
+      },
+      {
+        url: "/happenings/cleveland-2.jpeg",
+        alt: "IBE Cleveland Trip - Photo 2",
+      },
+      {
+        url: "/happenings/cleveland-3.jpeg",
+        alt: "IBE Cleveland Trip - Photo 3",
+      },
+      {
+        url: "/happenings/cleveland-4.jpeg",
+        alt: "IBE Cleveland Trip - Photo 4",
+      },
     ],
   },
 ];

@@ -26,18 +26,18 @@ const speakers: Speaker[] = [
     imageUrl: "/people/joelrathbun.jpg",
   },
   {
+    name: "Melinda Gloriosa",
+    position: "Managing Director at Rev1 Ventures",
+    company: "Rev1 Ventures",
+    bio: "Melinda accelerates innovation by connecting entrepreneurs with capital and resources to build high-growth tech companies, supporting early-stage founders through a startup studio and strategic partnerships.",
+    imageUrl: "/people/melindagloriosa.jpeg",
+  },
+  {
     name: "Thomas Millea",
     position: "Partner at AMEND Consulting",
     company: "AMEND",
     bio: "Thomas works with large enterprise and upper middle market clients to create lasting business transformation, specializing in business process improvement, technology and operational strategy development, and change management.",
     imageUrl: "/people/thomasmillea.jpeg",
-  },
-  {
-    name: "Sarah Boehm",
-    position: "IT Senior Business Analyst at Advanced Drainage Systems",
-    company: "Advanced Drainage Systems",
-    bio: "Sarah works in the Logistics field with a background in leadership and manufacturing after receiving a Bachelor of Arts degree from The Ohio State University with a Major in History.",
-    imageUrl: "/people/sarahboehm.jpg",
   },
   {
     name: "Zach Whittington",
