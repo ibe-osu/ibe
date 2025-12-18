@@ -45,7 +45,7 @@ export default function WhoAreWe() {
           </Box>
         </Grid>
 
-        {/* Left: text */}
+        {/* Right: video */}
         <Grid size={{ xs: 12, lg: 7, xl: 8 }} sx={{ alignContent: "center" }}>
           <Box
             sx={{

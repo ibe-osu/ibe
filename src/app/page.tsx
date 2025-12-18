@@ -1,3 +1,4 @@
+import Coursework from "@/components/home/Coursework";
 import OurStats from "@/components/home/OurStats";
 import Sponsors from "@/components/home/Sponsors";
 import Welcome from "@/components/home/Welcome";
@@ -10,6 +11,7 @@ export default function Home() {
       <WhoAreWe />
       <OurStats />
       <Sponsors />
+      <Coursework />
     </>
   );
 }
