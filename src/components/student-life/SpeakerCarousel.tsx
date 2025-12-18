@@ -76,7 +76,7 @@ export default function SpeakerCarousel(props: IProps) {
         width: "100%",
         display: "flex",
         alignItems: "center",
-        gap: 2,
+        gap: { xs: 0, md: 2 },
         position: "relative",
       }}
     >

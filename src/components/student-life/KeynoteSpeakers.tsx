@@ -82,8 +82,8 @@ export default function KeynoteSpeakers() {
           gap: { xs: 4, md: 6 },
           alignItems: "stretch",
           justifyContent: "space-between",
-          pl: { xs: 3, md: 12 },
-          pr: { xs: 3, md: 0 },
+          pl: { xs: 0, md: 12 },
+          pr: { xs: 0, md: 0 },
           pb: { xs: 4, md: 5 },
         }}
       >
@@ -92,7 +92,7 @@ export default function KeynoteSpeakers() {
             flexBasis: { xs: "100%", md: "35%" },
             display: "flex",
             alignItems: "center",
-            px: { xs: 2, md: 4 },
+            px: { xs: 5, md: 4 },
           }}
         >
           <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
@@ -127,7 +127,7 @@ export default function KeynoteSpeakers() {
           maxWidth: "1400px",
           width: "100%",
           mx: "auto",
-          px: { xs: 3, md: 6 },
+          px: { xs: 0.5, md: 6 },
           flexGrow: 1,
           display: "flex",
           alignItems: "center",

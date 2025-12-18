@@ -17,6 +17,7 @@ export default function AboutUs() {
       <Image
         src="/alumni.jpg"
         alt="Alumni"
+        priority
         width={1920}
         height={540}
         style={{

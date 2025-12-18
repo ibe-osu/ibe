@@ -73,7 +73,7 @@ export default function SpeakerCard(props: IProps) {
           sx={{
             fontWeight: "bold",
             color: "primary.main",
-            mb: 1,
+            mb: { xs: 0.5, md: 1 },
           }}
         >
           {speaker.name}
@@ -83,7 +83,7 @@ export default function SpeakerCard(props: IProps) {
           sx={{
             fontWeight: "bold",
             color: "text.primary",
-            mb: 2,
+            mb: { xs: 1, md: 2 },
           }}
         >
           {speaker.position}
@@ -93,7 +93,7 @@ export default function SpeakerCard(props: IProps) {
           sx={{
             color: "text.secondary",
             lineHeight: 1.5,
-            fontSize: "0.875rem",
+            fontSize: { xs: "0.75rem", md: "0.875rem" },
           }}
         >
           {speaker.bio}

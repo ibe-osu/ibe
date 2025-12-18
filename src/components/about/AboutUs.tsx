@@ -19,6 +19,7 @@ export default function AboutUs() {
         alt="About Us"
         width={1920}
         height={1366}
+        priority
         style={{
           objectFit: "cover",
           objectPosition: "center",
