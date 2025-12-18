@@ -16,7 +16,7 @@ export default function Welcome() {
       }}
     >
       <Image
-        src="/welcome.png"
+        src="/welcome.jpeg"
         alt="Welcome"
         width={1920}
         height={947}
