@@ -5,6 +5,8 @@ import { ThemeProvider } from "../theme/ThemeProvider";
 import Header from "../components/general/Header";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Footer from "@/components/general/Footer";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const ptSerifCaption = PT_Serif_Caption({
   weight: "400",
@@ -29,6 +31,8 @@ export default function RootLayout({
           <ThemeProvider>
             <Header />
             {children}
+            <Analytics />
+            <SpeedInsights />
             <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
