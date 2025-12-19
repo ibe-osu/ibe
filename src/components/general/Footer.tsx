@@ -70,7 +70,7 @@ export default function Footer() {
       >
         <PageLink to="" text="Home" />
         <PageLink to="about" text="About" />
-        <PageLink to="prospective-students" text="Join Us" />
+        <PageLink to="recruitment" text="Join Us" />
         <PageLink to="alumni" text="Alumni" />
         <PageLink to="student-life" text="Student Life" />
       </Stack>

@@ -25,7 +25,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ibeosu.com"), // change if different domain
 
   openGraph: {
-    title: "Integrated Business & Engineering Honors Program",
+    title:
+      "Integrated Business & Engineering Honors Program | The Ohio State University",
     description:
       "A four-year interdisciplinary honors program at Ohio State combining business, engineering, and leadership.",
     url: "https://ibeosu.com",
