@@ -160,6 +160,23 @@ export default function RecruitmentHero() {
                 IBE Interest Form
               </Link>
             </Button>
+
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: theme.palette.primary.main,
+                color: "common.white",
+                px: 3,
+                py: 1,
+                textTransform: "none",
+                boxShadow: 4,
+                "&:hover": { bgcolor: theme.palette.primary.light },
+              }}
+            >
+              <Link href="mailto:ohiostateibe@osu.edu" target="_blank">
+                Contact Us
+              </Link>
+            </Button>
           </Box>
         </Box>
 

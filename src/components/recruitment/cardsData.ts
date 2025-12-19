@@ -1,13 +1,14 @@
 const CARDS = [
   {
     header: "About IBE",
-    description: "Learn more about our program, curriculum, and academics",
+    description:
+      "Learn more about our program, curriculum, and academics throughout our site. If your questions aren't answered by the FAQs, reach out!",
     imageSrc: "/recruitment/aboutIBE.png",
   },
   {
     header: "Alumni",
     description:
-      "IBE graduates have had highly coveted internships and post-grad opportunities. Find out more about where our alumni are now!",
+      "IBE graduates have had highly coveted internships and post-grad opportunities. Find out more about where our alumni are now and check out the Alumni page!",
     imageSrc: "/recruitment/alumni.png",
   },
   {
