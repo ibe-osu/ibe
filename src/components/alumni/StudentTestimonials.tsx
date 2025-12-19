@@ -16,7 +16,7 @@ const testimonials: Testimonial[] = [
   {
     text: "IBE has not only driven me to succeed academically, but has also provided me with some of my closest friends and mentors. The interdisciplinary approach to learning has given me a unique perspective that I love and will carry throughout my career.",
     author: "Russel Heiser, Software Engineer @ Epic, IBE 10th Cohort",
-    imageUrl: "/people/RusselHeiser.jpeg",
+    imageUrl: "/people/russelheiser.jpeg",
   },
 ];
 
