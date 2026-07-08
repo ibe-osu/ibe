@@ -57,9 +57,20 @@ export default function Companies() {
       >
         Alumni Outcomes
       </Typography>
-      <Typography variant="h3" data-reveal sx={{ mb: "1.25rem" }}>
+      <Typography variant="h3" data-reveal sx={{ mb: "1rem" }}>
         One Program. Endless Opportunities.
       </Typography>
+      <Box
+        data-reveal
+        aria-hidden="true"
+        sx={{
+          width: "3.5rem",
+          height: "3px",
+          backgroundColor: "primary.main",
+          mx: "auto",
+          mb: "1.25rem",
+        }}
+      />
       <Typography
         variant="body1"
         data-reveal

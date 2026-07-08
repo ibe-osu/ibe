@@ -69,7 +69,7 @@ export default function SeniorLeadership() {
             aria-hidden
             sx={{
               width: "3.5rem",
-              height: "0.25rem",
+              height: "3px",
               backgroundColor: "primary.main",
             }}
           />

@@ -67,8 +67,8 @@ export default function StudentTestimonials() {
         <Typography variant="h3">Student Testimonials</Typography>
         <Box
           sx={{
-            width: "56px",
-            height: "2px",
+            width: "3.5rem",
+            height: "3px",
             backgroundColor: "primary.main",
             mx: "auto",
             mt: "1.25rem",

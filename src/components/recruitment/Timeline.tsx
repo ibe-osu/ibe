@@ -85,11 +85,20 @@ export default function TimelineIllustration() {
           sx={{
             color: "common.white",
             fontSize: { xs: "1.75rem", sm: "2rem", md: "2.375rem" },
-            mb: { xs: 5, md: 7 },
+            mb: "1rem",
           }}
         >
           Application Timeline
         </Typography>
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "3.5rem",
+            height: "3px",
+            backgroundColor: "secondary.main",
+            mb: { xs: 5, md: 7 },
+          }}
+        />
 
         <Box component="ol" sx={{ listStyle: "none", m: 0, p: 0 }}>
           {STEPS.map((step, i) => {

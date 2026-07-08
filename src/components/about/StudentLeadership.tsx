@@ -108,7 +108,7 @@ export default function StudentLeadership() {
             aria-hidden
             sx={{
               width: "3.5rem",
-              height: "0.25rem",
+              height: "3px",
               backgroundColor: "#fff",
             }}
           />

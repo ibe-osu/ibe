@@ -18,11 +18,20 @@ export default function InfoCardSection() {
           variant="h3"
           sx={{
             fontSize: { xs: "1.75rem", sm: "2rem", md: "2.375rem" },
-            mb: { xs: 4, md: 6 },
+            mb: "1rem",
           }}
         >
           Learn More About IBE
         </Typography>
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "3.5rem",
+            height: "3px",
+            backgroundColor: "primary.main",
+            mb: { xs: 4, md: 6 },
+          }}
+        />
 
         <Grid container spacing={{ xs: 3, md: 4 }} alignItems="stretch">
           {CARDS.map((c) => (

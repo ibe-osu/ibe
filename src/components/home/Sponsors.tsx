@@ -18,10 +18,20 @@ export default function Sponsors() {
           id="sponsors-heading"
           variant="h3"
           component="h2"
-          sx={{ mb: { xs: "2rem", md: "3rem" } }}
+          sx={{ mb: "1rem" }}
         >
           Program Sponsors
         </Typography>
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "3.5rem",
+            height: "3px",
+            backgroundColor: "primary.main",
+            mx: "auto",
+            mb: { xs: "2rem", md: "3rem" },
+          }}
+        />
 
         <Box
           sx={{

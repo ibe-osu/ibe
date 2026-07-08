@@ -112,10 +112,19 @@ export default function KeynoteSpeakers() {
           <Typography
             variant="h3"
             component="h2"
-            sx={{ mb: 2, textWrap: "balance" }}
+            sx={{ mb: 1.5, textWrap: "balance" }}
           >
             Recent Keynote Speakers
           </Typography>
+          <Box
+            aria-hidden="true"
+            sx={{
+              width: "3.5rem",
+              height: "3px",
+              backgroundColor: "primary.main",
+              mb: 2,
+            }}
+          />
           <Typography
             variant="body1"
             sx={{

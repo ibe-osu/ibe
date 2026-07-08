@@ -139,9 +139,21 @@ export default function Happenings() {
           >
             On &amp; Off Campus
           </Typography>
-          <Typography variant="h3" component="h2" sx={{ textWrap: "balance" }}>
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{ mb: 1.5, textWrap: "balance" }}
+          >
             IBE Happenings
           </Typography>
+          <Box
+            aria-hidden="true"
+            sx={{
+              width: "3.5rem",
+              height: "3px",
+              backgroundColor: "primary.main",
+            }}
+          />
         </Box>
 
         {events.map((event, index) => {

@@ -56,10 +56,20 @@ export default function OurStats() {
           id="our-stats-heading"
           variant="h3"
           component="h2"
-          sx={{ mb: { xs: "2.5rem", md: "3.5rem" } }}
+          sx={{ mb: "1rem" }}
         >
           Our Statistics
         </Typography>
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "3.5rem",
+            height: "3px",
+            backgroundColor: "secondary.main",
+            mx: "auto",
+            mb: { xs: "2.5rem", md: "3.5rem" },
+          }}
+        />
 
         <Grid container rowSpacing={{ xs: 4, md: 0 }} columnSpacing={0}>
           {STATS.map((stat, i) => (

@@ -49,10 +49,9 @@ export default function AlumniSpotlights() {
         </Typography>
         <Box
           sx={{
-            width: "56px",
-            height: "2px",
+            width: "3.5rem",
+            height: "3px",
             backgroundColor: "secondary.main",
-            opacity: 0.85,
             mx: "auto",
             mt: "1.25rem",
           }}
