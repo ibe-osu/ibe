@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import SpotlightCard from "./SpotlightCard";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -39,10 +40,11 @@ export default function AlumniSpotlights() {
       ref={sectionRef}
       sx={{
         backgroundColor: "primary.main",
-        py: { xs: "3.5rem", md: "5.5rem" },
-        px: { xs: "1.5rem", sm: "15%", md: "2rem", lg: "8rem", xl: "14rem" },
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
       <Box data-reveal sx={{ textAlign: "center" }}>
         <Typography variant="h3" sx={{ color: "secondary.main" }}>
           Alumni Spotlights
@@ -99,6 +101,7 @@ export default function AlumniSpotlights() {
             linkedinUrl="https://www.linkedin.com/in/alisa-noll/"
           />
         </Box>
+      </Box>
       </Box>
     </Box>
   );

@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import IndividualCard from "./IndividualCard";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -55,10 +56,10 @@ export default function SeniorLeadership() {
     <Box ref={sectionRef} component="section" sx={{ backgroundColor: "#fff" }}>
       <Box
         sx={{
-          maxWidth: "72rem",
+          maxWidth: CONTENT_MAX_WIDTH,
           mx: "auto",
-          px: { xs: 3, sm: 4, md: 6 },
-          py: { xs: 6, md: 10 },
+          px: PAGE_GUTTER,
+          py: SECTION_PY,
         }}
       >
         <Box data-reveal sx={{ mb: { xs: 4, md: 6 } }}>

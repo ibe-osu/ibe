@@ -5,6 +5,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -47,11 +48,11 @@ export default function OurStats() {
       sx={{
         backgroundColor: "primary.main",
         color: "secondary.main",
-        py: { xs: "4rem", md: "5.5rem" },
-        px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
-      <Box sx={{ maxWidth: "1280px", mx: "auto", textAlign: "center" }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto", textAlign: "center" }}>
         <Typography
           id="our-stats-heading"
           variant="h3"

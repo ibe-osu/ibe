@@ -1,16 +1,15 @@
 import { Box, Grid, Typography } from "@mui/material";
 import InfoCard from "./InfoCard";
 import CARDS from "./cardsData";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 export default function InfoCardSection() {
   return (
-    <Box component="section" sx={{ bgcolor: "grey.100" }}>
+    <Box component="section" sx={{ bgcolor: "grey.100", py: SECTION_PY, px: PAGE_GUTTER }}>
       <Box
         sx={{
-          maxWidth: 1280,
+          maxWidth: CONTENT_MAX_WIDTH,
           mx: "auto",
-          py: { xs: 6, md: 10 },
-          px: { xs: 2.5, sm: 4, md: 10 },
         }}
       >
         <Typography

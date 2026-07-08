@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 interface Track {
   name: string;
@@ -32,11 +33,11 @@ export default function Coursework() {
       component="section"
       aria-labelledby="coursework-heading"
       sx={{
-        py: { xs: "4rem", md: "7rem" },
-        px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
-      <Box sx={{ maxWidth: "1280px", mx: "auto" }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           id="coursework-heading"
           variant="h3"

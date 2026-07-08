@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP);
 
@@ -71,10 +72,10 @@ export default function AboutUs() {
         <Box
           sx={{
             width: "100%",
-            maxWidth: "72rem",
+            maxWidth: CONTENT_MAX_WIDTH,
             mx: "auto",
-            px: { xs: 3, sm: 4, md: 6 },
-            pb: { xs: 5, sm: 6, md: 8 },
+            px: PAGE_GUTTER,
+            pb: { xs: "3.5rem", md: "5rem" },
           }}
         >
           <Typography

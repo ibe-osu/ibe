@@ -4,6 +4,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 const faqItems = [
   {
@@ -34,19 +35,22 @@ const faqItems = [
 
 export default function FAQSection() {
   return (
-    <Box
-      sx={{
-        py: { xs: 4, md: 8 },
-        px: { xs: 2, md: 10 },
-        maxWidth: 1100,
-        mx: "auto",
-      }}
-    >
-      <Typography variant="h4" align="center" sx={{ mb: 3 }}>
-        FAQ
-      </Typography>
+    <Box component="section" sx={{ py: SECTION_PY, px: PAGE_GUTTER }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
+        <Typography variant="h3" component="h2" sx={{ mb: "1rem" }}>
+          FAQ
+        </Typography>
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "3.5rem",
+            height: "3px",
+            backgroundColor: "primary.main",
+            mb: { xs: 4, md: 6 },
+          }}
+        />
 
-      <Box sx={{ display: "grid", gap: 3 }}>
+        <Box sx={{ display: "grid", gap: 3 }}>
         {faqItems.map((it) => (
           <Accordion
             key={it.q}
@@ -82,6 +86,7 @@ export default function FAQSection() {
             </AccordionDetails>
           </Accordion>
         ))}
+        </Box>
       </Box>
     </Box>
   );

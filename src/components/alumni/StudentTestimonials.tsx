@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import TestimonialCarousel, { Testimonial } from "./TestimonialCarousel";
+import { PAGE_GUTTER, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -59,8 +60,8 @@ export default function StudentTestimonials() {
       sx={{
         textAlign: "center",
         backgroundColor: "grey.100",
-        py: { xs: "3.5rem", md: "6rem" },
-        px: "1.5rem",
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
       <Box data-reveal>

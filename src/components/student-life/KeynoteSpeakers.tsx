@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import SpeakerCarousel from "./SpeakerCarousel";
 import { Speaker } from "./SpeakerCard";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -89,11 +90,11 @@ export default function KeynoteSpeakers() {
       component="section"
       sx={{
         backgroundColor: "grey.100",
-        px: { xs: 3, sm: 5, md: 8 },
-        py: { xs: 7, md: 10 },
+        px: PAGE_GUTTER,
+        py: SECTION_PY,
       }}
     >
-      <Box sx={{ maxWidth: "1400px", mx: "auto" }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
         {/* Section header */}
         <Box data-section-reveal sx={{ mb: { xs: 4, md: 6 } }}>
           <Typography

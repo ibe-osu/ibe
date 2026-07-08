@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import IBEVideo from "./IBEVideo";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 export default function WhoAreWe() {
   return (
@@ -7,11 +8,11 @@ export default function WhoAreWe() {
       component="section"
       aria-labelledby="who-are-we-heading"
       sx={{
-        py: { xs: "4rem", md: "7rem" },
-        px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
-      <Box sx={{ maxWidth: "1280px", mx: "auto" }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Grid container spacing={{ xs: 6, lg: 10 }} alignItems="center">
           {/* Left: text */}
           <Grid size={{ xs: 12, lg: 5 }}>

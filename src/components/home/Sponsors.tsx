@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { SPONSORS } from "@/data/sponsors";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 export default function Sponsors() {
   return (
@@ -9,11 +10,11 @@ export default function Sponsors() {
       aria-labelledby="sponsors-heading"
       sx={{
         backgroundColor: "grey.100",
-        py: { xs: "4rem", md: "5.5rem" },
-        px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
-      <Box sx={{ maxWidth: "1280px", mx: "auto", textAlign: "center" }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto", textAlign: "center" }}>
         <Typography
           id="sponsors-heading"
           variant="h3"

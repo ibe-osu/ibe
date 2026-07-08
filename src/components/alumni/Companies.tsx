@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import CompanyScroller from "./CompanyScroller";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -39,10 +40,11 @@ export default function Companies() {
       ref={sectionRef}
       sx={{
         textAlign: "center",
-        px: { xs: "1.5rem", sm: "4rem", md: "8rem", lg: "12rem" },
-        py: { xs: "3.5rem", md: "6rem" },
+        px: PAGE_GUTTER,
+        py: SECTION_PY,
       }}
     >
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
       <Typography
         component="p"
         variant="body2"
@@ -88,6 +90,7 @@ export default function Companies() {
       </Typography>
       <Box data-reveal sx={{ mt: { xs: "2rem", md: "3rem" } }}>
         <CompanyScroller />
+      </Box>
       </Box>
     </Box>
   );

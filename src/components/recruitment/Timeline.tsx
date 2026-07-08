@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -74,11 +75,11 @@ export default function TimelineIllustration() {
       sx={{
         bgcolor: "primary.main",
         color: "common.white",
-        py: { xs: 6, md: 10 },
-        px: { xs: 2.5, sm: 4, md: 10 },
+        py: SECTION_PY,
+        px: PAGE_GUTTER,
       }}
     >
-      <Box sx={{ maxWidth: 920, mx: "auto" }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           component="h2"
           variant="h3"
