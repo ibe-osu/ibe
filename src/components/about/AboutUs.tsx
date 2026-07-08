@@ -34,8 +34,8 @@ export default function AboutUs() {
       component="section"
       sx={{
         position: "relative",
-        height: "calc(80vh - 64px)", // Adjust for header height
-        minHeight: "480px",
+        height: "calc(75vh - 64px)", // Adjust for header height
+        minHeight: "500px",
         overflow: "hidden",
       }}
     >
@@ -77,16 +77,20 @@ export default function AboutUs() {
             pb: { xs: 5, sm: 6, md: 8 },
           }}
         >
-          <Box
+          <Typography
             data-hero-reveal
-            aria-hidden
+            component="p"
             sx={{
-              width: "3.5rem",
-              height: "0.25rem",
-              backgroundColor: "primary.main",
-              mb: { xs: 2, md: 3 },
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#fff",
+              mb: { xs: 1.5, md: 2 },
             }}
-          />
+          >
+            About IBE
+          </Typography>
           <Typography
             data-hero-reveal
             variant="h1"
@@ -99,6 +103,16 @@ export default function AboutUs() {
           >
             About Us
           </Typography>
+          <Box
+            data-hero-reveal
+            aria-hidden
+            sx={{
+              width: "6rem",
+              height: "3px",
+              backgroundColor: "secondary.main",
+              mb: { xs: 2, md: 2.5 },
+            }}
+          />
           <Typography
             data-hero-reveal
             variant="body1"

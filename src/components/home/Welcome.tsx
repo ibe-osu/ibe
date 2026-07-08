@@ -98,11 +98,12 @@ export default function Welcome() {
           className="hero-kicker"
           component="p"
           sx={{
-            fontFamily: "var(--font-pt-serif-caption), serif",
-            fontStyle: "italic",
-            fontSize: { xs: "1rem", md: "1.25rem" },
-            color: "#f3cdd6",
-            mb: { xs: "0.75rem", md: "1rem" },
+            fontSize: "0.8125rem",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "#fff",
+            mb: { xs: 1.5, md: 2 },
           }}
         >
           Integrated Business &amp; Engineering Honors Program

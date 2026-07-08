@@ -34,10 +34,9 @@ export default function OurIBEAlumni() {
       sx={{
         position: "relative",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "calc(70vh - 64px)", // Adjust for header height
-        minHeight: "380px",
+        alignItems: "flex-end",
+        height: "calc(75vh - 64px)", // Adjust for header height
+        minHeight: "500px",
         overflow: "hidden",
       }}
     >
@@ -45,14 +44,12 @@ export default function OurIBEAlumni() {
         src="/alumni.jpg"
         alt="IBE alumni"
         priority
-        width={1920}
-        height={540}
+        fill
+        sizes="100vw"
         style={{
           objectFit: "cover",
           objectPosition: "top",
           pointerEvents: "none",
-          width: "100%",
-          height: "100%",
         }}
       />
       {/* Neutral scrim keeps the photo legible without washing it in flat brand color */}
@@ -77,26 +74,24 @@ export default function OurIBEAlumni() {
       />
       <Box
         sx={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          px: "1.5rem",
+          position: "relative",
+          width: "100%",
+          maxWidth: "1280px",
+          mx: "auto",
+          px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+          pb: { xs: "3.5rem", md: "5rem" },
         }}
       >
         <Typography
           component="p"
-          variant="body2"
           data-hero-reveal
           sx={{
-            color: "secondary.main",
+            fontSize: "0.8125rem",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
             textTransform: "uppercase",
-            letterSpacing: "0.28em",
-            fontWeight: 600,
-            mb: "1rem",
+            color: "#fff",
+            mb: { xs: 1.5, md: 2 },
           }}
         >
           Integrated Business and Engineering
@@ -106,19 +101,20 @@ export default function OurIBEAlumni() {
           data-hero-reveal
           sx={{
             color: "secondary.main",
-            fontSize: "clamp(3rem, 9vw, 6.5rem)",
+            fontSize: { xs: "2.75rem", sm: "3.5rem", md: "4.5rem" },
             lineHeight: 1.05,
+            mb: { xs: 2, md: 2.5 },
           }}
         >
           Our IBE Alumni
         </Typography>
         <Box
           data-hero-reveal
+          aria-hidden
           sx={{
-            width: "64px",
-            height: "2px",
+            width: "6rem",
+            height: "3px",
             backgroundColor: "secondary.main",
-            mt: "1.75rem",
           }}
         />
       </Box>

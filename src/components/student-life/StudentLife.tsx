@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -15,10 +16,10 @@ export default function StudentLifeHeader() {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from("[data-hero-reveal]", {
-          autoAlpha: 0,
+          opacity: 0,
           y: 24,
-          duration: 0.7,
-          ease: "power2.out",
+          duration: 0.9,
+          ease: "power3.out",
           stagger: 0.12,
         });
       });
@@ -31,82 +32,97 @@ export default function StudentLifeHeader() {
       ref={sectionRef}
       component="section"
       sx={{
-        backgroundColor: "primary.main",
-        color: "#fff",
-        px: { xs: 3, sm: 5, md: 8 },
-        py: { xs: 7, md: 10 },
+        position: "relative",
+        display: "flex",
+        alignItems: "flex-end",
+        height: "calc(75vh - 64px)",
+        minHeight: "500px",
+        overflow: "hidden",
       }}
     >
+      <Image
+        src="/happenings/cleveland-1.jpeg"
+        alt="IBE students on a program trip to Cleveland"
+        fill
+        priority
+        sizes="100vw"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center",
+        }}
+      />
+      {/* Scrim for text legibility over the photo */}
+      <Box
+        aria-hidden
+        sx={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.38) 55%, rgba(0, 0, 0, 0.18) 100%)",
+        }}
+      />
       <Box
         sx={{
-          maxWidth: "1200px",
+          position: "relative",
+          width: "100%",
+          maxWidth: "1280px",
           mx: "auto",
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1.1fr 1fr" },
-          columnGap: { md: 8 },
-          rowGap: 4,
-          alignItems: "center",
+          px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+          pb: { xs: "3.5rem", md: "5rem" },
         }}
       >
-        <Box data-hero-reveal>
-          <Typography
-            component="p"
-            sx={{
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "#fff",
-              mb: 2,
-            }}
-          >
-            Life at IBE
-          </Typography>
-          <Typography
-            variant="h2"
-            component="h1"
-            sx={{ lineHeight: 1.05, textWrap: "balance" }}
-          >
-            Student Life
-          </Typography>
-        </Box>
-
-        <Box
+        <Typography
+          component="p"
           data-hero-reveal
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2.5,
-            borderLeft: { md: "1px solid rgba(255, 255, 255, 0.4)" },
-            pl: { md: 6 },
-            pt: { xs: 1, md: 0 },
+            fontSize: "0.8125rem",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "#fff",
+            mb: { xs: 1.5, md: 2 },
           }}
         >
-          <Typography
-            variant="body1"
-            sx={{
-              lineHeight: 1.7,
-              fontSize: { md: "1.0625rem" },
-              color: "rgba(255, 255, 255, 0.95)",
-            }}
-          >
-            IBE fosters a culture of professional growth and meaningful
-            connections&mdash;ensuring that while we strive for excellence, we
-            also build lasting relationships and enjoy the journey along the
-            way.
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              lineHeight: 1.7,
-              fontSize: { md: "1.0625rem" },
-              color: "rgba(255, 255, 255, 0.95)",
-            }}
-          >
-            Whether it&apos;s program trips, speaker events or socials, see
-            below for what our students at IBE are up to!
-          </Typography>
-        </Box>
+          Life at IBE
+        </Typography>
+        <Typography
+          component="h1"
+          data-hero-reveal
+          sx={{
+            color: "#fff",
+            fontSize: { xs: "2.75rem", sm: "3.5rem", md: "4.5rem" },
+            lineHeight: 1.05,
+            mb: { xs: 2, md: 2.5 },
+          }}
+        >
+          Student Life
+        </Typography>
+        <Box
+          data-hero-reveal
+          aria-hidden
+          sx={{
+            width: "6rem",
+            height: "3px",
+            backgroundColor: "secondary.main",
+            mb: { xs: 2, md: 2.5 },
+          }}
+        />
+        <Typography
+          data-hero-reveal
+          variant="body1"
+          sx={{
+            maxWidth: "42rem",
+            color: "rgba(255, 255, 255, 0.92)",
+            fontSize: { xs: "1rem", md: "1.125rem" },
+            lineHeight: 1.65,
+          }}
+        >
+          IBE fosters a culture of professional growth and meaningful
+          connections&mdash;ensuring that while we strive for excellence, we
+          also build lasting relationships and enjoy the journey along the
+          way. Whether it&apos;s program trips, speaker events, or socials, see
+          below for what our students at IBE are up to!
+        </Typography>
       </Box>
     </Box>
   );
