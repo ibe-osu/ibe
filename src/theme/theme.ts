@@ -2,24 +2,30 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 let theme = createTheme({
   typography: {
-    fontFamily: `PT Serif Caption, serif`,
+    fontFamily: `var(--font-public-sans), sans-serif`,
     h1: {
+      fontFamily: `var(--font-pt-serif-caption), serif`,
       fontSize: "8rem",
     },
     h2: {
+      fontFamily: `var(--font-pt-serif-caption), serif`,
       fontSize: "6rem",
     },
     h3: {
+      fontFamily: `var(--font-pt-serif-caption), serif`,
       fontSize: "3rem",
     },
     h4: {
       fontSize: "2.5rem",
+      fontWeight: 600,
     },
     h5: {
       fontSize: "1.5rem",
+      fontWeight: 600,
     },
     h6: {
       fontSize: "1.25rem",
+      fontWeight: 600,
     },
     body1: {
       fontSize: "1rem",
