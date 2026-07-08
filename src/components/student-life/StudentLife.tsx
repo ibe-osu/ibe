@@ -87,6 +87,7 @@ export default function StudentLifeHeader() {
         </Typography>
         <Typography
           component="h1"
+          variant="h1"
           data-hero-reveal
           sx={{
             color: "#fff",
