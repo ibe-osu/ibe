@@ -1,71 +1,112 @@
+"use client";
+
+import { useRef } from "react";
 import { Box, Typography } from "@mui/material";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 export default function StudentLifeHeader() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from("[data-hero-reveal]", {
+          autoAlpha: 0,
+          y: 24,
+          duration: 0.7,
+          ease: "power2.out",
+          stagger: 0.12,
+        });
+      });
+    },
+    { scope: sectionRef },
+  );
+
   return (
-    // Full-bleed wrapper: offsetting the container by half the viewport width
-    // lets the hero stretch edge-to-edge while the rest of the app stays centered.
     <Box
+      ref={sectionRef}
+      component="section"
       sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        position: "relative",
-        left: "50%",
-        width: "100vw",
-        ml: "-50vw",
-        mr: "-50vw",
-        border: "4px solid",
-        borderColor: "primary.main",
+        backgroundColor: "primary.main",
+        color: "#fff",
+        px: { xs: 3, sm: 5, md: 8 },
+        py: { xs: 7, md: 10 },
       }}
     >
       <Box
         sx={{
-          flexBasis: { xs: "100%", md: "60%" },
-          backgroundColor: "primary.main",
-          color: "secondary.main",
-          display: "flex",
+          maxWidth: "1200px",
+          mx: "auto",
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "1.1fr 1fr" },
+          columnGap: { md: 8 },
+          rowGap: 4,
           alignItems: "center",
-          justifyContent: "center",
-          px: { xs: 3, md: 6 },
-          py: { xs: 4, md: 6 },
         }}
       >
-        <Typography variant="h2" sx={{ textAlign: "center" }}>
-          Student Life
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          flexBasis: { xs: "100%", md: "40%" },
-          backgroundColor: "secondary.main",
-          color: "text.primary",
-          borderLeft: { md: "4px solid" },
-          borderLeftColor: { md: "primary.main" },
-          borderTop: { xs: "4px solid", md: "none" },
-          borderTopColor: { xs: "primary.main" },
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          px: { xs: 3, md: 5 },
-          py: { xs: 3, md: 4 },
-          gap: 2,
-        }}
-      >
-        <Typography
-          variant="body1"
-          sx={{ lineHeight: 1.6, textAlign: "center" }}
+        <Box data-hero-reveal>
+          <Typography
+            component="p"
+            sx={{
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#fff",
+              mb: 2,
+            }}
+          >
+            Life at IBE
+          </Typography>
+          <Typography
+            variant="h2"
+            component="h1"
+            sx={{ lineHeight: 1.05, textWrap: "balance" }}
+          >
+            Student Life
+          </Typography>
+        </Box>
+
+        <Box
+          data-hero-reveal
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2.5,
+            borderLeft: { md: "1px solid rgba(255, 255, 255, 0.4)" },
+            pl: { md: 6 },
+            pt: { xs: 1, md: 0 },
+          }}
         >
-          IBE fosters a culture of professional growth and meaningful
-          connections—ensuring that while we strive for excellence, we also
-          build lasting relationships and enjoy the journey along the way.
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ lineHeight: 1.6, textAlign: "center" }}
-        >
-          Whether it&apos;s program trips, speaker events or socials, see below
-          for what our students at IBE are up to!
-        </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              lineHeight: 1.7,
+              fontSize: { md: "1.0625rem" },
+              color: "rgba(255, 255, 255, 0.95)",
+            }}
+          >
+            IBE fosters a culture of professional growth and meaningful
+            connections&mdash;ensuring that while we strive for excellence, we
+            also build lasting relationships and enjoy the journey along the
+            way.
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              lineHeight: 1.7,
+              fontSize: { md: "1.0625rem" },
+              color: "rgba(255, 255, 255, 0.95)",
+            }}
+          >
+            Whether it&apos;s program trips, speaker events or socials, see
+            below for what our students at IBE are up to!
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

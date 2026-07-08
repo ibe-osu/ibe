@@ -4,72 +4,77 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import { keyframes } from "@emotion/react";
 import { useEffect, useState } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface IProps {
-  cellHeight:
-    | number
-    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  cellHeight: number;
   gapPx: number;
   duration: number;
   direction?: "normal" | "reverse";
   logos: string[];
-  speed?: "fast" | "slow";
 }
 
+// Marquee loop: translateX only (composited), never left/margin
 const scrollAnimation = keyframes`
   to {
     transform: translateX(calc(-50% - var(--gap, 0px)));
   }
 `;
 
-export default function CompanyScrollRow(props: IProps) {
-  const { cellHeight, gapPx, duration, direction, logos, speed } = props;
+function logoAlt(src: string): string {
+  const base = src.split("/").pop()?.replace(".svg", "").replace(/-/g, " ");
+  return base ? `${base} logo` : "company logo";
+}
 
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+export default function CompanyScrollRow(props: IProps) {
+  const { cellHeight, gapPx, duration, direction = "normal", logos } = props;
+
+  // Progressive enhancement: only animate client-side, and only when the
+  // user has not requested reduced motion. Falls back to a static wrapped
+  // grid of logos otherwise.
   const [animated, setAnimated] = useState(false);
-  const [logoSet, setLogoSet] = useState<
-    { src: string; ariaHidden?: boolean }[]
-  >(logos.map((src) => ({ src })));
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setAnimated(false);
-      setLogoSet(logos.map((src) => ({ src })));
-      return;
-    }
-    // JS enhancement: duplicate content for animation, set aria-hidden
-    setAnimated(true);
-    setLogoSet([
-      ...logos.map((src) => ({ src })),
-      ...logos.map((src) => ({ src, ariaHidden: true })),
-    ]);
-  }, [logos, prefersReducedMotion]);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setAnimated(!mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  // Switching to the fixed-height marquee row changes this section's height
+  // after mount, which shifts everything below it and invalidates the scroll
+  // positions ScrollTrigger already cached elsewhere on the page (e.g. the
+  // Alumni Spotlights reveal). Refresh once the new layout has committed.
+  useEffect(() => {
+    if (!animated) return;
+    const id = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(id);
+  }, [animated]);
+
+  // Duplicate the set for a seamless loop; duplicates are aria-hidden
+  const logoSet = animated ? [...logos, ...logos] : logos;
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: cellHeight,
+        height: animated ? `${cellHeight}px` : "auto",
         overflow: animated ? "hidden" : "visible",
         position: "relative",
         maskImage: animated
-          ? "linear-gradient(90deg, transparent, white 20%, white 80%, transparent)"
+          ? "linear-gradient(90deg, transparent, white 15%, white 85%, transparent)"
           : undefined,
         WebkitMaskImage: animated
-          ? "linear-gradient(90deg, transparent, white 20%, white 80%, transparent)"
+          ? "linear-gradient(90deg, transparent, white 15%, white 85%, transparent)"
           : undefined,
-        bgcolor: "background.paper",
       }}
-      data-animated={animated ? "true" : undefined}
-      data-direction={direction === "reverse" ? "right" : "left"}
-      data-speed={speed}
     >
       <Box
         sx={{
           display: "flex",
           flexWrap: animated ? "nowrap" : "wrap",
+          justifyContent: animated ? "flex-start" : "center",
           gap: `${gapPx}px`,
           width: animated ? "max-content" : "100%",
           animation: animated
@@ -83,11 +88,11 @@ export default function CompanyScrollRow(props: IProps) {
             ? ({ "--gap": `${gapPx}px` } as React.CSSProperties)
             : undefined
         }
-        className={animated ? "scroller__inner" : undefined}
       >
-        {logoSet.map((logo, i) => (
+        {logoSet.map((src, i) => (
           <Box
             key={i}
+            aria-hidden={i >= logos.length || undefined}
             sx={{
               height: `${cellHeight}px`,
               display: "flex",
@@ -99,27 +104,19 @@ export default function CompanyScrollRow(props: IProps) {
             }}
           >
             <Image
-              src={logo.src}
-              alt={
-                logo.src.split("/").pop()?.replace(/[-.]/g, " ") ||
-                "company logo"
-              }
-              height={
-                typeof cellHeight === "number"
-                  ? Math.round(cellHeight * 0.7)
-                  : undefined
-              }
+              src={src}
+              alt={i >= logos.length ? "" : logoAlt(src)}
+              height={Math.round(cellHeight * 0.55)}
               width={0}
-              aria-hidden={logo.ariaHidden || undefined}
-              priority={i < logos.length}
               style={{
                 objectFit: "contain",
                 width: "auto",
-                height:
-                  typeof cellHeight === "number"
-                    ? `${Math.round(cellHeight * 0.7)}px`
-                    : "70%",
+                height: `${Math.round(cellHeight * 0.55)}px`,
                 display: "block",
+                // Muted monochrome press-bar treatment: quieter, more
+                // prestigious than 39 competing brand palettes
+                filter: "grayscale(1)",
+                opacity: 0.72,
               }}
             />
           </Box>

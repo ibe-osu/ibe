@@ -1,6 +1,14 @@
+"use client";
+
+import { useRef } from "react";
 import { Box, Typography, Divider } from "@mui/material";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import PhotoCarousel, { Photo } from "./PhotoCarousel";
 import React from "react";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 // Event data structure
 interface Event {
@@ -48,6 +56,7 @@ const events: Event[] = [
           sx={{
             color: "primary.main",
             textDecoration: "underline",
+            textUnderlineOffset: "3px",
             cursor: "pointer",
           }}
         >
@@ -78,130 +87,138 @@ const events: Event[] = [
 ];
 
 export default function Happenings() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.utils
+          .toArray<HTMLElement>("[data-section-reveal]")
+          .forEach((el) => {
+            gsap.from(el, {
+              autoAlpha: 0,
+              y: 28,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: el,
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
+            });
+          });
+      });
+    },
+    { scope: sectionRef },
+  );
+
   return (
     <Box
+      ref={sectionRef}
+      component="section"
       sx={{
-        position: "relative",
-        left: "50%",
-        width: "100vw",
-        ml: "-50vw",
-        mr: "-50vw",
         backgroundColor: "background.paper",
+        px: { xs: 3, sm: 5, md: 8 },
+        py: { xs: 7, md: 10 },
       }}
     >
-      {/* Header Banner */}
-      <Box
-        sx={{
-          backgroundColor: "primary.main",
-          color: "secondary.main",
-          py: { xs: 3, md: 4 },
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h3" sx={{ letterSpacing: 1.5 }}>
-          IBE Happenings:
-        </Typography>
-      </Box>
+      <Box sx={{ maxWidth: "1400px", mx: "auto" }}>
+        {/* Section header */}
+        <Box data-section-reveal sx={{ mb: { xs: 5, md: 8 } }}>
+          <Typography
+            component="p"
+            sx={{
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "primary.main",
+              mb: 1.5,
+            }}
+          >
+            On &amp; Off Campus
+          </Typography>
+          <Typography variant="h3" component="h2" sx={{ textWrap: "balance" }}>
+            IBE Happenings
+          </Typography>
+        </Box>
 
-      {/* Content Container */}
-      <Box
-        sx={{
-          maxWidth: "1600px",
-          mx: "auto",
-          px: { xs: 3, md: 6 },
-          py: { xs: 4, md: 6 },
-        }}
-      >
         {events.map((event, index) => {
-          // Alternate layout: even indices have photo on right, odd indices have photo on left
+          // Alternate layout: photos swap sides each event, but text stays
+          // left-aligned for readability.
           const isPhotoOnLeft = index % 2 !== 0;
-          const textAlign = isPhotoOnLeft ? "left" : "right";
-
-          const textContent = (
-            <Box
-              sx={{
-                flex: { xs: "1", md: "0 0 45%" },
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                textAlign: textAlign,
-                order: { xs: 1, md: isPhotoOnLeft ? 2 : 1 },
-              }}
-            >
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: "bold",
-                  color: "text.primary",
-                  textAlign: textAlign,
-                }}
-              >
-                {event.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: "text.secondary",
-                  fontStyle: "italic",
-                  textAlign: textAlign,
-                }}
-              >
-                {event.date}
-              </Typography>
-              {event.descriptions.map((description, descIndex) => (
-                <Typography
-                  key={descIndex}
-                  variant="body1"
-                  sx={{
-                    lineHeight: 1.7,
-                    color: "text.primary",
-                    textAlign: textAlign,
-                  }}
-                >
-                  {description}
-                </Typography>
-              ))}
-            </Box>
-          );
-
-          const photoContent = (
-            <Box
-              sx={{
-                flex: { xs: "1", md: "0 0 50%" },
-                order: { xs: 2, md: isPhotoOnLeft ? 1 : 2 },
-              }}
-            >
-              <PhotoCarousel photos={event.photos} />
-            </Box>
-          );
 
           return (
             <React.Fragment key={index}>
               <Box
+                data-section-reveal
+                component="article"
                 sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  gap: { xs: 3, md: 4 },
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", md: "5fr 6fr" },
+                  gap: { xs: 3, md: 8 },
+                  alignItems: "center",
                 }}
               >
-                {isPhotoOnLeft ? (
-                  <>
-                    {photoContent}
-                    {textContent}
-                  </>
-                ) : (
-                  <>
-                    {textContent}
-                    {photoContent}
-                  </>
-                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                    order: { xs: 1, md: isPhotoOnLeft ? 2 : 1 },
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    component="p"
+                    sx={{
+                      fontWeight: 700,
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      color: "primary.main",
+                    }}
+                  >
+                    {event.date}
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    component="h3"
+                    sx={{
+                      fontSize: { xs: "1.75rem", md: "2.125rem" },
+                      lineHeight: 1.2,
+                      color: "text.primary",
+                    }}
+                  >
+                    {event.title}
+                  </Typography>
+                  {event.descriptions.map((description, descIndex) => (
+                    <Typography
+                      key={descIndex}
+                      variant="body1"
+                      sx={{
+                        lineHeight: 1.75,
+                        color: "text.primary",
+                        maxWidth: "62ch",
+                      }}
+                    >
+                      {description}
+                    </Typography>
+                  ))}
+                </Box>
+
+                <Box sx={{ order: { xs: 2, md: isPhotoOnLeft ? 1 : 2 } }}>
+                  <PhotoCarousel
+                    photos={event.photos}
+                    label={`${event.title} photos`}
+                  />
+                </Box>
               </Box>
               {index < events.length - 1 && (
                 <Divider
                   sx={{
-                    my: { xs: 4, md: 6 },
-                    borderColor: "grey.400",
-                    borderWidth: 1,
+                    my: { xs: 6, md: 9 },
+                    borderColor: "grey.300",
                   }}
                 />
               )}

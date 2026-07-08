@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,11 @@ interface IProps {
   linkedinUrl: string;
 }
 
+function formatMinors(minors: string[]): string {
+  if (minors.length === 2) return `${minors[0]} and ${minors[1]}`;
+  return minors.join(", ");
+}
+
 export default function SpotlightCard(props: IProps) {
   const {
     name,
@@ -28,94 +33,130 @@ export default function SpotlightCard(props: IProps) {
     linkedinUrl,
   } = props;
 
+  const meta: { label: string; value: string }[] = [
+    { label: "Major", value: major },
+    ...(minors.length > 0
+      ? [
+          {
+            label: minors.length > 1 ? "Minors" : "Minor",
+            value: formatMinors(minors),
+          },
+        ]
+      : []),
+    { label: "Now", value: `${currentPosition} @ ${currentCompany}` },
+  ];
+
   return (
-    <>
+    <Box
+      component="article"
+      sx={{
+        p: { xs: "1.5rem", md: "2rem" },
+        backgroundColor: "secondary.main",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        minWidth: 0,
+      }}
+    >
       <Box
         sx={{
-          p: "1rem",
-          backgroundColor: "secondary.main",
-          flex: "1 1 0",
           display: "flex",
-          flexDirection: "column",
-          minWidth: 0,
+          gap: { xs: "1.25rem", md: "1.5rem" },
+          mb: "1.5rem",
+          alignItems: "flex-start",
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            gap: "1rem",
-            mb: "1rem",
+            width: { xs: "108px", sm: "132px", md: "148px" },
+            aspectRatio: "1",
+            position: "relative",
+            flexShrink: 0,
+            overflow: "hidden",
+            backgroundColor: "grey.200", // prevents layout shift before load
           }}
         >
-          <Box
-            sx={{
-              width: {
-                xs: "140px", // mobile
-                sm: "180px", // small tablet
-                md: "220px", // laptop
-                lg: "260px", // large screens
-                xl: "300px", // big desktop (your current size)
-              },
-              aspectRatio: "1",
-              position: "relative",
-              flexShrink: 0,
-              borderRadius: "0.25rem",
-              overflow: "hidden",
-              backgroundColor: "secondary.dark", // prevents layout shift before load
+          <Image
+            src={imageUrl}
+            alt={`Portrait of ${name}`}
+            fill
+            sizes="(max-width: 600px) 108px, (max-width: 900px) 132px, 148px"
+            style={{
+              objectFit: "cover",
+              objectPosition: "top center",
+              pointerEvents: "none",
             }}
-          >
-            <Image
-              src={imageUrl}
-              alt={`${name}'s spotlight`}
-              fill
-              sizes="(max-width: 600px) 140px, (max-width: 900px) 180px, (max-width: 1200px) 220px, (max-width: 1536px) 260px, 300px"
-              style={{
-                objectFit: "cover",
-                objectPosition: "top center",
-                pointerEvents: "none",
-              }}
-            />
-          </Box>
-
-          <Box>
-            <Typography variant="h5" sx={{ mb: "0.5rem" }}>
-              {name}, &apos;{graduationYear}
-            </Typography>
-            <Typography variant="body1">
-              Major: {major}
-              <Box component="span" sx={{ display: "block", height: "1rem" }} />
-              {minors.length > 0 && (
-                <>
-                  Minor{minors.length > 1 ? "s" : ""}:{" "}
-                  {minors.length === 2
-                    ? `${minors[0]} and ${minors[1]}`
-                    : minors.join(", ")}
-                  <Box
-                    component="span"
-                    sx={{ display: "block", height: "1rem" }}
-                  />
-                </>
-              )}
-              Current Position: {currentPosition} @ {currentCompany}
-            </Typography>
-          </Box>
+          />
         </Box>
-        <Typography variant="body1">{spotlightText}</Typography>
-        <Box
-          sx={{
-            mt: "auto",
-            mb: "-0.5rem",
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-        >
-          <Link href={linkedinUrl} target="_blank">
-            <IconButton sx={{ color: "secondary.dark" }}>
-              <LinkedInIcon color="inherit" sx={{ fontSize: "2.5rem" }} />
-            </IconButton>
-          </Link>
+
+        <Box sx={{ minWidth: 0 }}>
+          <Typography variant="h5" sx={{ mb: "0.75rem" }}>
+            {name}{" "}
+            <Box component="span" sx={{ color: "primary.main" }}>
+              &rsquo;{graduationYear}
+            </Box>
+          </Typography>
+          <Box component="dl" sx={{ m: 0 }}>
+            {meta.map(({ label, value }) => (
+              <Box key={label} sx={{ mb: "0.625rem" }}>
+                <Typography
+                  component="dt"
+                  sx={{
+                    fontSize: "0.6875rem",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.14em",
+                    color: "text.secondary",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {label}
+                </Typography>
+                <Typography
+                  component="dd"
+                  variant="body2"
+                  sx={{ m: 0, color: "text.primary", lineHeight: 1.5 }}
+                >
+                  {value}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Box>
-    </>
+
+      <Box sx={{ height: "1px", backgroundColor: "grey.300", mb: "1.25rem" }} />
+
+      <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
+        {spotlightText}
+      </Typography>
+
+      <Box sx={{ mt: "auto", pt: "1.5rem" }}>
+        <Typography
+          component={Link}
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="body2"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            fontWeight: 600,
+            color: "primary.main",
+            textDecoration: "none",
+            "&:hover": { textDecoration: "underline" },
+            "&:focus-visible": {
+              outline: "2px solid",
+              outlineColor: "primary.main",
+              outlineOffset: "2px",
+            },
+          }}
+        >
+          <LinkedInIcon sx={{ fontSize: "1.375rem" }} aria-hidden />
+          Connect with {name.split(" ")[0]} on LinkedIn
+        </Typography>
+      </Box>
+    </Box>
   );
 }

@@ -1,5 +1,13 @@
+"use client";
+
 import { Box, Typography } from "@mui/material";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import TestimonialCarousel, { Testimonial } from "./TestimonialCarousel";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const testimonials: Testimonial[] = [
   {
@@ -21,19 +29,55 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function StudentTestimonials() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from("[data-reveal]", {
+          opacity: 0,
+          y: 24,
+          duration: 0.7,
+          ease: "power2.out",
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            once: true,
+          },
+        });
+      });
+    },
+    { scope: sectionRef },
+  );
+
   return (
     <Box
+      component="section"
+      ref={sectionRef}
       sx={{
         textAlign: "center",
-        py: { xs: "2rem", md: "3rem" },
+        backgroundColor: "grey.100",
+        py: { xs: "3.5rem", md: "6rem" },
         px: "1.5rem",
-        color: "primary.main",
       }}
     >
-      <Typography variant="h3" sx={{ mb: { xs: "1rem", md: "2rem" } }}>
-        Student Testimonials:
-      </Typography>
-      <TestimonialCarousel testimonials={testimonials} />
+      <Box data-reveal>
+        <Typography variant="h3">Student Testimonials</Typography>
+        <Box
+          sx={{
+            width: "56px",
+            height: "2px",
+            backgroundColor: "primary.main",
+            mx: "auto",
+            mt: "1.25rem",
+          }}
+        />
+      </Box>
+      <Box data-reveal sx={{ mt: { xs: "2rem", md: "3rem" } }}>
+        <TestimonialCarousel testimonials={testimonials} />
+      </Box>
     </Box>
   );
 }

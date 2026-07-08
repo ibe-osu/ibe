@@ -1,98 +1,155 @@
-import { alpha } from "@mui/material/styles";
+"use client";
+
+import { useRef } from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import theme from "@/theme/theme";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 export default function Welcome() {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap
+          .timeline({ defaults: { ease: "power4.out" } })
+          .from(".hero-kicker", { y: 24, autoAlpha: 0, duration: 0.7 }, 0.15)
+          .from(".hero-title", { y: 36, autoAlpha: 0, duration: 0.9 }, 0.25)
+          .from(
+            ".hero-rule",
+            { scaleX: 0, transformOrigin: "left center", duration: 0.8 },
+            0.5,
+          )
+          .from(".hero-tagline", { y: 24, autoAlpha: 0, duration: 0.8 }, 0.6);
+      });
+    },
+    { scope: heroRef },
+  );
+
   return (
     <Box
+      ref={heroRef}
+      component="section"
+      aria-labelledby="welcome-heading"
       sx={{
         position: "relative",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "calc(100vh - 64px)", // Adjust for header height
+        alignItems: "flex-end",
+        minHeight: { xs: "calc(100svh - 64px)", md: "calc(100vh - 64px)" },
         overflow: "hidden",
       }}
     >
-      <picture
-        style={{
-          display: "block", // Ensure the picture element behaves as a block-level element
-          width: "100%", // Fill the width of the parent box
-          height: "100%", // Fill the height of the parent box
+      {/* Background photo */}
+      <Box
+        component="picture"
+        aria-hidden="true"
+        sx={{
+          position: "absolute",
+          inset: 0,
+          display: "block",
+          "& img": {
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            pointerEvents: "none",
+          },
         }}
       >
-        <source
-          media="(max-width:800px)"
-          srcSet="/welcome-vertical.jpeg"
-          sizes="(max-width: 800px) 100vw, 100vh" // Ensure it fills the parent box
-        />
+        <source media="(max-width:800px)" srcSet="/welcome-vertical.jpeg" />
         <Image
           src="/welcome.jpeg"
-          alt="Welcome"
+          alt=""
           width={1920}
           height={1080}
-          style={{
-            objectFit: "cover", // Ensures the image covers the parent box
-            pointerEvents: "none",
-            width: "100%", // Fills the width of the parent box
-            height: "100%", // Fills the height of the parent box
-          }}
+          priority
         />
-      </picture>
+      </Box>
+
+      {/* Scrim: deep scarlet cast, weighted toward the text corner for contrast */}
       <Box
+        aria-hidden="true"
         sx={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: alpha(theme.palette.primary.main, 0.4), // Red shade with transparency
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(to top, rgba(30, 2, 9, 0.85) 0%, rgba(30, 2, 9, 0.42) 45%, rgba(30, 2, 9, 0.18) 100%),
+            linear-gradient(115deg, rgba(186, 12, 47, 0.45) 0%, rgba(186, 12, 47, 0.08) 70%)
+          `,
         }}
       />
+
+      {/* Content — bottom-left, editorial */}
       <Box
         sx={{
-          position: "absolute",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
+          position: "relative",
           width: "100%",
-          height: "100%",
-          pb: { xs: "4.5rem", sm: "0rem" },
+          maxWidth: "1280px",
+          mx: "auto",
+          px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+          pb: { xs: "4.5rem", md: "6rem" },
+          pt: "8rem",
         }}
       >
         <Typography
-          variant="h1"
+          className="hero-kicker"
+          component="p"
           sx={{
+            fontFamily: "var(--font-pt-serif-caption), serif",
+            fontStyle: "italic",
+            fontSize: { xs: "1rem", md: "1.25rem" },
+            color: "#f3cdd6",
+            mb: { xs: "0.75rem", md: "1rem" },
+          }}
+        >
+          Integrated Business &amp; Engineering Honors Program
+        </Typography>
+
+        <Typography
+          id="welcome-heading"
+          component="h1"
+          className="hero-title"
+          sx={{
+            fontFamily: "var(--font-pt-serif-caption), serif",
             color: "secondary.main",
-            textAlign: "center",
-            // marginBottom: 2, // Add spacing between elements
+            fontSize: "clamp(3rem, 6.5vw + 0.5rem, 5.5rem)",
+            lineHeight: 1.05,
+            textWrap: "balance",
+            maxWidth: "14ch",
           }}
         >
           Welcome to IBE
         </Typography>
-        <Box sx={{ width: { xs: "85%", sm: "50%" } }}>
-          <Box
-            sx={{
-              height: "0.25rem",
-              backgroundColor: "secondary.main",
-              marginTop: "0.5rem", // Add spacing above the line
-              marginBottom: { xs: "5rem", sm: "1rem" }, // Add spacing below the line
-            }}
-          />
-          <Typography
-            variant="h4"
-            sx={{
-              color: "secondary.main",
-              textAlign: "center",
-              padding: { xl: "0 2rem", lg: "0 1rem", md: "0" }, // Add horizontal padding for better readability
-            }}
-          >
-            The Ohio State University&apos;s premier interdisciplinary academic
-            program
-          </Typography>
-        </Box>
+
+        <Box
+          className="hero-rule"
+          aria-hidden="true"
+          sx={{
+            width: "6rem",
+            height: "3px",
+            backgroundColor: "secondary.main",
+            my: { xs: "1.25rem", md: "1.75rem" },
+          }}
+        />
+
+        <Typography
+          className="hero-tagline"
+          component="p"
+          sx={{
+            color: "rgba(255, 255, 255, 0.94)",
+            fontSize: "clamp(1.125rem, 1.2vw + 0.75rem, 1.5rem)",
+            fontWeight: 400,
+            lineHeight: 1.5,
+            maxWidth: "36ch",
+            textWrap: "pretty",
+          }}
+        >
+          The Ohio State University&apos;s premier interdisciplinary academic
+          program
+        </Typography>
       </Box>
     </Box>
   );
