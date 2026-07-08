@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PT_Serif_Caption } from "next/font/google";
+import { PT_Serif_Caption, Public_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../theme/ThemeProvider";
 import Header from "../components/general/Header";
@@ -12,6 +12,12 @@ const ptSerifCaption = PT_Serif_Caption({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-pt-serif-caption",
+});
+
+const publicSans = Public_Sans({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-public-sans",
 });
 
 export const metadata: Metadata = {
@@ -63,7 +69,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={ptSerifCaption.variable}>
+      <body className={`${ptSerifCaption.variable} ${publicSans.variable}`}>
         <AppRouterCacheProvider>
           <ThemeProvider>
             <Header />

@@ -52,26 +52,27 @@ function splitIntoChunks<T>(arr: T[], n: number): T[][] {
 }
 
 // layout constants (use numeric px values as sensible defaults)
-const GAP_PX = 24; // px gap between cells
+const GAP_PX = 40; // px gap between cells
 
 export default function CompanyScroller() {
   const rows = splitIntoChunks(logos, 3);
-  const durations = [20, 22, 24];
+  // Slow, slightly offset drifts — calm and readable rather than busy
+  const durations = [52, 64, 58];
   const theme = useTheme();
   // Responsive cell height using MUI breakpoints
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  let cellHeight = 120;
-  if (isXs) cellHeight = 64;
-  else if (isSm) cellHeight = 100;
+  let cellHeight = 96;
+  if (isXs) cellHeight = 56;
+  else if (isSm) cellHeight = 80;
 
   return (
     <Box
+      aria-label="Companies where IBE alumni have worked"
       sx={{
         overflow: "hidden",
         width: "100%",
-        py: 4,
-        bgcolor: "common.white",
+        py: { xs: 2, md: 3 },
       }}
     >
       <Box
@@ -83,7 +84,6 @@ export default function CompanyScroller() {
           duration={durations[0]}
           direction="normal"
           logos={rows[0] || []}
-          speed="fast"
         />
 
         <CompanyScrollRow
@@ -92,7 +92,6 @@ export default function CompanyScroller() {
           duration={durations[1]}
           direction="reverse"
           logos={rows[1] || []}
-          speed="slow"
         />
 
         <CompanyScrollRow
@@ -101,7 +100,6 @@ export default function CompanyScroller() {
           duration={durations[2]}
           direction="normal"
           logos={rows[2] || []}
-          speed="fast"
         />
       </Box>
     </Box>

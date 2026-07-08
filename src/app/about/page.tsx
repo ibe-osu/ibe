@@ -5,6 +5,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
+  description:
+    "Meet the senior and student leadership of the Integrated Business & Engineering (IBE) Honors Program at The Ohio State University.",
 };
 
 export default function About() {

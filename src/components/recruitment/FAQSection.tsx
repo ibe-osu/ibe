@@ -3,7 +3,8 @@ import Typography from "@mui/material/Typography";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddIcon from "@mui/icons-material/Add";
+import { PAGE_GUTTER, CONTENT_MAX_WIDTH, SECTION_PY } from "@/theme/layout";
 
 const faqItems = [
   {
@@ -34,54 +35,115 @@ const faqItems = [
 
 export default function FAQSection() {
   return (
-    <Box
-      sx={{
-        py: { xs: 4, md: 8 },
-        px: { xs: 2, md: 10 },
-        maxWidth: 1100,
-        mx: "auto",
-      }}
-    >
-      <Typography variant="h4" align="center" sx={{ mb: 3 }}>
-        FAQ
-      </Typography>
+    <Box component="section" sx={{ py: SECTION_PY, px: PAGE_GUTTER }}>
+      <Box sx={{ maxWidth: CONTENT_MAX_WIDTH, mx: "auto" }}>
+        <Typography variant="h3" component="h2" sx={{ mb: "1rem" }}>
+          FAQ
+        </Typography>
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "3.5rem",
+            height: "3px",
+            backgroundColor: "primary.main",
+            mb: { xs: 4, md: 6 },
+          }}
+        />
 
-      <Box sx={{ display: "grid", gap: 3 }}>
-        {faqItems.map((it) => (
-          <Accordion
-            key={it.q}
-            sx={{
-              color: "secondary.main",
-              bgcolor: "primary.main",
-              boxShadow: 0,
-              borderRadius: 0,
-              "&.Mui-expanded": { margin: 0 },
-            }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />}
+        <Box
+          sx={{
+            border: "1px solid",
+            borderColor: "grey.300",
+          }}
+        >
+          {faqItems.map((it, i) => (
+            <Accordion
+              key={it.q}
+              square
+              disableGutters
+              elevation={0}
               sx={{
-                px: 3,
-                minHeight: 54,
-                display: "flex",
-                alignItems: "center",
-                "& .MuiAccordionSummary-content": {
-                  minHeight: 54,
-                  display: "flex",
-                  alignItems: "center",
+                bgcolor: "transparent",
+                borderTop: i === 0 ? "none" : "1px solid",
+                borderColor: "grey.300",
+                transition: "background-color 0.25s ease",
+                "&::before": { display: "none" },
+                // Resting hover: quiet grey wash + scarlet question text
+                "&:not(.Mui-expanded):hover": { bgcolor: "grey.100" },
+                "&:not(.Mui-expanded):hover .MuiTypography-root": {
+                  color: "primary.main",
+                },
+                // Open state: scarlet fills the row, contents invert to white
+                "&.Mui-expanded": {
+                  bgcolor: "primary.main",
+                  "& .MuiTypography-root": { color: "#fff" },
+                  "& .MuiAccordionSummary-expandIconWrapper": { color: "#fff" },
+                },
+                "@media (prefers-reduced-motion: reduce)": {
+                  transition: "none",
                 },
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                {it.q}
-              </Typography>
-            </AccordionSummary>
+              <AccordionSummary
+                expandIcon={<AddIcon />}
+                sx={{
+                  px: { xs: 2.5, md: 3.5 },
+                  minHeight: 68,
+                  "& .MuiAccordionSummary-content": {
+                    my: 2,
+                    pr: 2,
+                  },
+                  "& .MuiAccordionSummary-expandIconWrapper": {
+                    color: "primary.main",
+                    transition: "transform 0.25s ease, color 0.25s ease",
+                  },
+                  // Plus rotates into a cross when the row opens
+                  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                    transform: "rotate(135deg)",
+                  },
+                  "&:focus-visible": {
+                    outline: "2px solid",
+                    outlineColor: "primary.main",
+                    outlineOffset: "-2px",
+                    bgcolor: "transparent",
+                  },
+                  "@media (prefers-reduced-motion: reduce)": {
+                    "& .MuiAccordionSummary-expandIconWrapper": {
+                      transition: "none",
+                    },
+                  },
+                }}
+              >
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: { xs: "1rem", md: "1.0625rem" },
+                    fontWeight: 600,
+                    lineHeight: 1.45,
+                    transition: "color 0.25s ease",
+                  }}
+                >
+                  {it.q}
+                </Typography>
+              </AccordionSummary>
 
-            <AccordionDetails sx={{ px: 3, pt: 2.5, pb: 3 }}>
-              <Typography variant="body1">{it.a}</Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+              <AccordionDetails
+                sx={{ px: { xs: 2.5, md: 3.5 }, pt: 0, pb: 3 }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: "rgba(255, 255, 255, 0.92)",
+                    lineHeight: 1.7,
+                    maxWidth: "68ch",
+                  }}
+                >
+                  {it.a}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
       </Box>
     </Box>
   );

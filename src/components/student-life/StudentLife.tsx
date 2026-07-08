@@ -1,70 +1,128 @@
+"use client";
+
+import { useRef } from "react";
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 export default function StudentLifeHeader() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from("[data-hero-reveal]", {
+          opacity: 0,
+          y: 24,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.12,
+        });
+      });
+    },
+    { scope: sectionRef },
+  );
+
   return (
-    // Full-bleed wrapper: offsetting the container by half the viewport width
-    // lets the hero stretch edge-to-edge while the rest of the app stays centered.
     <Box
+      ref={sectionRef}
+      component="section"
       sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
         position: "relative",
-        left: "50%",
-        width: "100vw",
-        ml: "-50vw",
-        mr: "-50vw",
-        border: "4px solid",
-        borderColor: "primary.main",
+        display: "flex",
+        alignItems: "flex-end",
+        height: "calc(75vh - 64px)",
+        minHeight: "500px",
+        overflow: "hidden",
       }}
     >
+      <Image
+        src="/happenings/cleveland-1.jpeg"
+        alt="IBE students on a program trip to Cleveland"
+        fill
+        priority
+        sizes="100vw"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center",
+        }}
+      />
+      {/* Scrim for text legibility over the photo */}
+      <Box
+        aria-hidden
+        sx={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.38) 55%, rgba(0, 0, 0, 0.18) 100%)",
+        }}
+      />
       <Box
         sx={{
-          flexBasis: { xs: "100%", md: "60%" },
-          backgroundColor: "primary.main",
-          color: "secondary.main",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          px: { xs: 3, md: 6 },
-          py: { xs: 4, md: 6 },
+          position: "relative",
+          width: "100%",
+          maxWidth: "1280px",
+          mx: "auto",
+          px: { xs: "1.5rem", sm: "3rem", md: "4rem" },
+          pb: { xs: "3.5rem", md: "5rem" },
         }}
       >
-        <Typography variant="h2" sx={{ textAlign: "center" }}>
+        <Typography
+          component="p"
+          data-hero-reveal
+          sx={{
+            fontSize: "0.8125rem",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "#fff",
+            mb: { xs: 1.5, md: 2 },
+          }}
+        >
+          Life at IBE
+        </Typography>
+        <Typography
+          component="h1"
+          variant="h1"
+          data-hero-reveal
+          sx={{
+            color: "#fff",
+            fontSize: { xs: "2.75rem", sm: "3.5rem", md: "4.5rem" },
+            lineHeight: 1.05,
+            mb: { xs: 2, md: 2.5 },
+          }}
+        >
           Student Life
         </Typography>
-      </Box>
-      <Box
-        sx={{
-          flexBasis: { xs: "100%", md: "40%" },
-          backgroundColor: "secondary.main",
-          color: "text.primary",
-          borderLeft: { md: "4px solid" },
-          borderLeftColor: { md: "primary.main" },
-          borderTop: { xs: "4px solid", md: "none" },
-          borderTopColor: { xs: "primary.main" },
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          px: { xs: 3, md: 5 },
-          py: { xs: 3, md: 4 },
-          gap: 2,
-        }}
-      >
+        <Box
+          data-hero-reveal
+          aria-hidden
+          sx={{
+            width: "6rem",
+            height: "3px",
+            backgroundColor: "secondary.main",
+            mb: { xs: 2, md: 2.5 },
+          }}
+        />
         <Typography
+          data-hero-reveal
           variant="body1"
-          sx={{ lineHeight: 1.6, textAlign: "center" }}
+          sx={{
+            maxWidth: "42rem",
+            color: "rgba(255, 255, 255, 0.92)",
+            fontSize: { xs: "1rem", md: "1.125rem" },
+            lineHeight: 1.65,
+          }}
         >
           IBE fosters a culture of professional growth and meaningful
-          connections—ensuring that while we strive for excellence, we also
-          build lasting relationships and enjoy the journey along the way.
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ lineHeight: 1.6, textAlign: "center" }}
-        >
-          Whether it&apos;s program trips, speaker events or socials, see below
-          for what our students at IBE are up to!
+          connections&mdash;ensuring that while we strive for excellence, we
+          also build lasting relationships and enjoy the journey along the
+          way. Whether it&apos;s program trips, speaker events, or socials, see
+          below for what our students at IBE are up to!
         </Typography>
       </Box>
     </Box>
