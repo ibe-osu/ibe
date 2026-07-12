@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
+import recruitmentWelcomeImg from "../../../public/recruitment/welcome.jpeg";
 
 export default function RecruitmentHero() {
   return (
@@ -84,9 +85,10 @@ export default function RecruitmentHero() {
             }}
           >
             <Image
-              src="/recruitment/welcome.jpeg"
+              src={recruitmentWelcomeImg}
               alt="Prospective students visiting the IBE Honors Program at Ohio State"
               fill
+              placeholder="blur"
               style={{ objectFit: "cover" }}
               sizes="(max-width:900px) 100vw, 480px"
             />
@@ -148,9 +150,10 @@ export default function RecruitmentHero() {
             }}
           >
             <Image
-              src="/recruitment/welcome.jpeg"
+              src={recruitmentWelcomeImg}
               alt="Prospective students visiting the IBE Honors Program at Ohio State"
               fill
+              placeholder="blur"
               style={{ objectFit: "cover" }}
               sizes="(min-width:900px) 600px, 480px"
             />

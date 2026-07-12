@@ -2,12 +2,31 @@
 
 import { useRef } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import welcomeImg from "../../../public/welcome.jpeg";
+import welcomeVerticalImg from "../../../public/welcome-vertical.jpeg";
 
 gsap.registerPlugin(useGSAP);
+
+const heroAlt = "IBE Honors Program students gathered on Ohio State's campus";
+
+// Optimized srcsets for both art-directed crops; the raw <source> path used
+// to serve the full unoptimized JPEG on mobile.
+const { props: desktopImg } = getImageProps({
+  src: welcomeImg,
+  alt: heroAlt,
+  priority: true,
+  sizes: "100vw",
+});
+const { props: mobileImg } = getImageProps({
+  src: welcomeVerticalImg,
+  alt: heroAlt,
+  priority: true,
+  sizes: "100vw",
+});
 
 export default function Welcome() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -49,15 +68,16 @@ export default function Welcome() {
           display: "block",
           width: "100%",
           height: "100%",
+          // Blurred inline preview paints instantly while the photo streams in
+          backgroundImage: `url(${welcomeImg.blurDataURL})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        <source media="(max-width:800px)" srcSet="/welcome-vertical.jpeg" />
-        <Image
-          src="/welcome.jpeg"
-          alt="IBE Honors Program students gathered on Ohio State's campus"
-          width={1920}
-          height={1080}
-          priority
+        <source media="(max-width:800px)" srcSet={mobileImg.srcSet} />
+        <img
+          {...desktopImg}
+          alt={heroAlt}
           style={{
             objectFit: "cover",
             pointerEvents: "none",

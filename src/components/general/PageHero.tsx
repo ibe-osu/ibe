@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { Box, Typography } from "@mui/material";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -11,25 +11,23 @@ gsap.registerPlugin(useGSAP);
 interface PageHeroProps {
   title: string;
   subtitle?: string;
-  imageSrc: string;
+  image: StaticImageData;
   imageAlt: string;
-  imageWidth: number;
-  imageHeight: number;
   objectPosition?: string;
   height?: { xs: string; md: string };
 }
 
 /**
  * Shared full-bleed page hero: photo, scarlet brand tint plus darkening
- * gradient for text contrast, and the page h1.
+ * gradient for text contrast, and the page h1. Static imports give every
+ * banner an instant blur placeholder so client-side navigation never shows
+ * a blank band while the photo streams in.
  */
 export default function PageHero({
   title,
   subtitle,
-  imageSrc,
+  image,
   imageAlt,
-  imageWidth,
-  imageHeight,
   objectPosition = "center",
   height = { xs: "56svh", md: "64vh" },
 }: PageHeroProps) {
@@ -70,11 +68,11 @@ export default function PageHero({
       }}
     >
       <Image
-        src={imageSrc}
+        src={image}
         alt={imageAlt}
         priority
-        width={imageWidth}
-        height={imageHeight}
+        placeholder="blur"
+        sizes="100vw"
         style={{
           objectFit: "cover",
           objectPosition,

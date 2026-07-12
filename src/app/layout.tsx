@@ -5,6 +5,7 @@ import { ThemeProvider } from "../theme/ThemeProvider";
 import Header from "../components/general/Header";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Footer from "@/components/general/Footer";
+import HeroPrefetch from "@/components/general/HeroPrefetch";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -125,6 +126,7 @@ export default function RootLayout({
             </a>
             <Header />
             <main id="main-content">{children}</main>
+            <HeroPrefetch />
             <Analytics />
             <SpeedInsights />
             <Footer />
