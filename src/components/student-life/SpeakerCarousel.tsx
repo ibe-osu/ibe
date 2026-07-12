@@ -83,6 +83,7 @@ export default function SpeakerCarousel(props: IProps) {
       {/* Left Arrow */}
       <IconButton
         onClick={prev}
+        aria-label="Previous speakers"
         sx={{
           flexShrink: 0,
           zIndex: 2,
@@ -129,6 +130,7 @@ export default function SpeakerCarousel(props: IProps) {
       {/* Right Arrow */}
       <IconButton
         onClick={next}
+        aria-label="Next speakers"
         sx={{
           flexShrink: 0,
           zIndex: 2,

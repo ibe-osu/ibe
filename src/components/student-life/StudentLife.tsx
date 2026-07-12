@@ -29,7 +29,7 @@ export default function StudentLifeHeader() {
           py: { xs: 4, md: 6 },
         }}
       >
-        <Typography variant="h2" sx={{ textAlign: "center" }}>
+        <Typography variant="h2" component="h1" sx={{ textAlign: "center" }}>
           Student Life
         </Typography>
       </Box>

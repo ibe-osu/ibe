@@ -5,7 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const faqItems = [
+export const faqItems = [
   {
     q: "What is the difference between IBE and IBE-SI?",
     a: "In the IBE Program, Business Majors earn an Engineering Sciences Minor and Engineering Majors earn a Business Minor. In the IBE-SI track, Business Majors earn a Computer Science Minor and Engineering Majors earn a Business Minor. Additionally, the IBE-SI project-based classes focus on software and app solutions vs. traditional design/prototypes of the IBE classes.",
@@ -42,8 +42,8 @@ export default function FAQSection() {
         mx: "auto",
       }}
     >
-      <Typography variant="h4" align="center" sx={{ mb: 3 }}>
-        FAQ
+      <Typography variant="h3" component="h2" align="center" sx={{ mb: 3 }}>
+        Frequently Asked Questions
       </Typography>
 
       <Box sx={{ display: "grid", gap: 3 }}>
@@ -72,7 +72,11 @@ export default function FAQSection() {
                 },
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              <Typography
+                variant="h6"
+                component="span"
+                sx={{ fontWeight: 600 }}
+              >
                 {it.q}
               </Typography>
             </AccordionSummary>

@@ -1,7 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
-import theme from "@/theme/theme";
-import Link from "next/link";
 
 export default function RecruitmentHero() {
   return (
@@ -29,10 +27,9 @@ export default function RecruitmentHero() {
         >
           <Typography
             variant="h2"
+            component="h1"
             sx={{
               mb: 2,
-              fontSize: { xs: "2rem", sm: "2.4rem", md: "3.2rem" },
-              lineHeight: 1.1,
               maxWidth: { xs: "100%", sm: "90%", md: "60ch" },
             }}
           >
@@ -88,50 +85,12 @@ export default function RecruitmentHero() {
           >
             <Image
               src="/recruitment/welcome.jpeg"
-              alt="Recruitment"
+              alt="Prospective students visiting the IBE Honors Program at Ohio State"
               fill
               style={{ objectFit: "cover" }}
               sizes="(max-width:900px) 100vw, 480px"
             />
           </Box>
-
-          {/* <Box
-            sx={{
-              borderTop: "4px solid",
-              borderColor: theme.palette.common.black,
-              mt: 3,
-              mb: 3,
-              width: "100%",
-            }}
-          />
-
-          <Typography
-            variant="h4"
-            sx={{
-              color: theme.palette.primary.main,
-              mb: 2,
-              fontWeight: 700,
-              fontSize: { xs: "1.3rem", sm: "1.7rem", md: "2rem" },
-              lineHeight: 1.2,
-            }}
-          >
-            Fall 2025 Applications are Now Open!
-          </Typography>
-
-          <Typography
-            variant="body2"
-            sx={{
-              mb: 2,
-              fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.1rem" },
-              lineHeight: 1.5,
-            }}
-          >
-            Application to the IBE Honors Program is restricted to incoming
-            first-year business & engineering students previously admitted to
-            University Honors in the Fisher College of Business or College of
-            Engineering. Please fill out interest form to receive more
-            information:
-          </Typography> */}
 
           <Box
             sx={{
@@ -145,37 +104,22 @@ export default function RecruitmentHero() {
             }}
           >
             <Button
-              variant="contained"
-              sx={{
-                bgcolor: theme.palette.primary.main,
-                color: "common.white",
-                px: 3,
-                py: 1,
-                textTransform: "none",
-                boxShadow: 4,
-                "&:hover": { bgcolor: theme.palette.primary.light },
-              }}
+              component="a"
+              href="https://forms.gle/hbkbG9sRqqBhPeag8"
+              target="_blank"
+              rel="noopener noreferrer"
+              color="primary"
             >
-              <Link href="https://forms.gle/hbkbG9sRqqBhPeag8" target="_blank">
-                IBE Interest Form
-              </Link>
+              IBE Interest Form
             </Button>
 
             <Button
-              variant="contained"
-              sx={{
-                bgcolor: theme.palette.primary.main,
-                color: "common.white",
-                px: 3,
-                py: 1,
-                textTransform: "none",
-                boxShadow: 4,
-                "&:hover": { bgcolor: theme.palette.primary.light },
-              }}
+              component="a"
+              href="mailto:ohiostateibe@osu.edu"
+              variant="outlined"
+              color="primary"
             >
-              <Link href="mailto:ohiostateibe@osu.edu" target="_blank">
-                Contact Us
-              </Link>
+              Contact Us
             </Button>
           </Box>
         </Box>
@@ -205,7 +149,7 @@ export default function RecruitmentHero() {
           >
             <Image
               src="/recruitment/welcome.jpeg"
-              alt="Recruitment"
+              alt="Prospective students visiting the IBE Honors Program at Ohio State"
               fill
               style={{ objectFit: "cover" }}
               sizes="(min-width:900px) 600px, 480px"
@@ -229,13 +173,7 @@ export default function RecruitmentHero() {
           mt: 6,
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            fontFamily: theme.typography.fontFamily,
-            color: "common.white",
-          }}
-        >
+        <Typography variant="h3" component="h2" sx={{ color: "common.white" }}>
           Learn More About IBE
         </Typography>
       </Box>

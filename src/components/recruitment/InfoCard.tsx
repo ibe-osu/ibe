@@ -73,11 +73,7 @@ export default function InfoCard({
           flex: "0 0 auto",
         }}
       >
-        <Typography
-          variant="h4"
-          component="h3"
-          sx={{ fontWeight: 500, letterSpacing: 0.2, mb: 1 }}
-        >
+        <Typography variant="h4" component="h3" sx={{ mb: 1 }}>
           {header}
         </Typography>
         <Typography variant="body2" sx={{ mt: 1.5, lineHeight: 1.45 }}>

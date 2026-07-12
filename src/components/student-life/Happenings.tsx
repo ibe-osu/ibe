@@ -1,6 +1,7 @@
 import { Box, Typography, Divider } from "@mui/material";
 import PhotoCarousel, { Photo } from "./PhotoCarousel";
 import React from "react";
+import Reveal from "@/components/general/Reveal";
 
 // Event data structure
 interface Event {
@@ -98,8 +99,8 @@ export default function Happenings() {
           textAlign: "center",
         }}
       >
-        <Typography variant="h3" sx={{ letterSpacing: 1.5 }}>
-          IBE Happenings:
+        <Typography variant="h3" component="h2">
+          IBE Happenings
         </Typography>
       </Box>
 
@@ -113,9 +114,13 @@ export default function Happenings() {
         }}
       >
         {events.map((event, index) => {
-          // Alternate layout: even indices have photo on right, odd indices have photo on left
+          // Alternate layout: even indices have photo on right, odd indices have photo on left.
+          // Below md the columns stack, so text always reads left-aligned.
           const isPhotoOnLeft = index % 2 !== 0;
-          const textAlign = isPhotoOnLeft ? "left" : "right";
+          const textAlign = {
+            xs: "left",
+            md: isPhotoOnLeft ? "left" : "right",
+          } as const;
 
           const textContent = (
             <Box
@@ -130,8 +135,8 @@ export default function Happenings() {
             >
               <Typography
                 variant="h4"
+                component="h3"
                 sx={{
-                  fontWeight: "bold",
                   color: "text.primary",
                   textAlign: textAlign,
                 }}
@@ -177,7 +182,7 @@ export default function Happenings() {
 
           return (
             <React.Fragment key={index}>
-              <Box
+              <Reveal
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", md: "row" },
@@ -195,7 +200,7 @@ export default function Happenings() {
                     {photoContent}
                   </>
                 )}
-              </Box>
+              </Reveal>
               {index < events.length - 1 && (
                 <Divider
                   sx={{
