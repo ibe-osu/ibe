@@ -23,11 +23,14 @@ export default function NavButton({ children, href }: NavButtonProps) {
       sx={{
         position: "relative",
         overflow: "hidden",
-        color: active ? "primary.main" : "inherit",
-        fontWeight: 600,
+        color: active ? "primary.main" : "text.primary",
+        fontSize: "0.8125rem",
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
         backgroundColor: "transparent",
         transition: "color 0.25s ease",
-        padding: "0.5rem 0.5rem",
+        padding: "0.5rem 0.625rem",
         "&::after": {
           content: '""',
           position: "absolute",

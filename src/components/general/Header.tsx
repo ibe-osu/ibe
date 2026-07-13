@@ -39,6 +39,7 @@ export default function Header() {
             gap: { xs: 0.5, md: 3 },
           }}
         >
+          <NavButton href="/">Home</NavButton>
           <NavButton href="/about">About</NavButton>
           <NavButton href="/alumni">Alumni</NavButton>
           <NavButton href="/student-life">Student Life</NavButton>
@@ -49,7 +50,11 @@ export default function Header() {
             sx={{
               ml: { xs: 0.5, md: 1 },
               px: "1.25rem",
-              py: "0.5rem",
+              py: "0.5625rem",
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
             }}
           >
             Join Us
