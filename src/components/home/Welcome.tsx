@@ -40,6 +40,7 @@ export default function Welcome() {
 
       gsap
         .timeline({ defaults: { ease: "power4.out" } })
+        .from("[data-hero-kicker]", { y: 18, opacity: 0, duration: 0.8 }, 0.1)
         .from("[data-hero-title]", { y: 36, opacity: 0, duration: 1 }, 0.15)
         .from("[data-hero-rule]", { scaleX: 0, duration: 0.9 }, 0.45)
         .from("[data-hero-subtitle]", { y: 24, opacity: 0, duration: 0.9 }, 0.6)
@@ -116,6 +117,29 @@ export default function Welcome() {
           pb: { xs: "3rem", sm: 0 },
         }}
       >
+        <Typography
+          component="p"
+          data-hero-kicker
+          sx={{
+            color: "rgba(255, 255, 255, 0.92)",
+            textAlign: "center",
+            textTransform: "uppercase",
+            letterSpacing: "0.16em",
+            fontWeight: 600,
+            fontSize: { xs: "0.75rem", md: "0.875rem" },
+            mb: { xs: 1.5, md: 2 },
+            textShadow: "0 1px 12px rgba(0, 0, 0, 0.35)",
+          }}
+        >
+          <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+            Fisher College of Business
+          </Box>{" "}
+          ·{" "}
+          <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+            College of Engineering
+          </Box>
+        </Typography>
+
         <Typography
           variant="h1"
           data-hero-title

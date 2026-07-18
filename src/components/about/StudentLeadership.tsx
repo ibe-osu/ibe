@@ -83,7 +83,7 @@ export default function StudentLeadership() {
             },
           ].map((person) => (
             <Grid key={person.email} size={{ xs: 12, sm: 6, md: 4 }}>
-              <IndividualCard {...person} />
+              <IndividualCard {...person} accent="white" />
             </Grid>
           ))}
         </Grid>

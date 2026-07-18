@@ -1,4 +1,4 @@
-import Coursework from "@/components/home/Coursework";
+import FourYearJourney from "@/components/home/FourYearJourney";
 import OurStats from "@/components/home/OurStats";
 import Sponsors from "@/components/home/Sponsors";
 import Welcome from "@/components/home/Welcome";
@@ -8,9 +8,9 @@ export default function Home() {
   return (
     <>
       <Welcome />
-      <WhoAreWe />
       <OurStats />
-      <Coursework />
+      <WhoAreWe />
+      <FourYearJourney />
       <Sponsors />
     </>
   );
