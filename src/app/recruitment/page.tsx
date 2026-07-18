@@ -1,6 +1,7 @@
 import RecruitmentTop from "@/components/recruitment/RecruitmentTop";
+import AdmissionOverview from "@/components/recruitment/AdmissionOverview";
+import ApplicationTimeline from "@/components/recruitment/ApplicationTimeline";
 import InfoCardSection from "@/components/recruitment/InfoCardSection";
-import TimelineIllustration from "@/components/recruitment/Timeline";
 import FAQSection, { faqItems } from "@/components/recruitment/FAQSection";
 import { Metadata } from "next";
 
@@ -34,8 +35,9 @@ export default function Recruitment() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <RecruitmentTop />
+      <AdmissionOverview />
+      <ApplicationTimeline />
       <InfoCardSection />
-      <TimelineIllustration />
       <FAQSection />
     </>
   );

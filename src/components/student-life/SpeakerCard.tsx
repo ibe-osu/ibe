@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 
@@ -16,87 +13,75 @@ interface IProps {
   speaker: Speaker;
 }
 
+/**
+ * Speaker card: name and role are always visible below the portrait (no
+ * hover required, so mobile users see them too); hover or keyboard focus
+ * reveals the bio over the photo.
+ */
 export default function SpeakerCard(props: IProps) {
   const { speaker } = props;
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Box
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      tabIndex={0}
       sx={{
-        position: "relative",
-        aspectRatio: "1",
-        borderRadius: 2,
-        overflow: "hidden",
-        cursor: "pointer",
-        boxShadow: 2,
-        transition: "box-shadow 0.3s ease",
-        "&:hover": {
-          boxShadow: 4,
+        outline: "none",
+        "&:focus-visible": {
+          outline: "2px solid",
+          outlineColor: "primary.main",
+          outlineOffset: "3px",
+        },
+        "&:hover [data-speaker-bio], &:focus-visible [data-speaker-bio]": {
+          opacity: 1,
+        },
+        "&:hover img, &:focus-visible img": {
+          transform: "scale(1.04)",
         },
       }}
     >
-      {/* Image */}
-      <Image
-        src={speaker.imageUrl}
-        alt={`Portrait of ${speaker.name}, ${speaker.position}`}
-        fill
-        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        style={{
-          objectFit: "cover",
-          objectPosition: "center",
-        }}
-      />
-
-      {/* Hover Overlay with Text */}
       <Box
         sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          opacity: isHovered ? 1 : 0,
-          transition: "opacity 0.3s ease",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          p: 3,
-          textAlign: "center",
+          position: "relative",
+          aspectRatio: "1",
+          overflow: "hidden",
         }}
       >
-        <Typography
-          variant="h6"
+        <Image
+          src={speaker.imageUrl}
+          alt={`Portrait of ${speaker.name}, ${speaker.position}`}
+          fill
+          sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+            transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+        />
+        <Box
+          data-speaker-bio
           sx={{
-            fontWeight: "bold",
-            color: "primary.main",
-            mb: { xs: 0.5, md: 1 },
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(23, 24, 26, 0.85)",
+            color: "#fff",
+            opacity: 0,
+            transition: "opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+            display: "flex",
+            alignItems: "center",
+            p: { xs: 2, md: 2.5 },
           }}
         >
+          <Typography variant="body2" sx={{ lineHeight: 1.55 }}>
+            {speaker.bio}
+          </Typography>
+        </Box>
+      </Box>
+      <Box sx={{ pt: 1.25 }}>
+        <Typography variant="h6" component="h3">
           {speaker.name}
         </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: "bold",
-            color: "text.primary",
-            mb: { xs: 1, md: 2 },
-          }}
-        >
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {speaker.position}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            color: "text.secondary",
-            lineHeight: 1.5,
-            fontSize: { xs: "0.75rem", md: "0.875rem" },
-          }}
-        >
-          {speaker.bio}
         </Typography>
       </Box>
     </Box>

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import SpeakerCarousel from "./SpeakerCarousel";
 import { Speaker } from "./SpeakerCard";
 
@@ -50,88 +50,39 @@ const speakers: Speaker[] = [
 
 export default function KeynoteSpeakers() {
   return (
-    // Full-width background that inherits the page margin hack from the hero to
-    // guarantee the keynote section shares the same edge-to-edge treatment.
-    // This component absorbs leftover height to fill the viewport even when the carousel is still under construction.
     <Box
+      component="section"
+      aria-label="Recent keynote speakers"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        left: "50%",
-        width: "100vw",
-        ml: "-50vw",
-        mr: "-50vw",
-        backgroundColor: "grey.200",
-        // borderTop: "4px solid",
-        // borderTopColor: "primary.main",
-        // borderBottom: "4px solid",
-        // borderBottomColor: "primary.main",
-        pt: { xs: 4, md: 5 },
-        pb: { xs: 4, md: 5 },
-        minHeight: "calc(100vh - 64px - 400px)", // Subtract header height and approximate StudentLife height
-        flexGrow: 1,
+        py: { xs: 6, md: 9 },
+        backgroundColor: "#f9f6f6",
+        borderBottom: "1px solid",
+        borderColor: "divider",
       }}
     >
-      {/* Inner container stays centered so the speaker content aligns with the rest of the site grid. */}
-      {/* Header band now runs full-bleed to align with hero edges, matching the mock. */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: { xs: 4, md: 6 },
-          alignItems: "stretch",
-          justifyContent: "space-between",
-          pl: { xs: 0, md: 12 },
-          pr: { xs: 0, md: 0 },
-          pb: { xs: 4, md: 5 },
-        }}
-      >
-        <Box
+      <Container maxWidth="xl">
+        <Typography
+          variant="h3"
+          component="h2"
+          sx={{ textAlign: "center", mb: 1 }}
+        >
+          Recent Keynote Speakers
+        </Typography>
+        <Typography
+          variant="body1"
           sx={{
-            flexBasis: { xs: "100%", md: "35%" },
-            display: "flex",
-            alignItems: "center",
-            px: { xs: 5, md: 4 },
+            textAlign: "center",
+            color: "text.secondary",
+            maxWidth: "58ch",
+            mx: "auto",
+            mb: { xs: 4, md: 5 },
           }}
         >
-          <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
-            IBE students attend keynote events where industry leaders and
-            entrepreneurs share valuable insights.
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            flexBasis: { xs: "100%", md: "65%" },
-            backgroundColor: "primary.main",
-            color: "secondary.main",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            px: { xs: 3, md: 6 },
-            py: { xs: 3, md: 4 },
-          }}
-        >
-          <Typography variant="h3" component="h2" sx={{ textAlign: "center" }}>
-            Recent Keynote Speakers
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Speaker Carousel */}
-      <Box
-        sx={{
-          maxWidth: "1400px",
-          width: "100%",
-          mx: "auto",
-          px: { xs: 0.5, md: 6 },
-          flexGrow: 1,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+          Industry leaders and entrepreneurs regularly join IBE keynote events
+          to share insights with the cohort.
+        </Typography>
         <SpeakerCarousel speakers={speakers} />
-      </Box>
+      </Container>
     </Box>
   );
 }

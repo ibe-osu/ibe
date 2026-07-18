@@ -80,16 +80,7 @@ const events: Event[] = [
 
 export default function Happenings() {
   return (
-    <Box
-      sx={{
-        position: "relative",
-        left: "50%",
-        width: "100vw",
-        ml: "-50vw",
-        mr: "-50vw",
-        backgroundColor: "background.paper",
-      }}
-    >
+    <Box component="section" sx={{ backgroundColor: "background.paper" }}>
       {/* Header Banner */}
       <Box
         sx={{

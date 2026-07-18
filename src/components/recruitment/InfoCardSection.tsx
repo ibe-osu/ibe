@@ -1,13 +1,19 @@
-import React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import InfoCard from "./InfoCard";
 import CARDS from "./cardsData";
 import Reveal from "@/components/general/Reveal";
 
 export default function InfoCardSection() {
   return (
-    <Box sx={{ bgcolor: "background.default" }}>
-      <Box sx={{ py: { xs: 4, md: 8 }, px: { xs: 2, md: 10 } }}>
+    <Box component="section" sx={{ py: { xs: 6, md: 9 } }}>
+      <Container maxWidth="lg">
+        <Typography
+          variant="h3"
+          component="h2"
+          sx={{ textAlign: "center", mb: { xs: 4, md: 5 } }}
+        >
+          Keep Exploring
+        </Typography>
         <Reveal variant="stagger" targets=".MuiGrid-container > *">
           <Grid
             container
@@ -17,20 +23,12 @@ export default function InfoCardSection() {
           >
             {CARDS.map((c) => (
               <Grid key={c.header} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Box
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <InfoCard {...c} />
-                </Box>
+                <InfoCard {...c} />
               </Grid>
             ))}
           </Grid>
         </Reveal>
-      </Box>
+      </Container>
     </Box>
   );
 }
