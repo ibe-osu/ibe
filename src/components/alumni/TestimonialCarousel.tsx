@@ -94,7 +94,15 @@ export default function TestimonialCarousel(props: IProps) {
           >
             {/* Text */}
             <Box sx={{ maxWidth: "500px" }}>
-              <Typography variant="h3" sx={{ marginBottom: "-2rem" }}>
+              <Typography
+                variant="h3"
+                component="span"
+                sx={{
+                  display: "block",
+                  marginBottom: "-2rem",
+                  color: "primary.main",
+                }}
+              >
                 “
               </Typography>
               <Typography
@@ -103,10 +111,21 @@ export default function TestimonialCarousel(props: IProps) {
               >
                 {testimonial.text}
               </Typography>
-              <Typography variant="h3" sx={{ marginTop: "-0.75rem" }}>
+              <Typography
+                variant="h3"
+                component="span"
+                sx={{
+                  display: "block",
+                  marginTop: "-0.75rem",
+                  color: "primary.main",
+                }}
+              >
                 ”
               </Typography>
-              <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 600, color: "text.secondary" }}
+              >
                 {testimonial.author}
               </Typography>
             </Box>
@@ -117,7 +136,6 @@ export default function TestimonialCarousel(props: IProps) {
                 width: "200px",
                 height: "260px",
                 position: "relative",
-                borderRadius: "0.5rem",
                 overflow: "hidden",
                 flexShrink: 0,
               }}
@@ -139,6 +157,7 @@ export default function TestimonialCarousel(props: IProps) {
       {/* Navigation Buttons */}
       <IconButton
         onClick={prev}
+        aria-label="Previous testimonial"
         sx={{
           position: "absolute",
           top: "50%",
@@ -152,6 +171,7 @@ export default function TestimonialCarousel(props: IProps) {
 
       <IconButton
         onClick={next}
+        aria-label="Next testimonial"
         sx={{
           position: "absolute",
           top: "50%",
@@ -170,13 +190,18 @@ export default function TestimonialCarousel(props: IProps) {
         {testimonials.map((_, i) => (
           <Box
             key={i}
+            component="button"
             onClick={() => setIndex(i)}
+            aria-label={`Go to testimonial ${i + 1}`}
+            aria-current={i === index}
             sx={{
-              width: "10px",
-              height: "10px",
+              width: "12px",
+              height: "12px",
               borderRadius: "50%",
               cursor: "pointer",
-              backgroundColor: i === index ? "grey.400" : "grey.700",
+              border: "none",
+              padding: 0,
+              backgroundColor: i === index ? "primary.main" : "grey.400",
               transition: "background-color .3s",
             }}
           />

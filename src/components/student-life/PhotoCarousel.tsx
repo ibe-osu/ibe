@@ -105,6 +105,7 @@ export default function PhotoCarousel(props: IProps) {
       {/* Navigation Buttons - Overlaid on image */}
       <IconButton
         onClick={prev}
+        aria-label="Previous photo"
         sx={{
           position: "absolute",
           top: "50%",
@@ -122,6 +123,7 @@ export default function PhotoCarousel(props: IProps) {
 
       <IconButton
         onClick={next}
+        aria-label="Next photo"
         sx={{
           position: "absolute",
           top: "50%",
@@ -152,12 +154,16 @@ export default function PhotoCarousel(props: IProps) {
         {photos.map((_, i) => (
           <Box
             key={i}
+            component="button"
             onClick={() => setIndex(i)}
+            aria-label={`Go to photo ${i + 1}`}
+            aria-current={i === index}
             sx={{
-              width: "10px",
-              height: "10px",
+              width: "12px",
+              height: "12px",
               borderRadius: "50%",
               cursor: "pointer",
+              padding: 0,
               backgroundColor:
                 i === index
                   ? "rgba(255, 255, 255, 0.9)"

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { PT_Serif_Caption } from "next/font/google";
+import { PT_Serif_Caption, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../theme/ThemeProvider";
 import Header from "../components/general/Header";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Footer from "@/components/general/Footer";
+import HeroPrefetch from "@/components/general/HeroPrefetch";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -12,6 +13,14 @@ const ptSerifCaption = PT_Serif_Caption({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-pt-serif-caption",
+  display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  weight: ["400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-source-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +31,19 @@ export const metadata: Metadata = {
   description:
     "The Integrated Business & Engineering (IBE) Honors Program at The Ohio State University prepares students to lead at the intersection of business and technology.",
 
-  metadataBase: new URL("https://ibeosu.com"), // change if different domain
+  metadataBase: new URL("https://ibeosu.com"),
+  alternates: {
+    canonical: "/",
+  },
+  keywords: [
+    "IBE",
+    "Integrated Business and Engineering",
+    "Ohio State Honors Program",
+    "OSU honors",
+    "business and engineering program",
+    "Fisher College of Business",
+    "Ohio State College of Engineering",
+  ],
 
   openGraph: {
     title:
@@ -31,9 +52,10 @@ export const metadata: Metadata = {
       "A four-year interdisciplinary honors program at Ohio State combining business, engineering, and leadership.",
     url: "https://ibeosu.com",
     siteName: "IBE Honors Program",
+    locale: "en_US",
     images: [
       {
-        url: "/altLogo.png", // LOCAL image (important)
+        url: "/altLogo.png",
         width: 778,
         height: 262,
         alt: "IBE Honors Program at The Ohio State University",
@@ -56,6 +78,33 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Integrated Business & Engineering Honors Program",
+  alternateName: "IBE Honors Program",
+  url: "https://ibeosu.com",
+  logo: "https://ibeosu.com/altLogo.png",
+  description:
+    "A four-year interdisciplinary honors program at The Ohio State University combining business, engineering, and leadership.",
+  parentOrganization: {
+    "@type": "CollegeOrUniversity",
+    name: "The Ohio State University",
+    url: "https://www.osu.edu",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Columbus",
+    addressRegion: "OH",
+    addressCountry: "US",
+  },
+  sameAs: [
+    "https://www.instagram.com/ohiostateibe/",
+    "https://www.linkedin.com/company/ibeprogram/",
+    "https://www.facebook.com/ohiostateibe/",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,11 +112,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={ptSerifCaption.variable}>
+      <body className={`${ptSerifCaption.variable} ${sourceSans.variable}`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
         <AppRouterCacheProvider>
           <ThemeProvider>
+            <a href="#main-content" className="skip-link">
+              Skip to main content
+            </a>
             <Header />
-            {children}
+            <main id="main-content">{children}</main>
+            <HeroPrefetch />
             <Analytics />
             <SpeedInsights />
             <Footer />

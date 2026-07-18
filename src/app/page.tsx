@@ -10,8 +10,8 @@ export default function Home() {
       <Welcome />
       <WhoAreWe />
       <OurStats />
-      <Sponsors />
       <Coursework />
+      <Sponsors />
     </>
   );
 }

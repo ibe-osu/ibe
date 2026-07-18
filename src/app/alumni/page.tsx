@@ -6,6 +6,11 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Alumni",
+  description:
+    "IBE alumni lead at companies like Microsoft, Goldman Sachs, Tesla, and McKinsey. Explore spotlights, testimonials, and where our graduates build their careers.",
+  alternates: {
+    canonical: "/alumni",
+  },
 };
 
 export default function Alumni() {

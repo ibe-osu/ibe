@@ -5,6 +5,11 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
+  description:
+    "Meet the IBE Honors Program at Ohio State — our mission, senior leadership, and the student leaders who shape a tight-knit community bridging business and engineering.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function About() {

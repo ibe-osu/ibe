@@ -1,7 +1,6 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import Image from "next/image";
-import Link from "next/link";
 
 interface IProps {
   name: string;
@@ -59,7 +58,6 @@ export default function SpotlightCard(props: IProps) {
               aspectRatio: "1",
               position: "relative",
               flexShrink: 0,
-              borderRadius: "0.25rem",
               overflow: "hidden",
               backgroundColor: "secondary.dark", // prevents layout shift before load
             }}
@@ -109,11 +107,16 @@ export default function SpotlightCard(props: IProps) {
             justifyContent: "flex-start",
           }}
         >
-          <Link href={linkedinUrl} target="_blank">
-            <IconButton sx={{ color: "secondary.dark" }}>
-              <LinkedInIcon color="inherit" sx={{ fontSize: "2.5rem" }} />
-            </IconButton>
-          </Link>
+          <IconButton
+            component="a"
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} on LinkedIn`}
+            sx={{ color: "secondary.dark" }}
+          >
+            <LinkedInIcon color="inherit" sx={{ fontSize: "2.5rem" }} />
+          </IconButton>
         </Box>
       </Box>
     </>

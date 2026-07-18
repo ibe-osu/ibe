@@ -25,13 +25,16 @@ export default function StudentTestimonials() {
     <Box
       sx={{
         textAlign: "center",
-        py: { xs: "2rem", md: "3rem" },
+        py: { xs: 6, md: 8 },
         px: "1.5rem",
-        color: "primary.main",
       }}
     >
-      <Typography variant="h3" sx={{ mb: { xs: "1rem", md: "2rem" } }}>
-        Student Testimonials:
+      <Typography
+        variant="h3"
+        component="h2"
+        sx={{ mb: { xs: "1rem", md: "2rem" } }}
+      >
+        Student Testimonials
       </Typography>
       <TestimonialCarousel testimonials={testimonials} />
     </Box>

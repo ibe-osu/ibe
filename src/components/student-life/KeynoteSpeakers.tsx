@@ -112,11 +112,8 @@ export default function KeynoteSpeakers() {
             py: { xs: 3, md: 4 },
           }}
         >
-          <Typography
-            variant="h3"
-            sx={{ textAlign: "center", letterSpacing: 1.5 }}
-          >
-            Recent Keynote Speakers:
+          <Typography variant="h3" component="h2" sx={{ textAlign: "center" }}>
+            Recent Keynote Speakers
           </Typography>
         </Box>
       </Box>

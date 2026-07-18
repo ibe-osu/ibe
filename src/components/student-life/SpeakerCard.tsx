@@ -40,7 +40,7 @@ export default function SpeakerCard(props: IProps) {
       {/* Image */}
       <Image
         src={speaker.imageUrl}
-        alt={speaker.name}
+        alt={`Portrait of ${speaker.name}, ${speaker.position}`}
         fill
         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
         style={{

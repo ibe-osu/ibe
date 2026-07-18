@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@mui/material";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface NavButtonProps {
   href: string;
@@ -7,36 +10,47 @@ interface NavButtonProps {
 }
 
 export default function NavButton({ children, href }: NavButtonProps) {
+  const pathname = usePathname();
+  const active = pathname === href;
+
   return (
     <Button
       variant="text"
       color="inherit"
       component={Link}
       href={href}
+      aria-current={active ? "page" : undefined}
       sx={{
         position: "relative",
         overflow: "hidden",
-        color: "inherit",
+        color: active ? "primary.main" : "text.primary",
+        fontSize: "0.8125rem",
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
         backgroundColor: "transparent",
-        transition: "color 0.3s ease",
-        padding: "0.5rem 0.5rem",
+        transition: "color 0.25s ease",
+        padding: "0.5rem 0.625rem",
         "&::after": {
           content: '""',
           position: "absolute",
           left: "50%",
           bottom: 4,
-          transform: "translateX(-50%) scaleX(0)",
+          transform: active
+            ? "translateX(-50%) scaleX(1)"
+            : "translateX(-50%) scaleX(0)",
           transformOrigin: "center",
           width: "100%",
-          height: "3px",
+          height: "2px",
           backgroundColor: "primary.main",
-          transition: "transform 0.3s ease 0.05s",
+          transition: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
         },
         "&:hover::after": {
-          transform: "translateX(-50%) scaleX(1)", // grow outwards evenly
+          transform: "translateX(-50%) scaleX(1)",
         },
         "&:hover": {
           color: "primary.main",
+          backgroundColor: "transparent",
         },
       }}
     >

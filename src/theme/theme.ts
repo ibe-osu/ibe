@@ -1,37 +1,72 @@
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 
-let theme = createTheme({
+const serif = `var(--font-pt-serif-caption), "PT Serif Caption", Georgia, serif`;
+const sans = `var(--font-source-sans), "Source Sans 3", "Helvetica Neue", Arial, sans-serif`;
+
+const theme = createTheme({
   typography: {
-    fontFamily: `PT Serif Caption, serif`,
+    fontFamily: sans,
     h1: {
-      fontSize: "8rem",
+      fontFamily: serif,
+      fontSize: "clamp(2.75rem, 5.5vw + 1rem, 5.25rem)",
+      lineHeight: 1.08,
+      letterSpacing: "-0.015em",
     },
     h2: {
-      fontSize: "6rem",
+      fontFamily: serif,
+      fontSize: "clamp(2.25rem, 3.5vw + 1rem, 3.5rem)",
+      lineHeight: 1.12,
+      letterSpacing: "-0.01em",
     },
     h3: {
-      fontSize: "3rem",
+      fontFamily: serif,
+      fontSize: "clamp(1.75rem, 2vw + 0.9rem, 2.5rem)",
+      lineHeight: 1.18,
+      letterSpacing: "-0.005em",
     },
     h4: {
-      fontSize: "2.5rem",
+      fontFamily: serif,
+      fontSize: "clamp(1.35rem, 1.2vw + 0.9rem, 1.75rem)",
+      lineHeight: 1.3,
     },
     h5: {
-      fontSize: "1.5rem",
+      fontFamily: sans,
+      fontSize: "1.25rem",
+      fontWeight: 600,
+      lineHeight: 1.4,
     },
     h6: {
-      fontSize: "1.25rem",
+      fontFamily: sans,
+      fontSize: "1.1rem",
+      fontWeight: 600,
+      lineHeight: 1.45,
+    },
+    subtitle1: {
+      fontFamily: sans,
+      fontSize: "1.125rem",
+      lineHeight: 1.6,
     },
     body1: {
-      fontSize: "1rem",
+      fontFamily: sans,
+      fontSize: "1.0625rem",
+      lineHeight: 1.65,
     },
     body2: {
-      fontSize: "0.875rem",
+      fontFamily: sans,
+      fontSize: "0.9375rem",
+      lineHeight: 1.6,
+    },
+    button: {
+      fontFamily: sans,
+      fontWeight: 600,
+      letterSpacing: "0.01em",
     },
   },
   palette: {
     primary: {
       light: "#DD8697",
       main: "#ba0c2f",
+      dark: "#8e0a24",
     },
     secondary: {
       main: "#fff",
@@ -39,6 +74,7 @@ let theme = createTheme({
       dark: "#000",
     },
     grey: {
+      50: "#fafafa",
       100: "#f5f5f5",
       200: "#eeeeee",
       300: "#e0e0e0",
@@ -50,36 +86,74 @@ let theme = createTheme({
       900: "#212121",
     },
     text: {
-      primary: "#000",
-      secondary: "#646A6E",
+      primary: "#17181a",
+      secondary: "#494f53",
     },
+    background: {
+      default: "#ffffff",
+      paper: "#ffffff",
+    },
+    divider: "rgba(23, 24, 26, 0.12)",
+  },
+  shape: {
+    borderRadius: 0,
   },
   components: {
     MuiButton: {
       defaultProps: {
         variant: "contained",
+        disableElevation: true,
       },
       styleOverrides: {
         root: {
           textTransform: "none",
           fontSize: "1rem",
-          borderRadius: "0px",
+          borderRadius: 0,
           boxShadow: "none",
-          padding: "0.5rem 1rem",
+          padding: "0.625rem 1.5rem",
+          transition: "background-color 0.2s ease, color 0.2s ease",
+          "&:focus-visible": {
+            outline: "2px solid #ba0c2f",
+            outlineOffset: "3px",
+          },
+        },
+        containedPrimary: {
+          "&:hover": {
+            backgroundColor: "#8e0a24",
+            boxShadow: "none",
+          },
+        },
+        outlinedPrimary: {
+          borderWidth: "2px",
+          "&:hover": {
+            borderWidth: "2px",
+            backgroundColor: "rgba(186, 12, 47, 0.06)",
+          },
         },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#fff",
-          color: "#646A6E",
+          backgroundColor: "rgba(255, 255, 255, 0.94)",
+          backdropFilter: "blur(12px)",
+          color: "#17181a",
+          boxShadow: "none",
+          borderBottom: "1px solid rgba(23, 24, 26, 0.1)",
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          "&:focus-visible": {
+            outline: "2px solid #ba0c2f",
+            outlineOffset: "2px",
+          },
         },
       },
     },
   },
 });
-
-theme = responsiveFontSizes(theme);
 
 export default theme;

@@ -1,22 +1,26 @@
 import { Box, Typography } from "@mui/material";
 import SpotlightCard from "./SpotlightCard";
+import Reveal from "@/components/general/Reveal";
 
 export default function AlumniSpotlights() {
   return (
     <Box
+      component="section"
       sx={{
         backgroundColor: "primary.main",
-        py: "2rem",
+        py: { xs: 6, md: 8 },
         px: { xs: "1rem", sm: "15%", md: "2rem", lg: "8rem", xl: "14rem" },
       }}
     >
       <Typography
         variant="h3"
+        component="h2"
         sx={{ color: "secondary.main", textAlign: "center" }}
       >
         Alumni Spotlights
       </Typography>
-      <Box
+      <Reveal
+        variant="stagger"
         sx={{
           mt: "2rem",
           display: "flex",
@@ -48,7 +52,7 @@ export default function AlumniSpotlights() {
           imageUrl="/spotlight/AlisaNoll.png"
           linkedinUrl="https://www.linkedin.com/in/alisa-noll/"
         />
-      </Box>
+      </Reveal>
     </Box>
   );
 }
