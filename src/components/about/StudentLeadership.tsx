@@ -31,24 +31,24 @@ export default function StudentLeadership() {
         >
           {[
             {
-              name: "Claire Berlier",
+              name: "Katie Dunn",
               role: "President",
-              email: "berlier.3@osu.edu",
+              email: "dunn.973@osu.edu",
             },
             {
-              name: "Pranav Vuppu",
+              name: "Carlo Polisena",
               role: "Executive VP",
-              email: "panyamvuppu.1@osu.edu",
+              email: "polisena.6@osu.edu",
             },
             {
-              name: "Max Muckley",
+              name: "Riley Angel",
               role: "VP of Recruitment",
-              email: "muckley.9@osu.edu",
+              email: "angel.146@osu.edu",
             },
             {
-              name: "Patrick Dauenhauer",
+              name: "Anya Mehta",
               role: "VP of Alumni Relations",
-              email: "danhauer.4@osu.edu",
+              email: "mehta.684@osu.edu",
             },
             {
               name: "Owen Blevins",
@@ -56,19 +56,20 @@ export default function StudentLeadership() {
               email: "blevins.348@osu.edu",
             },
             {
-              name: "Carlo Polisena",
+              name: "Emma Cheng",
               role: "VP of Corporate Relations",
-              email: "polisena.6@osu.edu",
+              email: "cheng.2066@osu.edu",
             },
             {
-              name: "Gabby Raney",
+              name: "Devhuti Patel",
               role: "VP of Operations",
-              email: "raney.51@osu.edu",
+              email: "patel.5493@osu.edu",
             },
             {
-              name: "Katie Dunn",
+              name: "Charles Hite",
               role: "VP of Marketing",
-              email: "dunn.973@osu.edu",
+              email: "hite.189@osu.edu",
+              imageUrl: null,
             },
             {
               name: "Asha Segall",
@@ -76,9 +77,9 @@ export default function StudentLeadership() {
               email: "segall.22@osu.edu",
             },
             {
-              name: "Russel Heiser",
+              name: "Yuvraj Atre",
               role: "VP of Technology",
-              email: "heiser.75@osu.edu",
+              email: "atre.7@osu.edu",
             },
           ].map((person) => (
             <Grid key={person.email} size={{ xs: 12, sm: 6, md: 4 }}>
