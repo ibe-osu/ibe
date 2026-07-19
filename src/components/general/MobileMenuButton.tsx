@@ -47,18 +47,19 @@ export default function MobileMenuButton() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              alignItems: "center",
               mb: 2,
             }}
           >
             <Image
-              src="/logo.png"
-              alt="IBE Logo"
-              width={66}
-              height={66}
+              src="/altLogo.png"
+              alt="IBE Honors Program at The Ohio State University"
+              width={131}
+              height={44}
               priority
             />
             <IconButton onClick={() => setOpen(false)} aria-label="close menu">
-              <CloseIcon sx={{ fontSize: 40 }} />
+              <CloseIcon sx={{ fontSize: 32 }} />
             </IconButton>
           </Box>
 

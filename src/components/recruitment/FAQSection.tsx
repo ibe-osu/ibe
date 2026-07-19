@@ -1,10 +1,7 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FAQItem from "./FAQItem";
 
 export const faqItems = [
   {
@@ -55,51 +52,7 @@ export default function FAQSection() {
 
         <Box>
           {faqItems.map((it) => (
-            <Accordion
-              key={it.q}
-              disableGutters
-              square
-              elevation={0}
-              sx={{
-                backgroundColor: "transparent",
-                borderTop: "1px solid",
-                borderColor: "divider",
-                "&:last-of-type": {
-                  borderBottom: "1px solid",
-                  borderBottomColor: "divider",
-                },
-                "&::before": { display: "none" },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon sx={{ color: "primary.main" }} />}
-                sx={{
-                  px: { xs: 1, md: 2 },
-                  py: 0.75,
-                  transition: "background-color 0.2s ease",
-                  "&:hover": {
-                    backgroundColor: "rgba(186, 12, 47, 0.04)",
-                  },
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  component="span"
-                  sx={{ fontWeight: 600, pr: 2 }}
-                >
-                  {it.q}
-                </Typography>
-              </AccordionSummary>
-
-              <AccordionDetails sx={{ px: { xs: 1, md: 2 }, pt: 0, pb: 3 }}>
-                <Typography
-                  variant="body1"
-                  sx={{ color: "text.secondary", maxWidth: "75ch" }}
-                >
-                  {it.a}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+            <FAQItem key={it.q} question={it.q} answer={it.a} />
           ))}
         </Box>
       </Container>

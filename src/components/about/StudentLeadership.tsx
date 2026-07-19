@@ -12,6 +12,9 @@ export default function StudentLeadership() {
         textAlign: "center",
         pt: { xs: 6, md: 8 },
         pb: { xs: 4, md: 6 },
+        // The footer is also scarlet — without a seam the two sections
+        // read as one undifferentiated red mass.
+        borderBottom: "1px solid rgba(255, 255, 255, 0.25)",
       }}
     >
       <Typography variant="h3" component="h2" sx={{ pb: { xs: 3, md: 4 } }}>
@@ -69,7 +72,6 @@ export default function StudentLeadership() {
               name: "Charles Hite",
               role: "VP of Marketing",
               email: "hite.189@osu.edu",
-              imageUrl: null,
             },
             {
               name: "Asha Segall",

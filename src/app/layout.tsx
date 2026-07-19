@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { PT_Serif_Caption, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../theme/ThemeProvider";
@@ -76,6 +76,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ba0c2f",
 };
 
 const organizationJsonLd = {

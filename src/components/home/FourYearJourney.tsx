@@ -21,40 +21,40 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     year: "Year One",
-    title: "Join the Cohort",
-    body: "Seventy-two students from Fisher and the College of Engineering come together as one class. First-years live side by side in the IBE learning community, laying academic foundations while the cohort becomes a second family.",
+    title: "Build the Foundation",
+    body: "Seventy-two students from Fisher and the College of Engineering arrive as one class and move into the IBE learning community together. First Year Engineering (ENGR 1281H) pairs with the IBE Freshman Capstone (ENGR 1282H) — the Freshman Cornerstone Project — where the cohort tackles its first real design problem as a team.",
     highlights: [
       "IBE learning community",
-      "Foundational honors coursework",
+      "First Year Engineering & Freshman Capstone",
       "Cohort traditions & socials",
     ],
   },
   {
     year: "Year Two",
-    title: "Cross the Aisle",
-    body: "Business students step into engineering sciences and engineers take on the business core. The integrated curriculum takes hold — the same problem examined from both sides of the aisle.",
+    title: "Take On the Second Discipline",
+    body: "Engineers begin the business core and business majors begin engineering sciences — each earning the minor that makes IBE integrated. The Corporate Strategy Seminar (BUSMHR 2400H) grounds that new coursework in how real companies actually make decisions.",
     highlights: [
+      "Corporate Strategy Seminar (BUSMHR 2400H)",
       "Cross-disciplinary minor coursework",
-      "Sponsor-led case studies",
       "Peer & alumni mentorship",
     ],
   },
   {
     year: "Year Three",
     title: "Step Into Industry",
-    body: "The classroom opens outward. Students take on internships, network with corporate partners over industry lunches, and step into elected leadership roles that shape the program itself.",
+    body: "The classroom opens outward. The Innovation Strategy Seminar (BUSMHR 3400H) turns toward new-venture strategy as students take on internships, network with corporate partners over industry lunches, and step into elected roles on the student leadership board.",
     highlights: [
-      "Internships & co-ops",
-      "Industry networking lunches",
+      "Innovation Strategy Seminar (BUSMHR 3400H)",
+      "Internships & industry networking lunches",
       "Student leadership board",
     ],
   },
   {
     year: "Year Four",
     title: "Deliver the Capstone",
-    body: "Seniors close the loop with capstone projects guided by executives from the program's corporate sponsors — then graduate into a network with a 100% job placement record.",
+    body: "The year-long IBE Capstone (ENGR 5901H, ENGR 5902H) puts everything to work: seniors take on a sponsor-directed project guided by executives from the program's corporate partners, then graduate into a network with a 100% job placement record.",
     highlights: [
-      "Sponsor-directed capstone",
+      "IBE Capstone I & II (ENGR 5901H/5902H)",
       "Executive mentorship",
       "100% job placement",
     ],
