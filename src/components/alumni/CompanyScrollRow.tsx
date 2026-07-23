@@ -89,7 +89,16 @@ export default function CompanyScrollRow(props: IProps) {
           <Box
             key={i}
             sx={{
+              // Fixed, uniform cell: wide wordmarks (Bain, Boeing) used to
+              // balloon to ~775px and lumber across the viewport, which is
+              // what made the marquee read as "too slow". Bounding every
+              // logo to the same box keeps the row dense and the motion
+              // legible.
               height: `${cellHeight}px`,
+              width:
+                typeof cellHeight === "number"
+                  ? `${Math.round(cellHeight * 1.6)}px`
+                  : undefined,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -106,7 +115,7 @@ export default function CompanyScrollRow(props: IProps) {
               }
               height={
                 typeof cellHeight === "number"
-                  ? Math.round(cellHeight * 0.7)
+                  ? Math.round(cellHeight * 0.6)
                   : undefined
               }
               width={0}
@@ -115,10 +124,12 @@ export default function CompanyScrollRow(props: IProps) {
               style={{
                 objectFit: "contain",
                 width: "auto",
-                height:
+                height: "auto",
+                maxWidth: "100%",
+                maxHeight:
                   typeof cellHeight === "number"
-                    ? `${Math.round(cellHeight * 0.7)}px`
-                    : "70%",
+                    ? `${Math.round(cellHeight * 0.6)}px`
+                    : "60%",
                 display: "block",
               }}
             />

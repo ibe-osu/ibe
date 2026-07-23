@@ -56,7 +56,10 @@ const GAP_PX = 24; // px gap between cells
 
 export default function CompanyScroller() {
   const rows = splitIntoChunks(logos, 3);
-  const durations = [20, 22, 24];
+  // Seconds per full loop. Lower = faster. Tuned against the (now uniform)
+  // ~5,600px row width for ~215 px/s — brisk but still readable. The slight
+  // per-row variation gives a subtle parallax between the three rows.
+  const durations = [12, 13, 14];
   const theme = useTheme();
   // Responsive cell height using MUI breakpoints
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
