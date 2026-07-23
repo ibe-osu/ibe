@@ -1,0 +1,40 @@
+name: CI
+
+# Runs on every pull request into main, and on main itself after a merge.
+# Branch protection requires the "verify" job below to pass before a PR can
+# be merged — so broken code (from a person or a coding agent) can't reach
+# production at ibeosu.com.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Cancel an in-progress run if the same branch/PR is pushed again.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (also type-checks)
+        run: npm run build
