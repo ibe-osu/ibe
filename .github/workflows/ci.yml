@@ -20,6 +20,14 @@ jobs:
   verify:
     name: verify
     runs-on: ubuntu-latest
+    env:
+      # ibe-staging — the throwaway project every PR/CI run tests against.
+      # The publishable key is public by design (it ships in the browser
+      # bundle), so it's safe as a plain value here rather than a GitHub
+      # secret. There is deliberately no SUPABASE_SECRET_KEY: nothing in
+      # this app's build or CI needs it.
+      NEXT_PUBLIC_SUPABASE_URL: https://bvpohtlczjqzasdhwgwe.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_qCN-o8s1-P95euy4p1T1xw_09VG3qwi
     steps:
       - name: Check out the code
         uses: actions/checkout@v4
