@@ -70,6 +70,11 @@ export default function SignupForm() {
       email: values.email,
       password: values.password,
       options: {
+        // Without this, Supabase sends people to the project's Site URL —
+        // the bare homepage — and the ?code= it appends lands on a page
+        // that has no idea what to do with it. Point it at the route that
+        // actually exchanges the code for a session.
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
         // Read server-side by the before_user_created hook and the
         // handle_new_user() trigger (supabase/migrations/0002_invite_codes.sql).
         // The client-side format check above is just UX — this is the real
