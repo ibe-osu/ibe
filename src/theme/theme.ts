@@ -94,6 +94,19 @@ const theme = createTheme({
       paper: "#ffffff",
     },
     divider: "rgba(23, 24, 26, 0.12)",
+    // Deliberately distinct from primary scarlet (#ba0c2f) so a form error
+    // never reads as a brand accent. Standard Material red/green 800s —
+    // desaturated enough to sit quietly next to the brand color.
+    error: {
+      light: "#e57373",
+      main: "#c62828",
+      dark: "#8e0000",
+    },
+    success: {
+      light: "#66bb6a",
+      main: "#2e7d32",
+      dark: "#1b5e20",
+    },
   },
   shape: {
     borderRadius: 0,
@@ -150,6 +163,52 @@ const theme = createTheme({
             outline: "2px solid #ba0c2f",
             outlineOffset: "2px",
           },
+        },
+      },
+    },
+    // First form inputs in the repo — square corners and a scarlet focus
+    // ring to match MuiButton, since nothing here inherits those for free.
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(23, 24, 26, 0.23)",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#17181a",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#ba0c2f",
+            borderWidth: "2px",
+          },
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#c62828",
+          },
+        },
+        input: {
+          "&:-webkit-autofill": {
+            // Square-corner-compatible override of Chrome's autofill yellow,
+            // which otherwise ignores border-radius and looks out of place.
+            boxShadow: "0 0 0 1000px #ffffff inset",
+            WebkitTextFillColor: "#17181a",
+          },
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused": { color: "#ba0c2f" },
+          "&.Mui-error": { color: "#c62828" },
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0,
+          fontSize: "0.8125rem",
         },
       },
     },

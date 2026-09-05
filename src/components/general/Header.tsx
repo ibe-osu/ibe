@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import NavButton from "./NavButton";
 import MobileMenuButton from "./MobileMenuButton";
+import AuthNavLinks from "@/components/auth/AuthNavLinks";
+import AccountMenu from "@/components/auth/AccountMenu";
 
 export default function Header() {
   return (
@@ -43,6 +45,7 @@ export default function Header() {
           <NavButton href="/about">About</NavButton>
           <NavButton href="/alumni">Alumni</NavButton>
           <NavButton href="/student-life">Student Life</NavButton>
+          <AuthNavLinks />
           <Button
             component={Link}
             href="/recruitment"
@@ -59,6 +62,7 @@ export default function Header() {
           >
             Join Us
           </Button>
+          <AccountMenu />
         </Box>
 
         {/* Mobile Menu Button */}
