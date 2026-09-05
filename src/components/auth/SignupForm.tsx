@@ -54,7 +54,17 @@ export default function SignupForm() {
 
   async function onSubmit(values: FormValues) {
     setFormError(null);
-    const supabase = createClient();
+
+    let supabase;
+    try {
+      supabase = createClient();
+    } catch {
+      // See LoginForm — missing env vars shouldn't look like a dead button.
+      setFormError(
+        "Account creation isn't available right now. Please let an IBE officer know.",
+      );
+      return;
+    }
 
     const { error } = await supabase.auth.signUp({
       email: values.email,

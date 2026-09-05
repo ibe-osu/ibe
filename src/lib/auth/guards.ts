@@ -15,7 +15,18 @@ import { createClient } from "@/lib/supabase/server";
  *     reason instead of just silently rendering an empty page.)
  */
 export async function requireMember() {
-  const supabase = await createClient();
+  // Deliberately outside the redirect calls below: redirect() works by
+  // throwing a special NEXT_REDIRECT error, so wrapping those in a
+  // try/catch would swallow them and break every redirect in this file.
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    // Supabase isn't configured in this environment. Nobody can be an
+    // authenticated member without an auth backend, so treat it exactly
+    // like a signed-out visitor — a redirect to /login, not a 500.
+    redirect("/login");
+  }
 
   const {
     data: { user },

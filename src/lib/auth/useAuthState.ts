@@ -24,7 +24,22 @@ export function useAuthState(): AuthState {
   const [state, setState] = useState<AuthState>({ status: "loading" });
 
   useEffect(() => {
-    const supabase = createClient();
+    let supabase: ReturnType<typeof createClient>;
+    try {
+      supabase = createClient();
+    } catch {
+      // Supabase isn't configured in this environment — e.g. a Vercel
+      // preview or production deploy whose env vars aren't set yet.
+      //
+      // This must never throw. The header renders this hook on EVERY page,
+      // so an unguarded throw here takes down the entire site with a
+      // client-side exception, including the purely static marketing pages
+      // that have nothing to do with auth. Degrading to "signed out" keeps
+      // the site fully usable and just hides the member-only nav, which is
+      // the correct behaviour when there's no auth backend to talk to.
+      setState({ status: "signed-out" });
+      return;
+    }
 
     supabase.auth.getUser().then(({ data: { user } }) => {
       setState(

@@ -37,7 +37,20 @@ export default function LoginForm() {
 
   async function onSubmit(values: FormValues) {
     setFormError(null);
-    const supabase = createClient();
+
+    let supabase;
+    try {
+      supabase = createClient();
+    } catch {
+      // Missing Supabase env vars in this environment. Better a clear
+      // message than an unhandled rejection that looks like nothing
+      // happened when you pressed the button.
+      setFormError(
+        "Sign-in isn't available right now. Please let an IBE officer know.",
+      );
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithPassword(values);
 
     if (error) {
