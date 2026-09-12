@@ -1,52 +1,169 @@
-# Handoff: IBE Website — making it look less boring
+# Handoff: IBE Website — auth system + GitHub org migration
 
-## Where things live
+Replaces the previous handoff (the "site looks boring" UI-revamp thread — that
+work shipped in the Home/About/Recruitment/Student Life revamp commits).
 
-- **Repo**: `yuvi-atre/ibe` (Next.js 15 + MUI 7, App Router)
-- **Working directory**: `/Users/yuvia/IBE Website/.claude/worktrees/website-ui-seo-revamp-aeb25c` (a git worktree)
-- **Branch**: `claude/website-ui-seo-revamp-aeb25c`
-- **PR**: https://github.com/yuvi-atre/ibe/pull/50
-- **Live preview**: https://ibe-website-preview.vercel.app (deployed under the `yuvi-atres-projects` Vercel account, NOT the production Vercel integration for ibeosu.com — that integration lives under a different account and never picked up this branch when checked)
-- **Context docs already in repo root**: `PRODUCT.md` (register: brand, users, design principles for the `impeccable` skill)
+---
 
-## What's been done this session (all committed, pushed, deployed)
+## ⏭️ Pick up here
 
-1. **Design system revamp** — PT Serif Caption (display) + Source Sans 3 (body/UI), fluid `clamp()` type scale, OSU scarlet `#ba0c2f` + ink `#17181a` palette, square-corner button system (`src/theme/theme.ts`, `src/app/globals.css`)
-2. **Header/footer** — sticky blur header with active-page nav underlines, uppercase collegiate nav type, Home link added, three-column footer (`src/components/general/Header.tsx`, `Footer.tsx`, `NavButton.tsx`)
-3. **Motion layer** — GSAP hero entrances, scroll-reveal system (`src/components/general/Reveal.tsx`), stats count-up (`OurStats.tsx`), all `prefers-reduced-motion` and hidden-tab safe
-4. **SEO** — `sitemap.ts`, `robots.ts`, `EducationalOrganization` + `FAQPage` JSON-LD, per-page canonicals/descriptions, skip-to-content link
-5. **Image loading fix** — static imports + blur placeholders + idle prefetch so hero banners don't pop in on page nav (`HeroPrefetch.tsx`, `PageHero.tsx`)
-6. **Eboard roster updated** — new officers (Katie Dunn as President, Carlo Polisena as EVP, Riley Angel, Anya Mehta, Emma Cheng, Devhuti Patel, Charles Hite, Yuvraj Atre), new headshots in `public/people/`. `IndividualCard.tsx` now supports `imageUrl: null` → accessible initials placeholder for people without a photo yet (Charles Hite currently uses this).
+**The user is mid-migration, at Step 1 of moving the repos into a GitHub
+Organization.** Full plan: `~/.claude/plans/we-have-a-very-functional-toucan.md`
 
-Everything above passes `tsc --noEmit`, ESLint, and `npm run build` (11 static routes). This part of the work is **not** what's under discussion below — don't second-guess the SEO/motion/roster work unless something's actually broken.
+They were asked to create the org and report back with its name. Nothing has
+been transferred yet.
 
-## The actual ask: the site looks "boring"
+**Why the migration:** deploying currently requires unlinking GitHub from their
+personal Vercel account, relinking to the IBE Vercel team, deploying, then
+relinking back. Root cause, per Vercel's docs: *"To import or connect a GitHub
+repository owned by a personal account, you must be the repository Owner"* —
+and a personal GitHub identity points at one Vercel scope at a time. Org-owned
+repos install the Vercel GitHub App on the **org**, so the two stop fighting.
+It also fixes tech-chair access and long-term handoff.
 
-The user's words: *"I know it can be better I just don't know how we get there because it looks boring right now."* This is their personal project ("my baby") — they're emotionally invested and currently disappointed, not just nitpicking. Take this seriously as the primary creative problem to solve, not a minor polish pass.
+**Not a hosting problem.** OSU suggested Azure/AWS alternatives (Heather
+Shepherd email). Migrating hosts would *not* fix this — it's GitHub ownership,
+not hosting. Also worth knowing: the alumni PII lives in Supabase, so if OSU
+ever raises data-residency as a requirement, hosting is the wrong lever.
 
-I gave this honest diagnosis (paraphrased) of why a technically-correct site still reads as boring:
+### Critical safety rails for the migration
+- **Reconnect the EXISTING Vercel project** (Settings → Git). Creating a new one
+  loses the `ibeosu.com` domain binding and all four env vars.
+- **Never** delete the Vercel project, delete the repo (use Transfer), or touch
+  DNS/Porkbun.
+- **Don't** blind find-and-replace `yuvi-atre` — `HANDOFF.md` L9/L50 contain
+  `yuvi-atres-projects`, a *Vercel scope*, not the GitHub owner.
+- After transfer, collaborators become **outside collaborators**, and Vercel
+  refuses to let outside collaborators connect a repo. Invite them as org
+  **Members**.
+- ibeosu.com stays up throughout — Vercel keeps serving the live deployment;
+  only *new* deploys pause.
 
-1. **Every hero uses the identical formula.** Home, About, Alumni all do: full-bleed photo → scarlet tint overlay → dark gradient → centered white heading + centered subtitle. Five pages, one move. Reads as a template, not a design decision. See `src/components/general/PageHero.tsx` (shared by About/Alumni) and `src/components/home/Welcome.tsx` (home hero, bespoke but same visual formula).
-2. **Scarlet is decoration, not identity.** It's confined to thin accent bands — the stats strip (`OurStats.tsx`), the footer, the nav underline, the 35%-opacity hero tint. The rest of the site is white/gray. OSU scarlet is a strong, specific brand color and the site is currently timid with it. Per the `impeccable` skill's brand register, this project has explicit permission to use a "Committed" or even "Drenched" color strategy (one saturated color carrying 30–60%+ of a surface) — right now it's stuck at "Restrained."
-3. **Everything is centered and symmetric.** Centered hero copy, centered section titles (`variant="h3" ... textAlign: "center"` shows up constantly), evenly-spaced/symmetric card grids for the Eboard (`StudentLeadership.tsx`, `SeniorLeadership.tsx`) and stats (`OurStats.tsx`). No asymmetric composition anywhere, nothing for the eye to land on first. This is the single most template-reading trait.
+---
 
-## Proposed direction (not yet started — user hasn't confirmed scope)
+## What's built (Phase 1 auth — PRs #52, #53, #54, #56, all merged)
 
-I recommended focusing on 2-3 places it'll matter most rather than a blanket redesign:
+Account creation works end to end, verified live: signup with a membership code
+→ confirmation email → `/auth/callback` → session → gated `/members`.
 
-- **Vary the hero treatment per page** instead of repeating the photo-tint-gradient-centered-text formula everywhere. Home, About, Alumni could each have a genuinely different composition (asymmetric crop + off-center type on one, a drenched-scarlet moment with no photo at all on another, etc.)
-- **Let scarlet actually dominate somewhere** — not just as an accent band, but as a surface color carrying a real section (a "Committed" or "Drenched" moment per the brand register, not just a 35%-opacity photo tint)
-- **Break the centered-grid reflex** on at least one section — the Eboard grid in particular is a textbook "identical card grid" (evenly-spaced photo + name + role + email, repeated 10x). Worth asking whether a different affordance serves the content better, or whether breaking the grid's symmetry (varied sizes, offset rows, asymmetric hero card for the President) would read as art-directed instead of assembled.
+- **Security headers** (`next.config.ts`) — CSP in **report-only**; flip
+  `enforceCsp` to `true` to enforce (that's PR 5, the whole diff)
+- **Supabase wiring** — `src/lib/supabase/{client,server,middleware}.ts`,
+  `src/middleware.ts`
+- **Auth** — `/login`, `/signup`, `/auth/callback`, `/members`,
+  `/members/alumni-database` (both "Under Construction")
+- **Gating** — `requireMember()` / `requireAdmin()` in `src/lib/auth/guards.ts`
+- **Migrations** — `supabase/migrations/0001` (app_users, roles, rate limiting),
+  `0002` (invite codes, signup hook, provisioning trigger), `0003` (pgcrypto
+  search_path fix)
 
-**Important constraints to preserve while doing this:**
-- OSU scarlet `#ba0c2f` / gray `#646A6E` / white are non-negotiable — this is university branding, not a free palette choice
-- WCAG AA contrast (body text ≥4.5:1), keyboard nav, `prefers-reduced-motion` alternatives — already solid, don't regress
-- Responsive at 375/768/1280+ — verified clean this session, re-verify after changes
-- Read `PRODUCT.md` at repo root before making register/brand decisions — it has the confirmed brand personality, anti-references, and design principles from earlier in this project's `impeccable` skill setup
+### Decisions — settled, don't re-litigate
+- **Middleware is not the security boundary.** It only refreshes sessions. Real
+  gating = per-page `requireMember()` + RLS. Next.js middleware has a history of
+  bypass CVEs (PR #53 patched several).
+- **No `SUPABASE_SECRET_KEY` in the app or CI, ever.** The only thing needing it
+  is the invite Edge Function (PR 4), where Supabase injects it.
+- **The publishable key is public by design** — it's plaintext in `ci.yml`
+  deliberately. Access control is RLS, not key secrecy.
+- **The code is an invitation; the account is the boundary.** Per-person invites
+  (PR 4) become primary; the shared code stays a fallback.
+- **Alumni PII:** drop `phone` and `gender` at import. Never commit the JSON —
+  a static import compiles it into a CDN-served chunk that is *not* behind login.
 
-## Process notes / gotchas from this session
+---
 
-- Browser-pane **screenshots were flaky** for a stretch (returned blank white images even though the page had rendered) — when that happens, verify via `javascript_tool` computed-DOM checks (font, color, image `naturalWidth`, etc.) instead of trusting the screenshot. Worked reliably every time it was tried.
-- **Vercel**: the CLI is authenticated as `yuvi-atre` but the *production* ibeosu.com deployment integration is on a different account/scope that this session couldn't see. The preview deployed here is a separate sandbox project (`ibe-website-preview` under `yuvi-atres-projects`) — merging the PR may or may not trigger the real production deploy; that's unconfirmed.
-- After any `npm run build`, the dev server's `.next` dir gets clobbered — restart the dev server before continuing to browser-test.
-- Deploying via `npx vercel deploy --yes` creates a new deployment URL each time; the stable alias `ibe-website-preview.vercel.app` needs `npx vercel alias set <new-url> ibe-website-preview.vercel.app` after every deploy or it keeps pointing at the old one.
+## Live config state
+
+| | `ibe-staging` | `ibe-prod` |
+|---|---|---|
+| URL | `bvpohtlczjqzasdhwgwe.supabase.co` | `ygofoziyvusykfykpdyy.supabase.co` |
+| Publishable key | `sb_publishable_qCN-o8s1-P95euy4p1T1xw_09VG3qwi` | `sb_publishable_eUSEnxTgPS1BphEYbp0DWg_Ytiea0B2` |
+| Migrations 0001–0003 | ✅ applied | ❌ none |
+| `before_user_created` hook | ✅ registered | ❌ |
+| Custom SMTP (Resend) | ✅ | ❌ |
+| Site URL | `http://localhost:3000` | must be `https://ibeosu.com` |
+| Redirect URLs | ✅ localhost + `*-ohiostateibes-projects.vercel.app` + ibeosu.com | ❌ |
+| Status | healthy | **PAUSED** (free tier, 7-day idle — hostname doesn't resolve) |
+
+- **Vercel env vars**: Preview → staging, Production → prod. Set as **Config**,
+  not Secret (they're `NEXT_PUBLIC_`, so public by definition).
+- **Resend**: account `ibevptech@gmail.com`, `ibeosu.com` verified via Vercel's
+  native Resend integration (auto-added the DNS records). Sender
+  `noreply@ibeosu.com`, SMTP `smtp.resend.com:465`, username literally `resend`.
+- **Email rate limit**: was 2/hour (Supabase default), now **30/hour** with
+  custom SMTP. Still Supabase-side and adjustable — raise it before inviting 200
+  people.
+- **Test invite code** `IBE-CK6135UA-EBJYTWC0UFNW` was created 2026-09-05 with a
+  **7-day expiry — it has now expired.** Issue a fresh one for testing:
+  ```sql
+  insert into public.invite_codes (prefix, secret_hash, label, max_uses, expires_at)
+  values ('<8CHARS>', crypt('<12CHARS>', gen_salt('bf')), 'testing', 5, now() + interval '7 days');
+  ```
+  Codes must be **uppercase alphanumeric only** — `normalizeInviteCode()`
+  uppercases input, so a lowercase code is unredeemable.
+- **Test accounts on staging**: `yuviatre+ibetest{,2,3}@gmail.com`
+
+---
+
+## What's next, after the migration
+
+- **PR 4 — admin UI + bulk invites.** The important one: paste an email list and
+  invite everyone, issue/revoke codes, promote to admin, suspend. Until it
+  ships, every code is hand-written SQL. Needs a Supabase **Edge Function** to
+  hold the secret key (keeps it out of Vercel).
+- **PR 5 — enforce CSP.** One-line flip of `enforceCsp` in `next.config.ts`.
+- **Before real launch:** unpause `ibe-prod`, apply migrations 0001–0003, register
+  the auth hook, configure SMTP, set Site URL to `https://ibeosu.com`, add its
+  redirect URLs, raise the email cap, and issue real (not test) codes.
+- **Phase 2 — alumni directory.** Deferred entirely. Note the source data in
+  `ibe-connect` was **replaced with a 268-record CSV-derived set** (was 288), so
+  re-profile before importing; the earlier duplicate/data-quality analysis is
+  stale.
+
+### Known rough edge now live on production
+The header shows "Log In" to every visitor, but `ibe-prod` is paused, so signing
+in fails — and the message says *"That email or password isn't right"*, which is
+misleading when the real cause is the backend being asleep. Low stakes (nobody
+has prod credentials), fixed by either setting up prod or hiding the button.
+
+---
+
+## Gotchas (hard-won; several cost real time this session)
+
+- **`npm run build` clobbers a running dev server's `.next`** → the dev server
+  starts 500ing on every route. Restart it. This bit us twice.
+- **Browser-pane `computer` clicks hang** intermittently while `read_page`,
+  `navigate`, and screenshots keep working. Use `javascript_tool` to click via
+  `document.querySelector(...).click()` and inspect the DOM instead.
+- **Vercel previews are behind deployment protection** — `curl` gets a 302 to
+  SSO, so preview state can't be verified from the CLI. The user has to check in
+  a browser where they're logged into Vercel.
+- **Never test signup with `curl`.** It bypasses the JS SDK's PKCE setup, so
+  Supabase falls back to a different confirmation-link format that
+  `/auth/callback` isn't built for. Cost two rounds of false debugging. Test
+  through the real form.
+- **pgcrypto lives in the `extensions` schema on Supabase, not `public`.** Any
+  `SECURITY DEFINER` function calling `crypt()`/`gen_salt()` must include
+  `extensions` in its pinned `search_path` (that's all migration 0003 is). It
+  works in the SQL Editor regardless, which is exactly how it hides.
+- **MUI's `Menu` rejects a Fragment child** — it walks children directly for
+  focus management. Pass a flat array with keys.
+- **Supabase rejects `@example.com`** as an invalid signup email. Use a real
+  deliverable address.
+- **Vercel only applies env vars to new builds** — changing them requires a
+  redeploy to take effect.
+- A **typo'd env var name now fails silently** (degrades to signed-out) rather
+  than crashing. If auth mysteriously doesn't work, check the variable names
+  first.
+
+---
+
+## Related docs
+
+- `docs/OFFICER_HANDOFF.md` — accounts, credentials-locations, and open risks
+  for the *next VP of Tech* (different audience from this file). Pointers only,
+  never secrets.
+- `docs/DEPLOYMENT.md` — branch → PR → preview → merge flow. **Never push to
+  `main`.**
+- `docs/student_db.md` — Phase 2 schema notes.
+- `CLAUDE.md` / `PRODUCT.md` — design system and brand, both non-negotiable.
