@@ -7,7 +7,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import Reveal from "@/components/general/Reveal";
+import { serifFamily } from "@/theme/fonts";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -160,19 +160,32 @@ export default function FourYearJourney() {
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="lg">
-        <Reveal sx={{ textAlign: "center", mb: { xs: 5, md: 8 } }}>
-          <Typography variant="h3" component="h2" sx={{ mb: 1.5 }}>
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 2,
+            alignItems: "end",
+            mb: { xs: 6, md: 9 },
+          }}
+        >
+          <Typography variant="h2" sx={{ maxWidth: "10ch" }}>
             The Four-Year Journey
           </Typography>
           <Typography
             variant="body1"
-            sx={{ color: "text.secondary", maxWidth: "58ch", mx: "auto" }}
+            sx={{
+              color: "text.secondary",
+              maxWidth: "52ch",
+              fontSize: { md: "1.125rem" },
+            }}
           >
             From move-in day to a sponsor-directed capstone, IBE is a single
             continuous arc — each year building on the last.
           </Typography>
-        </Reveal>
+        </Box>
 
         {/* Timeline track: spine on the left (mobile) or left-of-center
             (desktop), with the year label and content beside it. */}
@@ -208,7 +221,7 @@ export default function FourYearJourney() {
             }}
           />
 
-          {MILESTONES.map((milestone) => (
+          {MILESTONES.map((milestone, index) => (
             <Box
               key={milestone.year}
               data-journey-node
@@ -218,23 +231,44 @@ export default function FourYearJourney() {
                 gridTemplateColumns: { xs: "16px 1fr", md: "28% 16px 1fr" },
                 columnGap: { xs: 2.5, md: 4 },
                 "&:not(:last-of-type)": {
-                  pb: { xs: 5.5, md: 7.5 },
+                  pb: { xs: 5.5, md: 8 },
                 },
               }}
             >
-              {/* Year label: right-aligned against the spine on desktop */}
-              <Typography
-                variant="h4"
+              {/* Year figure: right-aligned against the spine on desktop */}
+              <Box
                 component="h3"
                 sx={{
-                  display: { xs: "none", md: "block" },
+                  display: { xs: "none", md: "flex" },
+                  flexDirection: "column",
+                  alignItems: "flex-end",
                   textAlign: "right",
-                  lineHeight: 1.15,
-                  pt: "0.05em",
+                  m: 0,
+                  mt: "-0.18em",
                 }}
               >
-                {milestone.year}
-              </Typography>
+                <Typography
+                  component="span"
+                  aria-hidden="true"
+                  sx={{
+                    fontFamily: serifFamily,
+                    fontSize: "clamp(3rem, 5vw, 4.5rem)",
+                    lineHeight: 1,
+                    letterSpacing: "-0.03em",
+                    color: "primary.main",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {index + 1}
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="overline"
+                  sx={{ color: "text.secondary", mt: 1 }}
+                >
+                  {milestone.year}
+                </Typography>
+              </Box>
 
               {/* Spine marker */}
               <Box
@@ -259,16 +293,16 @@ export default function FourYearJourney() {
 
               <Box data-journey-content sx={{ minWidth: 0 }}>
                 <Typography
-                  variant="h4"
+                  variant="overline"
                   component="h3"
-                  sx={{ display: { md: "none" }, mb: 0.75 }}
+                  sx={{ display: { md: "none" }, color: "primary.main", mb: 1 }}
                 >
                   {milestone.year}
                 </Typography>
                 <Typography
-                  variant="h5"
+                  variant="h3"
                   component="p"
-                  sx={{ color: "primary.main", mb: 1 }}
+                  sx={{ mb: 1.5, maxWidth: "20ch" }}
                 >
                   {milestone.title}
                 </Typography>
@@ -316,76 +350,91 @@ export default function FourYearJourney() {
         </Box>
 
         {/* Two tracks end-cap: the academic blueprint behind the journey */}
-        <Reveal
+        <Box
           sx={{
-            mt: { xs: 7, md: 10 },
+            mt: { xs: 8, md: 12 },
             pt: { xs: 5, md: 7 },
             borderTop: "1px solid",
             borderColor: "divider",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 4,
+            alignItems: "start",
           }}
         >
-          <Typography
-            variant="h4"
-            component="h3"
-            sx={{ textAlign: "center", mb: { xs: 3, md: 4 } }}
-          >
-            Two Tracks, One Cohort
-          </Typography>
-
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: { xs: 3, md: 5 },
-              maxWidth: "52rem",
-              mx: "auto",
-              mb: { xs: 4, md: 5 },
-            }}
-          >
-            <Box>
-              <Typography variant="h5" component="h4" sx={{ mb: 0.5 }}>
-                IBE Traditional
-              </Typography>
-              <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                <strong>Engineering majors</strong> earn a business minor;{" "}
-                <strong>business majors</strong> earn an engineering sciences
-                minor.
-              </Typography>
-            </Box>
-            <Box>
-              <Typography variant="h5" component="h4" sx={{ mb: 0.5 }}>
-                IBE Software Innovation
-              </Typography>
-              <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                <strong>CSE majors</strong> earn a business minor;{" "}
-                <strong>business and non-CSE majors</strong> earn a computer
-                science minor.
-              </Typography>
-            </Box>
-          </Box>
-
-          <Box sx={{ maxWidth: "52rem", mx: "auto" }}>
-            <picture>
-              <source
-                media="(max-width:800px)"
-                srcSet="/coursework/coursework-vertical.svg"
-              />
-              <Image
-                src="/coursework/coursework.svg"
-                alt="Diagram of the IBE four-year coursework plan across business and engineering"
-                width={700}
-                height={300}
-                style={{ width: "100%", height: "auto" }}
-              />
-            </picture>
-          </Box>
-
-          <Box sx={{ textAlign: "center", mt: { xs: 4, md: 5 } }}>
-            <Button component={Link} href="/recruitment" sx={{ px: "1.75rem" }}>
+          <Box>
+            <Typography variant="h2" component="h3" sx={{ maxWidth: "10ch" }}>
+              Two Tracks, One Cohort
+            </Typography>
+            <Button
+              component={Link}
+              href="/recruitment"
+              sx={{ px: "1.75rem", mt: { xs: 3, md: 4 } }}
+            >
               See How to Apply
             </Button>
           </Box>
-        </Reveal>
+
+          <Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                gap: { xs: 3, md: 5 },
+                mb: { xs: 4, md: 6 },
+              }}
+            >
+              <Box
+                sx={{ pt: 2, borderTop: "2px solid", borderColor: "primary.main" }}
+              >
+                <Typography variant="h5" component="h4" sx={{ mb: 0.75 }}>
+                  IBE Traditional
+                </Typography>
+                <Typography variant="body1" sx={{ color: "text.secondary" }}>
+                  <strong>Engineering majors</strong> earn a business minor;{" "}
+                  <strong>business majors</strong> earn an engineering sciences
+                  minor.
+                </Typography>
+              </Box>
+              <Box
+                sx={{ pt: 2, borderTop: "2px solid", borderColor: "primary.main" }}
+              >
+                <Typography variant="h5" component="h4" sx={{ mb: 0.75 }}>
+                  IBE Software Innovation
+                </Typography>
+                <Typography variant="body1" sx={{ color: "text.secondary" }}>
+                  <strong>CSE majors</strong> earn a business minor;{" "}
+                  <strong>business and non-CSE majors</strong> earn a computer
+                  science minor.
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                backgroundColor: "#fff",
+                p: { xs: 2, md: 3 },
+              }}
+            >
+              <picture>
+                <source
+                  media="(max-width:800px)"
+                  srcSet="/coursework/coursework-vertical.svg"
+                />
+                <Image
+                  src="/coursework/coursework.svg"
+                  alt="Diagram of the IBE four-year coursework plan across business and engineering"
+                  width={700}
+                  height={300}
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
+              </picture>
+            </Box>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );

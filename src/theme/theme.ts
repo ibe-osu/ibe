@@ -1,28 +1,35 @@
 import { createTheme } from "@mui/material/styles";
+import { sansFamily as sans, serifFamily as serif } from "./fonts";
 
-const serif = `var(--font-pt-serif-caption), "PT Serif Caption", Georgia, serif`;
-const sans = `var(--font-source-sans), "Source Sans 3", "Helvetica Neue", Arial, sans-serif`;
+declare module "@mui/material/styles" {
+  interface Palette {
+    ink: Palette["primary"];
+  }
+  interface PaletteOptions {
+    ink?: PaletteOptions["primary"];
+  }
+}
 
 const theme = createTheme({
   typography: {
     fontFamily: sans,
     h1: {
       fontFamily: serif,
-      fontSize: "clamp(2.75rem, 5.5vw + 1rem, 5.25rem)",
-      lineHeight: 1.08,
-      letterSpacing: "-0.015em",
+      fontSize: "clamp(2.75rem, 5vw + 1rem, 5.5rem)",
+      lineHeight: 1.02,
+      letterSpacing: "-0.02em",
     },
     h2: {
       fontFamily: serif,
-      fontSize: "clamp(2.25rem, 3.5vw + 1rem, 3.5rem)",
-      lineHeight: 1.12,
-      letterSpacing: "-0.01em",
+      fontSize: "clamp(2.125rem, 3.2vw + 1rem, 3.75rem)",
+      lineHeight: 1.06,
+      letterSpacing: "-0.015em",
     },
     h3: {
       fontFamily: serif,
-      fontSize: "clamp(1.75rem, 2vw + 0.9rem, 2.5rem)",
-      lineHeight: 1.18,
-      letterSpacing: "-0.005em",
+      fontSize: "clamp(1.625rem, 1.8vw + 0.9rem, 2.375rem)",
+      lineHeight: 1.15,
+      letterSpacing: "-0.01em",
     },
     h4: {
       fontFamily: serif,
@@ -56,6 +63,14 @@ const theme = createTheme({
       fontSize: "0.9375rem",
       lineHeight: 1.6,
     },
+    overline: {
+      fontFamily: sans,
+      fontSize: "0.75rem",
+      fontWeight: 600,
+      letterSpacing: "0.14em",
+      lineHeight: 1.5,
+      textTransform: "uppercase",
+    },
     button: {
       fontFamily: sans,
       fontWeight: 600,
@@ -72,6 +87,12 @@ const theme = createTheme({
       main: "#fff",
       light: "#646A6E",
       dark: "#000",
+    },
+    ink: {
+      main: "#17181a",
+      light: "#2b2d30",
+      dark: "#0e0f10",
+      contrastText: "#ffffff",
     },
     grey: {
       50: "#fafafa",
@@ -93,7 +114,7 @@ const theme = createTheme({
       default: "#ffffff",
       paper: "#ffffff",
     },
-    divider: "rgba(23, 24, 26, 0.12)",
+    divider: "rgba(23, 24, 26, 0.14)",
     // Deliberately distinct from primary scarlet (#ba0c2f) so a form error
     // never reads as a brand accent. Standard Material red/green 800s —
     // desaturated enough to sit quietly next to the brand color.
@@ -123,8 +144,12 @@ const theme = createTheme({
           fontSize: "1rem",
           borderRadius: 0,
           boxShadow: "none",
-          padding: "0.625rem 1.5rem",
-          transition: "background-color 0.2s ease, color 0.2s ease",
+          padding: "0.75rem 1.5rem",
+          transition:
+            "background-color 0.18s cubic-bezier(0.25, 1, 0.5, 1), color 0.18s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.18s cubic-bezier(0.25, 1, 0.5, 1), transform 0.12s cubic-bezier(0.25, 1, 0.5, 1)",
+          "&:active": {
+            transform: "translateY(1px)",
+          },
           "&:focus-visible": {
             outline: "2px solid #ba0c2f",
             outlineOffset: "3px",
@@ -148,11 +173,12 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(255, 255, 255, 0.94)",
-          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(255, 255, 255, 0.96)",
+          backdropFilter: "blur(10px)",
           color: "#17181a",
           boxShadow: "none",
-          borderBottom: "1px solid rgba(23, 24, 26, 0.1)",
+          borderTop: "3px solid #ba0c2f",
+          borderBottom: "1px solid rgba(23, 24, 26, 0.12)",
         },
       },
     },

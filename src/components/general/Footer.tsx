@@ -1,15 +1,9 @@
-import {
-  Box,
-  Container,
-  Divider,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, IconButton, Stack, Typography } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Link from "next/link";
+import { serifFamily } from "@/theme/fonts";
 
 interface SocialIconProps {
   href: string;
@@ -27,12 +21,15 @@ const SocialIcon = (props: SocialIconProps) => {
       aria-label={props.label}
       sx={{
         color: "#fff",
-        border: "1px solid rgba(255, 255, 255, 0.3)",
+        border: "1px solid rgba(255, 255, 255, 0.22)",
         borderRadius: 0,
-        transition: "background-color 0.2s ease, border-color 0.2s ease",
+        width: 44,
+        height: 44,
+        transition:
+          "background-color 0.2s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
         "&:hover": {
-          backgroundColor: "rgba(255, 255, 255, 0.12)",
-          borderColor: "rgba(255, 255, 255, 0.6)",
+          backgroundColor: "primary.main",
+          borderColor: "primary.main",
         },
       }}
     >
@@ -53,13 +50,19 @@ const PageLink = (props: PageLinkProps) => {
       href={`/${props.to}`}
       variant="body1"
       sx={{
-        color: "rgba(255, 255, 255, 0.85)",
+        color: "rgba(255, 255, 255, 0.78)",
         width: "fit-content",
-        transition: "color 0.2s ease",
+        lineHeight: 1.4,
+        letterSpacing: "0.01em",
+        backgroundImage: "linear-gradient(currentColor, currentColor)",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "0 100%",
+        backgroundSize: "0% 1px",
+        transition:
+          "background-size 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
         "&:hover": {
           color: "#fff",
-          textDecoration: "underline",
-          textUnderlineOffset: "4px",
+          backgroundSize: "100% 1px",
         },
       }}
     >
@@ -73,50 +76,86 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: "primary.main",
+        backgroundColor: "ink.main",
         color: "#fff",
-        pt: { xs: 5, md: 7 },
-        pb: 3,
+        pt: { xs: 7, md: 10 },
+        pb: { xs: 3, md: 4 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1.5fr 1fr 1fr" },
-            gap: { xs: 4, md: 6 },
-            pb: { xs: 4, md: 6 },
+            gridTemplateColumns: { xs: "1fr", md: "7fr 5fr" },
+            alignItems: "end",
+            gap: { xs: 3, md: 6 },
+            pb: { xs: 4, md: 5 },
+            borderBottom: "1px solid",
+            borderColor: "primary.main",
           }}
         >
-          {/* Program identity */}
-          <Box>
+          <Typography
+            component="p"
+            sx={{
+              fontFamily: serifFamily,
+              fontSize: "clamp(4.5rem, 12vw, 11rem)",
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+              color: "#fff",
+              userSelect: "none",
+            }}
+            aria-label="IBE"
+          >
+            IBE
+          </Typography>
+          <Typography
+            variant="h4"
+            component="p"
+            sx={{
+              color: "rgba(255, 255, 255, 0.86)",
+              maxWidth: "26ch",
+              lineHeight: 1.3,
+              textWrap: "balance",
+            }}
+          >
+            Integrated Business &amp; Engineering Honors Program at The Ohio
+            State University
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "6fr 3fr 3fr" },
+            gap: { xs: 4, md: 6 },
+            py: { xs: 4, md: 6 },
+          }}
+        >
+          <Box sx={{ gridColumn: { xs: "1 / -1", md: "auto" } }}>
             <Typography
-              variant="h4"
-              component="p"
-              sx={{ mb: 1.5, color: "#fff" }}
+              variant="body1"
+              sx={{
+                color: "rgba(255, 255, 255, 0.72)",
+                maxWidth: "44ch",
+                lineHeight: 1.7,
+                letterSpacing: "0.005em",
+              }}
             >
-              IBE Honors Program
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ color: "rgba(255, 255, 255, 0.85)", maxWidth: "42ch" }}
-            >
-              The Integrated Business &amp; Engineering Honors Program at The
-              Ohio State University — preparing the next generation of leaders
-              at the intersection of business and technology.
+              Preparing the next generation of leaders at the intersection of
+              business and technology — one cohort of 72, two colleges, four
+              years.
             </Typography>
           </Box>
 
-          {/* Explore */}
           <Box>
             <Typography
-              variant="h6"
+              variant="overline"
               component="p"
-              sx={{ mb: 1.5, color: "#fff" }}
+              sx={{ color: "rgba(255, 255, 255, 0.55)", mb: 2 }}
             >
               Explore
             </Typography>
-            <Stack component="nav" aria-label="Footer" spacing={1}>
+            <Stack component="nav" aria-label="Footer" spacing={1.25}>
               <PageLink to="" text="Home" />
               <PageLink to="about" text="About" />
               <PageLink to="recruitment" text="Join Us" />
@@ -125,60 +164,58 @@ export default function Footer() {
             </Stack>
           </Box>
 
-          {/* Connect */}
           <Box>
             <Typography
-              variant="h6"
+              variant="overline"
               component="p"
-              sx={{ mb: 1.5, color: "#fff" }}
+              sx={{ color: "rgba(255, 255, 255, 0.55)", mb: 2 }}
             >
               Connect
             </Typography>
-            <Stack direction="row" spacing={1.5}>
+            <Stack direction="row" spacing={1.25}>
               <SocialIcon
                 href="https://www.instagram.com/ohiostateibe/"
                 label="IBE on Instagram"
               >
-                <InstagramIcon sx={{ fontSize: "1.5rem" }} />
+                <InstagramIcon sx={{ fontSize: "1.375rem" }} />
               </SocialIcon>
               <SocialIcon
                 href="https://www.linkedin.com/company/ibeprogram/"
                 label="IBE on LinkedIn"
               >
-                <LinkedInIcon sx={{ fontSize: "1.5rem" }} />
+                <LinkedInIcon sx={{ fontSize: "1.375rem" }} />
               </SocialIcon>
               <SocialIcon
                 href="https://www.facebook.com/ohiostateibe/"
                 label="IBE on Facebook"
               >
-                <FacebookIcon sx={{ fontSize: "1.5rem" }} />
+                <FacebookIcon sx={{ fontSize: "1.375rem" }} />
               </SocialIcon>
             </Stack>
             <Typography
               variant="body2"
-              sx={{ mt: 2, color: "rgba(255, 255, 255, 0.85)" }}
+              sx={{ mt: 2.5, color: "rgba(255, 255, 255, 0.72)" }}
             >
               Columbus, Ohio
             </Typography>
           </Box>
         </Box>
 
-        <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.25)" }} />
-
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={1}
           sx={{
-            pt: 2.5,
+            pt: 3,
+            borderTop: "1px solid rgba(255, 255, 255, 0.14)",
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: { xs: "flex-start", sm: "center" },
           }}
         >
-          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.85)" }}>
+          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.62)" }}>
             © {new Date().getFullYear()} IBE Honors Program · The Ohio State
             University
           </Typography>
-          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.85)" }}>
+          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.62)" }}>
             Made with ❤️ in Columbus
           </Typography>
         </Stack>

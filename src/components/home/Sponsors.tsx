@@ -15,27 +15,32 @@ export default function Sponsors() {
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="lg">
-        <Typography
-          variant="h3"
-          component="h2"
-          sx={{ textAlign: "center", mb: 1 }}
-        >
-          Program Sponsors
-        </Typography>
-        <Typography
-          variant="body1"
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
+        <Box
           sx={{
-            textAlign: "center",
-            color: "text.secondary",
-            mb: { xs: 4, md: 5 },
-            mx: "auto",
-            maxWidth: "55ch",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 2,
+            alignItems: "end",
+            mb: { xs: 4, md: 6 },
           }}
         >
-          Industry partners who invest in the next generation of business and
-          engineering leaders.
-        </Typography>
+          <Typography variant="h2" sx={{ maxWidth: "10ch" }}>
+            Program Sponsors
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: "text.secondary",
+              maxWidth: "52ch",
+              fontSize: { md: "1.125rem" },
+            }}
+          >
+            Industry partners who invest in the next generation of business and
+            engineering leaders.
+          </Typography>
+        </Box>
 
         {/* Ruled logo wall: 1px gaps over the divider color draw the
             hairlines; logos rest muted and take full color on hover. */}
@@ -47,13 +52,12 @@ export default function Sponsors() {
               xs: "repeat(2, 1fr)",
               sm: "repeat(3, 1fr)",
               md: "repeat(4, 1fr)",
+              lg: "repeat(6, 1fr)",
             },
             gap: "1px",
             backgroundColor: "divider",
             border: "1px solid",
             borderColor: "divider",
-            maxWidth: "56rem",
-            mx: "auto",
           }}
         >
           {SPONSORS.map((sponsor) => (

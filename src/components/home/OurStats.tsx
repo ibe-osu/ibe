@@ -5,42 +5,22 @@ import { Box, Container, Typography } from "@mui/material";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { serifFamily } from "@/theme/fonts";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-interface StatProps {
-  value: string;
-  label: string;
-}
+const FIGURES = [
+  { value: "3.8", label: "Average GPA" },
+  { value: "34", label: "Average ACT" },
+  { value: "100%", label: "Job Placement" },
+  { value: "$96k", label: "Avg. Starting Salary" },
+];
 
-function Stat({ value, label }: StatProps) {
-  return (
-    <Box
-      sx={{
-        textAlign: "center",
-        px: 2,
-        py: { xs: 2.5, md: 1 },
-      }}
-    >
-      <Typography
-        variant="h2"
-        component="p"
-        data-stat-value={value}
-        sx={{ color: "#fff", lineHeight: 1.1 }}
-      >
-        {value}
-      </Typography>
-      <Typography
-        variant="h6"
-        component="p"
-        sx={{ color: "rgba(255, 255, 255, 0.9)", mt: 0.75 }}
-      >
-        {label}
-      </Typography>
-    </Box>
-  );
-}
-
+/**
+ * The ledger: the program's proof set as large scarlet figures in ruled
+ * rows. Figures count up on scroll for motion-tolerant visitors; the final
+ * values are in the DOM from the start.
+ */
 export default function OurStats() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -55,9 +35,8 @@ export default function OurStats() {
         return;
       }
 
-      el.querySelectorAll<HTMLElement>("[data-stat-value]").forEach((node) => {
-        const target = node.dataset.statValue ?? "";
-        // Split "$96k" / "100%" / "3.8" into prefix, number, suffix
+      el.querySelectorAll<HTMLElement>("[data-figure]").forEach((node) => {
+        const target = node.dataset.figure ?? "";
         const match = target.match(/^([^0-9]*)([0-9.]+)(.*)$/);
         if (!match) return;
         const [, prefix, num, suffix] = match;
@@ -66,13 +45,9 @@ export default function OurStats() {
 
         gsap.to(counter, {
           v: parseFloat(num),
-          duration: 1.4,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: node,
-            start: "top 85%",
-            once: true,
-          },
+          duration: 1.6,
+          ease: "power3.out",
+          scrollTrigger: { trigger: node, start: "top 85%", once: true },
           onUpdate: () => {
             node.textContent = `${prefix}${counter.v.toFixed(decimals)}${suffix}`;
           },
@@ -87,38 +62,67 @@ export default function OurStats() {
       ref={ref}
       component="section"
       aria-label="Program outcomes"
-      sx={{
-        backgroundColor: "primary.main",
-        py: { xs: 5, md: 8 },
-      }}
+      sx={{ py: { xs: 7, md: 11 } }}
     >
-      <Container maxWidth="lg">
-        <Typography
-          variant="h3"
-          component="h2"
-          sx={{ color: "#fff", textAlign: "center", mb: { xs: 3, md: 5 } }}
-        >
-          Program by the Numbers
-        </Typography>
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(2, 1fr)",
-              md: "repeat(4, 1fr)",
-            },
-            rowGap: { xs: 2, sm: 3 },
-            "& > *:not(:first-of-type)": {
-              borderLeft: {
-                md: "1px solid rgba(255, 255, 255, 0.35)",
-              },
-            },
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 4,
+            alignItems: "start",
           }}
         >
-          <Stat value="3.8" label="Average GPA" />
-          <Stat value="34" label="Average ACT" />
-          <Stat value="100%" label="Job Placement" />
-          <Stat value="$96k" label="Avg. Starting Salary" />
+          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
+            <Typography variant="h2" sx={{ maxWidth: "10ch" }}>
+              Program by the Numbers
+            </Typography>
+          </Box>
+
+          <Box component="dl" sx={{ m: 0 }}>
+            {FIGURES.map((figure) => (
+              <Box
+                key={figure.label}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "minmax(0, 1fr) minmax(0, 1fr)" },
+                  alignItems: "baseline",
+                  columnGap: 3,
+                  py: { xs: 2.5, md: 3 },
+                  borderTop: "1px solid",
+                  borderColor: "divider",
+                  "&:last-of-type": {
+                    borderBottom: "1px solid",
+                    borderBottomColor: "divider",
+                  },
+                }}
+              >
+                <Typography
+                  component="dd"
+                  data-figure={figure.value}
+                  sx={{
+                    m: 0,
+                    fontFamily: serifFamily,
+                    fontSize: "clamp(3.25rem, 6vw, 5.5rem)",
+                    lineHeight: 1,
+                    letterSpacing: "-0.03em",
+                    color: "primary.main",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {figure.value}
+                </Typography>
+                <Typography
+                  component="dt"
+                  variant="h5"
+                  sx={{ color: "text.primary", mt: { xs: 1, sm: 0 } }}
+                >
+                  {figure.label}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Container>
     </Box>

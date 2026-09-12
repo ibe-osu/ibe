@@ -8,9 +8,10 @@ export default function IBEVideo() {
       sx={{
         position: "relative",
         pt: "56.25%", // 16:9
-        borderRadius: 2,
         overflow: "hidden",
-        boxShadow: 3,
+        backgroundColor: "ink.main",
+        border: "1px solid",
+        borderColor: "divider",
       }}
     >
       <iframe
@@ -19,6 +20,7 @@ export default function IBEVideo() {
         allow="encrypted-media; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
+        loading="lazy"
         style={{
           position: "absolute",
           inset: 0,

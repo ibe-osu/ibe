@@ -1,4 +1,5 @@
 import FourYearJourney from "@/components/home/FourYearJourney";
+import JoinBand from "@/components/home/JoinBand";
 import OurStats from "@/components/home/OurStats";
 import Sponsors from "@/components/home/Sponsors";
 import Welcome from "@/components/home/Welcome";
@@ -12,6 +13,7 @@ export default function Home() {
       <WhoAreWe />
       <FourYearJourney />
       <Sponsors />
+      <JoinBand />
     </>
   );
 }

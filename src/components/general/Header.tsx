@@ -13,10 +13,9 @@ export default function Header() {
         sx={{
           justifyContent: "space-between",
           minHeight: { xs: 64, md: 72 },
-          px: { xs: 2, md: 4 },
+          px: { xs: 2, md: 4, lg: 6 },
         }}
       >
-        {/* Logo */}
         <Box sx={{ display: "flex", alignItems: "center", userSelect: "none" }}>
           <Link href="/" aria-label="IBE Honors Program home">
             <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -31,14 +30,13 @@ export default function Header() {
           </Link>
         </Box>
 
-        {/* Desktop Nav */}
         <Box
           component="nav"
           aria-label="Primary"
           sx={{
             display: { xs: "none", sm: "flex" },
             alignItems: "center",
-            gap: { xs: 0.5, md: 3 },
+            gap: { xs: 0.5, md: 2.5 },
           }}
         >
           <NavButton href="/">Home</NavButton>
@@ -51,12 +49,12 @@ export default function Header() {
             href="/recruitment"
             color="primary"
             sx={{
-              ml: { xs: 0.5, md: 1 },
+              ml: { xs: 0.5, md: 1.5 },
               px: "1.25rem",
-              py: "0.5625rem",
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              letterSpacing: "0.08em",
+              py: "0.625rem",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              letterSpacing: "0.12em",
               textTransform: "uppercase",
             }}
           >
@@ -65,7 +63,6 @@ export default function Header() {
           <AccountMenu />
         </Box>
 
-        {/* Mobile Menu Button */}
         <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <MobileMenuButton />
         </Box>
