@@ -44,8 +44,8 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
           gap: 2,
           width: "100%",
           cursor: "pointer",
-          px: { xs: 1, md: 2 },
-          py: 2.25,
+          px: 0,
+          py: { xs: 2.25, md: 2.75 },
           "&:focus-visible": {
             outline: "2px solid",
             outlineColor: "primary.main",
@@ -54,14 +54,15 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
         }}
       >
         <Typography
-          variant="h6"
+          variant="h5"
           component="span"
           sx={{
             flex: 1,
             textAlign: "left",
             fontWeight: 600,
+            textWrap: "pretty",
             color: open ? "primary.main" : "text.primary",
-            transition: "color 0.25s ease",
+            transition: "color 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
           }}
         >
           {question}
@@ -91,9 +92,8 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
             variant="body1"
             sx={{
               color: "text.secondary",
-              maxWidth: "75ch",
-              px: { xs: 1, md: 2 },
-              pb: 3,
+              maxWidth: "68ch",
+              pb: 3.5,
             }}
           >
             {answer}

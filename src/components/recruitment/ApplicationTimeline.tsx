@@ -5,6 +5,7 @@ import { Box, Container, Typography } from "@mui/material";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { serifFamily } from "@/theme/fonts";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -49,11 +50,10 @@ const STEPS: Step[] = [
 
 /**
  * Scroll-driven application timeline: a scarlet spine fills past six dated
- * milestones as the visitor scrolls. Mirrors the home page journey's
- * [date | spine | content] grammar on desktop; the spine moves to the left
- * edge on mobile. The completed state is the CSS default — GSAP only
- * rewinds and scrubs it when motion is allowed — so the timeline is fully
- * legible without JavaScript and under reduced motion.
+ * milestones as the visitor scrolls, mirroring the home page journey's
+ * [date | spine | content] grammar. The completed state is the CSS default;
+ * GSAP only rewinds and scrubs it when motion is allowed, so the timeline is
+ * fully legible without JavaScript and under reduced motion.
  */
 export default function ApplicationTimeline() {
   const ref = useRef<HTMLDivElement>(null);
@@ -130,140 +130,141 @@ export default function ApplicationTimeline() {
       component="section"
       aria-label="Application timeline"
       sx={{
-        py: { xs: 6, md: 9 },
+        py: { xs: 7, md: 11 },
         backgroundColor: "#f9f6f6",
         borderTop: "1px solid",
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="lg">
-        <Typography
-          variant="h3"
-          component="h2"
-          sx={{ textAlign: "center", mb: 1 }}
-        >
-          Application Timeline
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: "center",
-            color: "text.secondary",
-            maxWidth: "55ch",
-            mx: "auto",
-            mb: { xs: 5, md: 7 },
-          }}
-        >
-          From the Early Action deadline to the April 3 close, here is how the
-          application season unfolds.
-        </Typography>
-
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
         <Box
-          data-steps
           sx={{
-            position: "relative",
-            maxWidth: "52rem",
-            mx: "auto",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 4,
-              bottom: 4,
-              left: { xs: "7px", md: "calc(30% + 7px)" },
-              width: "2px",
-              backgroundColor: "grey.300",
-            },
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 5,
+            alignItems: "start",
           }}
         >
-          <Box
-            data-timeline-fill
-            aria-hidden="true"
-            sx={{
-              position: "absolute",
-              top: 4,
-              bottom: 4,
-              left: { xs: "7px", md: "calc(30% + 7px)" },
-              width: "2px",
-              backgroundColor: "primary.main",
-              transformOrigin: "top center",
-            }}
-          />
-
-          {STEPS.map((step) => (
-            <Box
-              key={step.title}
-              data-step
-              sx={{
-                position: "relative",
-                display: "grid",
-                gridTemplateColumns: { xs: "16px 1fr", md: "30% 16px 1fr" },
-                columnGap: { xs: 2.5, md: 4 },
-                "&:not(:last-of-type)": {
-                  pb: { xs: 4.5, md: 5.5 },
-                },
-              }}
+          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
+            <Typography variant="h2" sx={{ maxWidth: "10ch", mb: 2 }}>
+              Application Timeline
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ color: "text.secondary", maxWidth: "36ch" }}
             >
-              {/* Date label: right-aligned against the spine on desktop */}
-              <Typography
-                variant="body2"
-                component="p"
+              From the Early Action deadline to the April 3 close, here is how
+              the application season unfolds.
+            </Typography>
+          </Box>
+
+          <Box
+            data-steps
+            sx={{
+              position: "relative",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 6,
+                bottom: 6,
+                left: { xs: "7px", md: "calc(32% + 7px)" },
+                width: "2px",
+                backgroundColor: "grey.300",
+              },
+            }}
+          >
+            <Box
+              data-timeline-fill
+              aria-hidden="true"
+              sx={{
+                position: "absolute",
+                top: 6,
+                bottom: 6,
+                left: { xs: "7px", md: "calc(32% + 7px)" },
+                width: "2px",
+                backgroundColor: "primary.main",
+                transformOrigin: "top center",
+              }}
+            />
+
+            {STEPS.map((step) => (
+              <Box
+                key={step.title}
+                data-step
                 sx={{
-                  display: { xs: "none", md: "block" },
-                  textAlign: "right",
-                  fontWeight: 700,
-                  color: "primary.main",
-                  pt: "1px",
+                  position: "relative",
+                  display: "grid",
+                  gridTemplateColumns: { xs: "16px 1fr", md: "32% 16px 1fr" },
+                  columnGap: { xs: 2.5, md: 4 },
+                  "&:not(:last-of-type)": {
+                    pb: { xs: 5, md: 6.5 },
+                  },
                 }}
               >
-                {step.date}
-              </Typography>
-
-              {/* Spine marker */}
-              <Box
-                sx={{ position: "relative", gridColumn: { xs: 1, md: 2 } }}
-                aria-hidden="true"
-              >
-                <Box
-                  data-step-dot
-                  sx={{
-                    position: "absolute",
-                    top: 2,
-                    left: 0,
-                    width: 16,
-                    height: 16,
-                    backgroundColor: "primary.main",
-                    border: "3px solid #f9f6f6",
-                    outline: "1px solid",
-                    outlineColor: "grey.400",
-                  }}
-                />
-              </Box>
-
-              <Box data-step-content sx={{ minWidth: 0 }}>
                 <Typography
-                  variant="body2"
                   component="p"
                   sx={{
-                    display: { md: "none" },
-                    fontWeight: 700,
+                    display: { xs: "none", md: "block" },
+                    textAlign: "right",
+                    fontFamily: serifFamily,
+                    fontSize: "clamp(1.375rem, 1.6vw, 1.875rem)",
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.01em",
                     color: "primary.main",
-                    mb: 0.5,
+                    mt: "-0.05em",
                   }}
                 >
                   {step.date}
                 </Typography>
-                <Typography variant="h5" component="h3" sx={{ mb: 0.75 }}>
-                  {step.title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ color: "text.secondary", maxWidth: "52ch" }}
+
+                <Box
+                  sx={{ position: "relative", gridColumn: { xs: 1, md: 2 } }}
+                  aria-hidden="true"
                 >
-                  {step.body}
-                </Typography>
+                  <Box
+                    data-step-dot
+                    sx={{
+                      position: "absolute",
+                      top: 4,
+                      left: 0,
+                      width: 16,
+                      height: 16,
+                      backgroundColor: "primary.main",
+                      border: "3px solid #f9f6f6",
+                      outline: "1px solid",
+                      outlineColor: "grey.400",
+                    }}
+                  />
+                </Box>
+
+                <Box data-step-content sx={{ minWidth: 0 }}>
+                  <Typography
+                    component="p"
+                    sx={{
+                      display: { md: "none" },
+                      fontFamily: serifFamily,
+                      fontSize: "1.375rem",
+                      lineHeight: 1.1,
+                      color: "primary.main",
+                      mb: 1,
+                    }}
+                  >
+                    {step.date}
+                  </Typography>
+                  <Typography variant="h4" component="h3" sx={{ mb: 1 }}>
+                    {step.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "text.secondary", maxWidth: "54ch" }}
+                  >
+                    {step.body}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       </Container>
     </Box>

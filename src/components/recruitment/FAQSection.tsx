@@ -34,26 +34,34 @@ export default function FAQSection() {
   return (
     <Box
       component="section"
+      aria-labelledby="faq"
       sx={{
-        py: { xs: 6, md: 9 },
+        py: { xs: 7, md: 11 },
         borderTop: "1px solid",
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="md">
-        <Typography
-          variant="h3"
-          component="h2"
-          align="center"
-          sx={{ mb: { xs: 3, md: 5 } }}
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 4,
+            alignItems: "start",
+          }}
         >
-          Frequently Asked Questions
-        </Typography>
+          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
+            <Typography variant="h2" id="faq" sx={{ maxWidth: "10ch" }}>
+              Frequently Asked Questions
+            </Typography>
+          </Box>
 
-        <Box>
-          {faqItems.map((it) => (
-            <FAQItem key={it.q} question={it.q} answer={it.a} />
-          ))}
+          <Box>
+            {faqItems.map((it) => (
+              <FAQItem key={it.q} question={it.q} answer={it.a} />
+            ))}
+          </Box>
         </Box>
       </Container>
     </Box>

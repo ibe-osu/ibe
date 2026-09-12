@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Image from "next/image";
 import Link from "next/link";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 interface InfoCardProps {
   header: string;
@@ -13,8 +14,8 @@ interface InfoCardProps {
 }
 
 /**
- * Clickable explore card: the whole card is one link. Hover/focus zooms the
- * photo and pulls the border to scarlet, matching the site's card language.
+ * One entry in the "Keep Exploring" ruled row. The whole entry is a single
+ * link; hover/focus eases the photo in and draws the CTA underline.
  */
 export default function InfoCard({
   header,
@@ -31,18 +32,24 @@ export default function InfoCard({
       component={isInternal ? Link : "a"}
       href={href}
       sx={{
-        height: "100%",
         display: "flex",
         flexDirection: "column",
         backgroundColor: "#fff",
-        border: "1px solid",
-        borderColor: "divider",
-        transition: "border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
-        "&:hover, &:focus-visible": {
-          borderColor: "primary.main",
+        py: { xs: 3, md: 4 },
+        px: { xs: 0, md: 3 },
+        "&:first-of-type": { pl: 0 },
+        "&:last-of-type": { pr: 0 },
+        "&:hover img, &:focus-visible img": { transform: "scale(1.04)" },
+        "&:hover [data-cta]::after, &:focus-visible [data-cta]::after": {
+          transform: "scaleX(1)",
         },
-        "&:hover img, &:focus-visible img": {
-          transform: "scale(1.05)",
+        "&:hover [data-cta] svg, &:focus-visible [data-cta] svg": {
+          transform: "translateX(4px)",
+        },
+        "&:focus-visible": {
+          outline: "2px solid",
+          outlineColor: "primary.main",
+          outlineOffset: "-2px",
         },
       }}
     >
@@ -51,41 +58,62 @@ export default function InfoCard({
           position: "relative",
           aspectRatio: "3 / 2",
           overflow: "hidden",
+          backgroundColor: "grey.100",
+          mb: 3,
         }}
       >
         <Image
           src={imageSrc}
           alt={imageAlt || header}
           fill
-          sizes="(max-width:600px) 100vw, 380px"
+          sizes="(max-width: 900px) 100vw, 33vw"
           style={{
             objectFit: "cover",
-            transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+            transition: "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         />
       </Box>
-      <Box
-        sx={{ p: { xs: 2.5, md: 3 }, display: "flex", flexDirection: "column", flex: 1 }}
+      <Typography variant="h3" component="h3" sx={{ mb: 1.25 }}>
+        {header}
+      </Typography>
+      <Typography
+        variant="body1"
+        sx={{ color: "text.secondary", maxWidth: "48ch", textWrap: "pretty" }}
       >
-        <Typography variant="h5" component="h3" sx={{ mb: 1 }}>
-          {header}
-        </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {description}
-        </Typography>
-        <Typography
-          variant="body2"
-          component="span"
-          sx={{
-            mt: "auto",
-            pt: 2,
-            fontWeight: 700,
-            color: "primary.main",
-          }}
-        >
-          {cta} →
-        </Typography>
-      </Box>
+        {description}
+      </Typography>
+      <Typography
+        component="span"
+        data-cta
+        sx={{
+          position: "relative",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 0.75,
+          width: "fit-content",
+          mt: 3,
+          fontWeight: 600,
+          color: "primary.main",
+          "& svg": {
+            fontSize: "1.125rem",
+            transition: "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)",
+          },
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: -2,
+            height: "1.5px",
+            backgroundColor: "primary.main",
+            transform: "scaleX(0)",
+            transformOrigin: "left",
+            transition: "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)",
+          },
+        }}
+      >
+        {cta} <ArrowForwardIcon />
+      </Typography>
     </Box>
   );
 }

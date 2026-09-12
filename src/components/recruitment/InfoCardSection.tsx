@@ -1,33 +1,40 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import InfoCard from "./InfoCard";
 import CARDS from "./cardsData";
-import Reveal from "@/components/general/Reveal";
 
 export default function InfoCardSection() {
   return (
-    <Box component="section" sx={{ py: { xs: 6, md: 9 } }}>
-      <Container maxWidth="lg">
+    <Box
+      component="section"
+      aria-labelledby="keep-exploring"
+      sx={{ py: { xs: 7, md: 11 } }}
+    >
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
         <Typography
-          variant="h3"
-          component="h2"
-          sx={{ textAlign: "center", mb: { xs: 4, md: 5 } }}
+          variant="h2"
+          id="keep-exploring"
+          sx={{ mb: { xs: 4, md: 6 } }}
         >
           Keep Exploring
         </Typography>
-        <Reveal variant="stagger" targets=".MuiGrid-container > *">
-          <Grid
-            container
-            spacing={{ xs: 3, md: 4 }}
-            alignItems="stretch"
-            justifyContent="center"
-          >
-            {CARDS.map((c) => (
-              <Grid key={c.header} size={{ xs: 12, sm: 6, md: 4 }}>
-                <InfoCard {...c} />
-              </Grid>
-            ))}
-          </Grid>
-        </Reveal>
+
+        {/* Ruled row: 1px gaps over the divider color draw the hairlines
+            between entries, so nothing needs a box of its own. */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
+            gap: "1px",
+            backgroundColor: "divider",
+            borderTop: "1px solid",
+            borderBottom: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          {CARDS.map((c) => (
+            <InfoCard key={c.header} {...c} />
+          ))}
+        </Box>
       </Container>
     </Box>
   );
