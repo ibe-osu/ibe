@@ -62,9 +62,9 @@ export default function PhotoCarousel(props: IProps) {
       sx={{
         width: "100%",
         position: "relative",
-        borderRadius: 2,
         overflow: "hidden",
         isolation: "isolate",
+        backgroundColor: "grey.100",
       }}
     >
       {/* Slide Container */}
@@ -112,9 +112,11 @@ export default function PhotoCarousel(props: IProps) {
           left: "1rem",
           transform: "translateY(-50%)",
           zIndex: 2,
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: 0,
+          color: "#17181a",
+          backgroundColor: "rgba(255, 255, 255, 0.85)",
           "&:hover": {
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            backgroundColor: "#fff",
           },
         }}
       >
@@ -130,9 +132,11 @@ export default function PhotoCarousel(props: IProps) {
           right: "1rem",
           transform: "translateY(-50%)",
           zIndex: 2,
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: 0,
+          color: "#17181a",
+          backgroundColor: "rgba(255, 255, 255, 0.85)",
           "&:hover": {
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            backgroundColor: "#fff",
           },
         }}
       >
@@ -159,17 +163,21 @@ export default function PhotoCarousel(props: IProps) {
             aria-label={`Go to photo ${i + 1}`}
             aria-current={i === index}
             sx={{
-              width: "12px",
-              height: "12px",
-              borderRadius: "50%",
+              width: 24,
+              height: 3,
               cursor: "pointer",
               padding: 0,
+              border: "none",
               backgroundColor:
                 i === index
-                  ? "rgba(255, 255, 255, 0.9)"
-                  : "rgba(255, 255, 255, 0.5)",
-              transition: "background-color .3s",
-              border: "1px solid rgba(0, 0, 0, 0.2)",
+                  ? "rgba(255, 255, 255, 0.95)"
+                  : "rgba(255, 255, 255, 0.45)",
+              boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.15)",
+              transition: "background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+              "&:focus-visible": {
+                outline: "2px solid #fff",
+                outlineOffset: "3px",
+              },
             }}
           />
         ))}

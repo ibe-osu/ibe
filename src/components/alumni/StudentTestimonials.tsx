@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import TestimonialCarousel, { Testimonial } from "./TestimonialCarousel";
 
 const testimonials: Testimonial[] = [
@@ -23,20 +23,32 @@ const testimonials: Testimonial[] = [
 export default function StudentTestimonials() {
   return (
     <Box
-      sx={{
-        textAlign: "center",
-        py: { xs: 6, md: 8 },
-        px: "1.5rem",
-      }}
+      component="section"
+      aria-labelledby="student-testimonials"
+      sx={{ py: { xs: 7, md: 11 } }}
     >
-      <Typography
-        variant="h3"
-        component="h2"
-        sx={{ mb: { xs: "1rem", md: "2rem" } }}
-      >
-        Student Testimonials
-      </Typography>
-      <TestimonialCarousel testimonials={testimonials} />
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 4,
+            alignItems: "start",
+          }}
+        >
+          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
+            <Typography
+              variant="h2"
+              id="student-testimonials"
+              sx={{ maxWidth: "10ch" }}
+            >
+              Student Testimonials
+            </Typography>
+          </Box>
+          <TestimonialCarousel testimonials={testimonials} />
+        </Box>
+      </Container>
     </Box>
   );
 }

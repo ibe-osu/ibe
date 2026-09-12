@@ -2,7 +2,6 @@ import { Box, Container, Typography } from "@mui/material";
 import SpeakerCarousel from "./SpeakerCarousel";
 import { Speaker } from "./SpeakerCard";
 
-// Keynote Speakers Data
 const speakers: Speaker[] = [
   {
     name: "Bill Baumel",
@@ -52,35 +51,44 @@ export default function KeynoteSpeakers() {
   return (
     <Box
       component="section"
-      aria-label="Recent keynote speakers"
+      aria-labelledby="keynote-speakers"
       sx={{
-        py: { xs: 6, md: 9 },
+        py: { xs: 7, md: 11 },
         backgroundColor: "#f9f6f6",
         borderBottom: "1px solid",
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="xl">
-        <Typography
-          variant="h3"
-          component="h2"
-          sx={{ textAlign: "center", mb: 1 }}
-        >
-          Recent Keynote Speakers
-        </Typography>
-        <Typography
-          variant="body1"
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
+        <Box
           sx={{
-            textAlign: "center",
-            color: "text.secondary",
-            maxWidth: "58ch",
-            mx: "auto",
-            mb: { xs: 4, md: 5 },
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "5fr 7fr" },
+            columnGap: { md: 6, lg: 10 },
+            rowGap: 2,
+            alignItems: "end",
+            mb: { xs: 4, md: 6 },
           }}
         >
-          Industry leaders and entrepreneurs regularly join IBE keynote events
-          to share insights with the cohort.
-        </Typography>
+          <Typography
+            variant="h2"
+            id="keynote-speakers"
+            sx={{ maxWidth: "12ch" }}
+          >
+            Recent Keynote Speakers
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: "text.secondary",
+              maxWidth: "52ch",
+              fontSize: { md: "1.125rem" },
+            }}
+          >
+            Industry leaders and entrepreneurs regularly join IBE keynote events
+            to share insights with the cohort.
+          </Typography>
+        </Box>
         <SpeakerCarousel speakers={speakers} />
       </Container>
     </Box>

@@ -1,9 +1,8 @@
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import PhotoCarousel, { Photo } from "./PhotoCarousel";
 import React from "react";
-import Reveal from "@/components/general/Reveal";
+import { serifFamily } from "@/theme/fonts";
 
-// Event data structure
 interface Event {
   title: string;
   date: string;
@@ -11,7 +10,6 @@ interface Event {
   photos: Photo[];
 }
 
-// Events content
 const events: Event[] = [
   {
     title: "IBE Date Party!",
@@ -48,8 +46,10 @@ const events: Event[] = [
           rel="noopener noreferrer"
           sx={{
             color: "primary.main",
+            fontWeight: 600,
             textDecoration: "underline",
-            cursor: "pointer",
+            textUnderlineOffset: "3px",
+            "&:hover": { color: "primary.dark" },
           }}
         >
           Collin Aldrich
@@ -80,131 +80,81 @@ const events: Event[] = [
 
 export default function Happenings() {
   return (
-    <Box component="section" sx={{ backgroundColor: "background.paper" }}>
-      {/* Header Banner */}
-      <Box
-        sx={{
-          backgroundColor: "primary.main",
-          color: "secondary.main",
-          py: { xs: 3, md: 4 },
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h3" component="h2">
+    <Box
+      component="section"
+      aria-labelledby="happenings"
+      sx={{ py: { xs: 7, md: 11 } }}
+    >
+      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
+        <Typography variant="h2" id="happenings" sx={{ mb: { xs: 5, md: 8 } }}>
           IBE Happenings
         </Typography>
-      </Box>
 
-      {/* Content Container */}
-      <Box
-        sx={{
-          maxWidth: "1600px",
-          mx: "auto",
-          px: { xs: 3, md: 6 },
-          py: { xs: 4, md: 6 },
-        }}
-      >
         {events.map((event, index) => {
-          // Alternate layout: even indices have photo on right, odd indices have photo on left.
-          // Below md the columns stack, so text always reads left-aligned.
-          const isPhotoOnLeft = index % 2 !== 0;
-          const textAlign = {
-            xs: "left",
-            md: isPhotoOnLeft ? "left" : "right",
-          } as const;
-
-          const textContent = (
+          // Alternate the photo side so consecutive entries don't stack
+          // into one repeating template.
+          const photoLeft = index % 2 === 1;
+          return (
             <Box
+              key={event.title}
+              component="article"
               sx={{
-                flex: { xs: "1", md: "0 0 45%" },
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                textAlign: textAlign,
-                order: { xs: 1, md: isPhotoOnLeft ? 2 : 1 },
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "5fr 7fr" },
+                columnGap: { md: 6, lg: 10 },
+                rowGap: 3,
+                alignItems: "start",
+                py: { xs: 5, md: 7 },
+                borderTop: "1px solid",
+                borderColor: "divider",
+                "&:last-of-type": {
+                  borderBottom: "1px solid",
+                  borderBottomColor: "divider",
+                },
               }}
             >
-              <Typography
-                variant="h4"
-                component="h3"
-                sx={{
-                  color: "text.primary",
-                  textAlign: textAlign,
-                }}
-              >
-                {event.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: "text.secondary",
-                  fontStyle: "italic",
-                  textAlign: textAlign,
-                }}
-              >
-                {event.date}
-              </Typography>
-              {event.descriptions.map((description, descIndex) => (
+              <Box sx={{ order: { md: photoLeft ? 2 : 1 }, minWidth: 0 }}>
                 <Typography
-                  key={descIndex}
-                  variant="body1"
+                  component="p"
                   sx={{
-                    lineHeight: 1.7,
-                    color: "text.primary",
-                    textAlign: textAlign,
+                    fontFamily: serifFamily,
+                    fontSize: "clamp(1.375rem, 1.6vw, 1.875rem)",
+                    lineHeight: 1.1,
+                    color: "primary.main",
+                    mb: 1.5,
                   }}
                 >
-                  {description}
+                  {event.date}
                 </Typography>
-              ))}
+                <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                  {event.title}
+                </Typography>
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                >
+                  {event.descriptions.map((description, descIndex) => (
+                    <Typography
+                      key={descIndex}
+                      variant="body1"
+                      sx={{
+                        color: "text.secondary",
+                        maxWidth: "56ch",
+                        lineHeight: 1.7,
+                        textWrap: "pretty",
+                      }}
+                    >
+                      {description}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+              <Box sx={{ order: { md: photoLeft ? 1 : 2 }, minWidth: 0 }}>
+                <PhotoCarousel photos={event.photos} />
+              </Box>
             </Box>
-          );
-
-          const photoContent = (
-            <Box
-              sx={{
-                flex: { xs: "1", md: "0 0 50%" },
-                order: { xs: 2, md: isPhotoOnLeft ? 1 : 2 },
-              }}
-            >
-              <PhotoCarousel photos={event.photos} />
-            </Box>
-          );
-
-          return (
-            <React.Fragment key={index}>
-              <Reveal
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  gap: { xs: 3, md: 4 },
-                }}
-              >
-                {isPhotoOnLeft ? (
-                  <>
-                    {photoContent}
-                    {textContent}
-                  </>
-                ) : (
-                  <>
-                    {textContent}
-                    {photoContent}
-                  </>
-                )}
-              </Reveal>
-              {index < events.length - 1 && (
-                <Divider
-                  sx={{
-                    my: { xs: 4, md: 6 },
-                    borderColor: "grey.400",
-                    borderWidth: 1,
-                  }}
-                />
-              )}
-            </React.Fragment>
           );
         })}
-      </Box>
+      </Container>
     </Box>
   );
 }
