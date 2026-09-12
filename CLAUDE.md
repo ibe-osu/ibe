@@ -51,7 +51,18 @@ Full details, including the emergency-bypass procedure, are in
   `#17181a`, secondary text `#494f53`, white stage. Square corners
   (`borderRadius: 0`) are a deliberate collegiate voice — don't round
   buttons or cards.
-- **Heroes**: shared [`src/components/general/PageHero.tsx`](src/components/general/PageHero.tsx).
+- **Heroes**: shared [`src/components/general/PageHero.tsx`](src/components/general/PageHero.tsx)
+  — true-color photo, neutral bottom scrim, flush-left title. No scarlet
+  tint over photographs.
+- **Section grammar** (Sept 2026 redesign): flush-left grids (`4fr 8fr` or
+  `5fr 7fr`) inside `Container maxWidth="xl"` with `px: { xs: 2.5, md: 4,
+  lg: 6 }`, hairline rules (`divider`) instead of cards, and the program's
+  numbers set as large scarlet serif figures in ruled rows (the "ledger").
+  At most one scarlet band per page; the footer is ink.
+- **Font stacks in `sx`**: import `serifFamily` / `sansFamily` from
+  [`src/theme/fonts.ts`](src/theme/fonts.ts). Never use `(t) => t.typography…`
+  callbacks in `sx` — server components can't serialize functions to MUI's
+  client components and the page 500s.
 - **Motion**: GSAP. Every animation needs a `prefers-reduced-motion`
   fallback, and content must be visible without JS (never gate visibility on
   a scroll/reveal animation).

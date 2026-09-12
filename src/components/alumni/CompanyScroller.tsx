@@ -61,9 +61,9 @@ export default function CompanyScroller() {
   // Responsive cell height using MUI breakpoints
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  let cellHeight = 120;
-  if (isXs) cellHeight = 64;
-  else if (isSm) cellHeight = 100;
+  let cellHeight = 84;
+  if (isXs) cellHeight = 52;
+  else if (isSm) cellHeight = 68;
 
   return (
     <Box

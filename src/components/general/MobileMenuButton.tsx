@@ -2,12 +2,13 @@
 
 import {
   Box,
+  Button,
   IconButton,
   Drawer,
   List,
   ListItem,
   ListItemButton,
-  ListItemText,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -17,6 +18,7 @@ import Image from "next/image";
 import { useAuthState } from "@/lib/auth/useAuthState";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { serifFamily } from "@/theme/fonts";
 
 export default function MobileMenuButton() {
   const [open, setOpen] = useState(false);
@@ -26,7 +28,6 @@ export default function MobileMenuButton() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/recruitment", label: "Join Us" },
     { href: "/alumni", label: "Alumni" },
     { href: "/student-life", label: "Student Life" },
     // "Resources" and "Alumni Database" are signed-in-only, same rule as
@@ -38,27 +39,38 @@ export default function MobileMenuButton() {
           { href: "/members/alumni-database", label: "Alumni Database" },
         ]
       : []),
-    auth.status === "signed-in"
-      ? { href: "#signout", label: "Sign Out" }
-      : { href: "/login", label: "Log In" },
   ];
 
-  async function handleNavClick(href: string) {
+  async function signOut() {
     setOpen(false);
-    if (href === "#signout") {
-      const supabase = createClient();
-      await supabase.auth.signOut();
-      router.push("/");
-      router.refresh();
-    }
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
   }
+
+  const linkSx = {
+    px: 0,
+    py: 2,
+    borderBottom: "1px solid",
+    borderColor: "divider",
+    "&:hover": { backgroundColor: "transparent", color: "primary.main" },
+  };
+
+  const labelSx = {
+    fontFamily: serifFamily,
+    fontSize: "2rem",
+    lineHeight: 1.1,
+    letterSpacing: "-0.01em",
+    color: "inherit",
+  };
 
   return (
     <>
       <IconButton
         onClick={() => setOpen(true)}
         aria-label="open menu"
-        sx={{ py: 2.5 }}
+        sx={{ py: 2.5, color: "text.primary" }}
       >
         <MenuIcon />
       </IconButton>
@@ -67,14 +79,25 @@ export default function MobileMenuButton() {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
-        PaperProps={{ sx: { width: "100vw" } }}
+        PaperProps={{
+          sx: { width: "100vw", borderTop: "3px solid", borderColor: "primary.main" },
+        }}
       >
-        <Box sx={{ p: 2 }}>
+        <Box
+          sx={{
+            px: 2.5,
+            pb: 4,
+            minHeight: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              minHeight: 61,
               mb: 2,
             }}
           >
@@ -85,52 +108,63 @@ export default function MobileMenuButton() {
               height={44}
               priority
             />
-            <IconButton onClick={() => setOpen(false)} aria-label="close menu">
-              <CloseIcon sx={{ fontSize: 32 }} />
+            <IconButton
+              onClick={() => setOpen(false)}
+              aria-label="close menu"
+              sx={{ color: "text.primary", mr: -1 }}
+            >
+              <CloseIcon sx={{ fontSize: 28 }} />
             </IconButton>
           </Box>
 
-          <List>
-            {navLinks.map((link) =>
-              link.href === "#signout" ? (
-                <ListItem key={link.href} disablePadding>
-                  <ListItemButton onClick={() => handleNavClick(link.href)}>
-                    <ListItemText
-                      primary={link.label}
-                      sx={{
-                        textAlign: "right",
-                        "& .MuiTypography-root": {
-                          fontSize: "2rem",
-                          fontWeight: 700,
-                          color: "primary.main",
-                        },
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ) : (
-                <ListItem key={link.href} disablePadding>
-                  <ListItemButton
-                    component={Link}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                  >
-                    <ListItemText
-                      primary={link.label}
-                      sx={{
-                        textAlign: "right",
-                        "& .MuiTypography-root": {
-                          fontSize: "2rem",
-                          fontWeight: 700,
-                          color: "primary.main",
-                        },
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ),
-            )}
+          <List
+            component="nav"
+            aria-label="Mobile"
+            disablePadding
+            sx={{ borderTop: "1px solid", borderColor: "divider" }}
+          >
+            {navLinks.map((link) => (
+              <ListItem key={link.href} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  sx={linkSx}
+                >
+                  <Typography component="span" sx={labelSx}>
+                    {link.label}
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
+
+          <Box sx={{ mt: "auto", pt: 4, display: "flex", flexDirection: "column", gap: 1.5 }}>
+            <Button
+              component={Link}
+              href="/recruitment"
+              onClick={() => setOpen(false)}
+              size="large"
+              sx={{ py: "0.9rem" }}
+            >
+              Join Us
+            </Button>
+            {auth.status === "signed-in" ? (
+              <Button variant="outlined" onClick={signOut} sx={{ py: "0.9rem" }}>
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                component={Link}
+                href="/login"
+                variant="outlined"
+                onClick={() => setOpen(false)}
+                sx={{ py: "0.9rem" }}
+              >
+                Log In
+              </Button>
+            )}
+          </Box>
         </Box>
       </Drawer>
     </>
