@@ -8,6 +8,7 @@ export default function OurIBEAlumni() {
       subtitle="A network of graduates leading in engineering, consulting, finance, and technology across the country."
       image={alumniImg}
       imageAlt="IBE alumni gathered at a program reunion"
+      imageTag="Alumni · Reunion"
       objectPosition="top"
     />
   );

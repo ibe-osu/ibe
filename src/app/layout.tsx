@@ -1,25 +1,32 @@
 import type { Metadata, Viewport } from "next";
-import { PT_Serif_Caption, Source_Sans_3 } from "next/font/google";
+import { Bricolage_Grotesque, Geist_Mono, Source_Sans_3 } from "next/font/google";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import "./globals.css";
 import { ThemeProvider } from "../theme/ThemeProvider";
 import Header from "../components/general/Header";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Footer from "@/components/general/Footer";
-import HeroPrefetch from "@/components/general/HeroPrefetch";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const ptSerifCaption = PT_Serif_Caption({
-  weight: "400",
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-pt-serif-caption",
+  axes: ["opsz"],
+  variable: "--font-display",
   display: "swap",
 });
 
-const sourceSans = Source_Sans_3({
-  weight: ["400", "600", "700"],
+const body = Source_Sans_3({
+  weight: ["400", "600"],
   subsets: ["latin"],
-  variable: "--font-source-sans",
+  variable: "--font-body",
+  display: "swap",
+});
+
+const mono = Geist_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -55,10 +62,10 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/altLogo.png",
-        width: 778,
-        height: 262,
-        alt: "IBE Honors Program at The Ohio State University",
+        url: "/welcome.jpeg",
+        width: 1280,
+        height: 691,
+        alt: "IBE Honors Program students gathered on Ohio State's campus",
       },
     ],
     type: "website",
@@ -69,7 +76,7 @@ export const metadata: Metadata = {
     title: "Integrated Business & Engineering Honors Program",
     description:
       "Preparing the next generation of business and technology leaders at Ohio State.",
-    images: ["/altLogo.png"],
+    images: ["/welcome.jpeg"],
   },
 
   robots: {
@@ -79,7 +86,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ba0c2f",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0d" },
+  ],
 };
 
 const organizationJsonLd = {
@@ -115,8 +125,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${ptSerifCaption.variable} ${sourceSans.variable}`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
+        <InitColorSchemeScript attribute="class" defaultMode="system" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -129,8 +140,9 @@ export default function RootLayout({
               Skip to main content
             </a>
             <Header />
-            <main id="main-content">{children}</main>
-            <HeroPrefetch />
+            <main id="main-content" style={{ paddingTop: 88 }}>
+              {children}
+            </main>
             <Analytics />
             <SpeedInsights />
             <Footer />

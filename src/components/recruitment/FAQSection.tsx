@@ -1,7 +1,8 @@
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
 import FAQItem from "./FAQItem";
+import Wrap from "@/components/ui/Wrap";
+import Panel from "@/components/ui/Panel";
+import SectionHead from "@/components/ui/SectionHead";
 
 export const faqItems = [
   {
@@ -32,38 +33,15 @@ export const faqItems = [
 
 export default function FAQSection() {
   return (
-    <Box
-      component="section"
-      aria-labelledby="faq"
-      sx={{
-        py: { xs: 7, md: 11 },
-        borderTop: "1px solid",
-        borderColor: "divider",
-      }}
-    >
-      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
-            columnGap: { md: 6, lg: 10 },
-            rowGap: 4,
-            alignItems: "start",
-          }}
-        >
-          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
-            <Typography variant="h2" id="faq" sx={{ maxWidth: "10ch" }}>
-              Frequently Asked Questions
-            </Typography>
-          </Box>
-
-          <Box>
-            {faqItems.map((it) => (
-              <FAQItem key={it.q} question={it.q} answer={it.a} />
-            ))}
-          </Box>
-        </Box>
-      </Container>
+    <Box component="section" aria-labelledby="faq" sx={{ pt: { xs: 8, md: 12 } }}>
+      <Wrap sx={{ display: "grid", gap: { xs: 3, md: 4 } }}>
+        <SectionHead id="faq" title="Questions." />
+        <Panel sx={{ maxWidth: "58rem", width: "100%", mx: "auto" }}>
+          {faqItems.map((it) => (
+            <FAQItem key={it.q} question={it.q} answer={it.a} />
+          ))}
+        </Panel>
+      </Wrap>
     </Box>
   );
 }

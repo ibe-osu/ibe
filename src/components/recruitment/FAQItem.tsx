@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddIcon from "@mui/icons-material/Add";
 
 interface FAQItemProps {
   question: string;
@@ -10,26 +10,16 @@ interface FAQItemProps {
 }
 
 /**
- * Hand-rolled disclosure instead of MUI's Accordion/Collapse: Collapse
- * measures DOM height in JS on every open, which visibly stutters on first
- * expand. Animating `grid-template-rows` (0fr -> 1fr) on a CSS Grid track
- * is a pure-compositor transition — same visual result, no measurement lag.
+ * Hand-rolled disclosure: animating `grid-template-rows` (0fr -> 1fr) is a
+ * pure-compositor transition, unlike MUI's Collapse which measures height
+ * in JS and stutters on first open.
  */
 export default function FAQItem({ question, answer }: FAQItemProps) {
   const [open, setOpen] = useState(false);
   const contentId = useId();
 
   return (
-    <Box
-      sx={{
-        borderTop: "1px solid",
-        borderColor: "divider",
-        "&:last-of-type": {
-          borderBottom: "1px solid",
-          borderBottomColor: "divider",
-        },
-      }}
-    >
+    <Box sx={{ borderTop: "1px solid", borderColor: "divider", "&:first-of-type": { borderTop: 0 } }}>
       <Box
         component="button"
         type="button"
@@ -44,36 +34,23 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
           gap: 2,
           width: "100%",
           cursor: "pointer",
-          px: 0,
-          py: { xs: 2.25, md: 2.75 },
-          "&:focus-visible": {
-            outline: "2px solid",
-            outlineColor: "primary.main",
-            outlineOffset: "-2px",
-          },
+          px: { xs: 2.5, md: 3 },
+          py: 2,
+          "&:hover": { backgroundColor: "action.hover" },
+          "&:focus-visible": { outline: "2px solid", outlineColor: "signal.main", outlineOffset: -2 },
         }}
       >
-        <Typography
-          variant="h5"
-          component="span"
-          sx={{
-            flex: 1,
-            textAlign: "left",
-            fontWeight: 600,
-            textWrap: "pretty",
-            color: open ? "primary.main" : "text.primary",
-            transition: "color 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
-          }}
-        >
+        <Typography variant="h6" component="span" sx={{ flex: 1, textAlign: "left", textWrap: "pretty", color: open ? "signal.main" : "text.primary" }}>
           {question}
         </Typography>
-        <ExpandMoreIcon
+        <AddIcon
           aria-hidden="true"
           sx={{
             flexShrink: 0,
-            color: "primary.main",
-            transform: open ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+            fontSize: 20,
+            color: "text.disabled",
+            transform: open ? "rotate(45deg)" : "rotate(0deg)",
+            transition: "transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         />
       </Box>
@@ -84,18 +61,11 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
         sx={{
           display: "grid",
           gridTemplateRows: open ? "1fr" : "0fr",
-          transition: "grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+          transition: "grid-template-rows 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         <Box sx={{ overflow: "hidden" }}>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.secondary",
-              maxWidth: "68ch",
-              pb: 3.5,
-            }}
-          >
+          <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: "68ch", px: { xs: 2.5, md: 3 }, pb: 2.5 }}>
             {answer}
           </Typography>
         </Box>

@@ -42,32 +42,40 @@ Full details, including the emergency-bypass procedure, are in
   confirm you visually verified the change (don't rely on the build alone).
 - Keep changes scoped; match the surrounding code's style.
 
-## Design system — these are committed decisions, don't re-litigate them
+## Design system (Sept 2026 overhaul) — committed decisions
 
-- **Type**: PT Serif Caption (display / headings) + Source Sans 3 (body/UI),
-  loaded via `next/font` in `src/app/layout.tsx`. The fluid `clamp()` scale
-  lives in `src/theme/theme.ts`.
-- **Color**: OSU scarlet `#ba0c2f` is the non-negotiable brand color; ink
-  `#17181a`, secondary text `#494f53`, white stage. Square corners
-  (`borderRadius: 0`) are a deliberate collegiate voice — don't round
-  buttons or cards.
-- **Heroes**: shared [`src/components/general/PageHero.tsx`](src/components/general/PageHero.tsx)
-  — true-color photo, neutral bottom scrim, flush-left title. No scarlet
-  tint over photographs.
-- **Section grammar** (Sept 2026 redesign): flush-left grids (`4fr 8fr` or
-  `5fr 7fr`) inside `Container maxWidth="xl"` with `px: { xs: 2.5, md: 4,
-  lg: 6 }`, hairline rules (`divider`) instead of cards, and the program's
-  numbers set as large scarlet serif figures in ruled rows (the "ledger").
-  At most one scarlet band per page; the footer is ink.
-- **Font stacks in `sx`**: import `serifFamily` / `sansFamily` from
-  [`src/theme/fonts.ts`](src/theme/fonts.ts). Never use `(t) => t.typography…`
-  callbacks in `sx` — server components can't serialize functions to MUI's
-  client components and the page 500s.
-- **Motion**: GSAP. Every animation needs a `prefers-reduced-motion`
-  fallback, and content must be visible without JS (never gate visibility on
-  a scroll/reveal animation).
-- **Brand voice, audiences, and anti-references** are in
-  [`PRODUCT.md`](PRODUCT.md). Read it before making visual/brand decisions.
+- **Brand constraints**: the IBE logo, scarlet `#ba0c2f` on white (light) and
+  scarlet on near-black (dark). Everything else is open.
+- **Themes**: MUI color schemes with CSS variables
+  (`cssVariables: { colorSchemeSelector: "class" }` in
+  [`src/theme/theme.ts`](src/theme/theme.ts)); `InitColorSchemeScript` in the
+  layout prevents a flash; `ThemeToggle` uses `useColorScheme`. Always use
+  tokens in `sx` — `background.default/paper/panel`, `text.*`, `divider`,
+  `signal.main` (scarlet tuned for text on the current ground; `primary.main`
+  stays brand scarlet for fills). Never hard-code `#fff` except on scarlet.
+- **Type**: Bricolage Grotesque (display, 600) + Source Sans 3 (body) +
+  Geist Mono (labels, figures, dates), via `next/font` in `layout.tsx`.
+  Import `displayFamily` / `bodyFamily` / `monoFamily` from
+  [`src/theme/fonts.ts`](src/theme/fonts.ts) for `sx`. Never use
+  `(t) => …` callbacks in `sx` — server components can't serialize functions
+  to MUI's client components and the page 500s.
+- **Layout**: centered. `Wrap` (1120px, or `width="text"` for 68ch) and
+  `Panel` (hairline border, 8px radius, paper tint) in `src/components/ui/`.
+  Sections stack with `pt: { xs: 8, md: 12 }`; `SectionHead` centers a
+  label + title + lede. No left-heading/right-content grids.
+- **Heroes**: [`PageHero`](src/components/general/PageHero.tsx) = centered
+  title + lede, then the photo in a `PhotoPanel` (requested at panel width,
+  `priority` only there). No scrims, no full-bleed.
+- **Motion budget**: one `rise`/`settle` CSS entrance per page, count-ups
+  (`useCountUp`), hover states, the marquee. No scroll-triggered reveals, no
+  GSAP page choreography, never animate the LCP element's opacity. Every
+  animation respects `prefers-reduced-motion`; content is visible without JS.
+- **Dark-mode assets**: raster brand assets drawn for white get
+  `className="invert-on-dark"`; logo walls use
+  `.dark & img { filter: grayscale(1) invert(1) }`.
+- **Performance/SEO bar**: Lighthouse SEO and accessibility stay at 100;
+  LCP target < 2.5 s mobile. Check with `npx lighthouse` against
+  `npm run build && npm run start` (see the plan file for the recipe).
 
 ## Conventions
 

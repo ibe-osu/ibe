@@ -1,6 +1,7 @@
 import AboutUs from "@/components/about/AboutUs";
 import SeniorLeadership from "@/components/about/SeniorLeadership";
 import StudentLeadership from "@/components/about/StudentLeadership";
+import JoinBand from "@/components/home/JoinBand";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function About() {
       <AboutUs />
       <SeniorLeadership />
       <StudentLeadership />
+      <JoinBand />
     </>
   );
 }

@@ -1,63 +1,26 @@
-import { Box, Container, Link as MuiLink, Typography } from "@mui/material";
+import { Box, Link as MuiLink, Typography } from "@mui/material";
 import Image from "next/image";
 import { SPONSORS } from "@/data/sponsors";
-import Reveal from "@/components/general/Reveal";
+import Wrap from "@/components/ui/Wrap";
+import Panel from "@/components/ui/Panel";
+import SectionHead from "@/components/ui/SectionHead";
 
 export default function Sponsors() {
   return (
-    <Box
-      component="section"
-      aria-label="Program sponsors"
-      sx={{
-        py: { xs: 6, md: 9 },
-        backgroundColor: "#fff",
-        borderTop: "1px solid",
-        borderColor: "divider",
-      }}
-    >
-      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
-        <Box
+    <Box component="section" aria-label="Program sponsors" sx={{ pt: { xs: 8, md: 12 } }}>
+      <Wrap sx={{ display: "grid", gap: { xs: 3, md: 4 } }}>
+        <SectionHead
+          label="Partners"
+          title="Program sponsors"
+          lede="Industry partners who invest in the next generation of business and engineering leaders."
+        />
+        {/* 1px gaps over the divider colour draw the hairlines between cells. */}
+        <Panel
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
-            columnGap: { md: 6, lg: 10 },
-            rowGap: 2,
-            alignItems: "end",
-            mb: { xs: 4, md: 6 },
-          }}
-        >
-          <Typography variant="h2" sx={{ maxWidth: "10ch" }}>
-            Program Sponsors
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.secondary",
-              maxWidth: "52ch",
-              fontSize: { md: "1.125rem" },
-            }}
-          >
-            Industry partners who invest in the next generation of business and
-            engineering leaders.
-          </Typography>
-        </Box>
-
-        {/* Ruled logo wall: 1px gaps over the divider color draw the
-            hairlines; logos rest muted and take full color on hover. */}
-        <Reveal
-          variant="stagger"
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(2, 1fr)",
-              sm: "repeat(3, 1fr)",
-              md: "repeat(4, 1fr)",
-              lg: "repeat(6, 1fr)",
-            },
+            gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(6, 1fr)" },
             gap: "1px",
             backgroundColor: "divider",
-            border: "1px solid",
-            borderColor: "divider",
           }}
         >
           {SPONSORS.map((sponsor) => (
@@ -67,20 +30,20 @@ export default function Sponsors() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#fff",
-                minHeight: { xs: "6.5rem", md: "8rem" },
-                px: 3,
-                py: 2.5,
+                backgroundColor: "background.paper",
+                minHeight: { xs: "5.5rem", md: "6.5rem" },
+                px: 2.5,
+                py: 2,
                 "& img": {
                   filter: "grayscale(1)",
-                  opacity: 0.6,
-                  transition:
-                    "filter 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1)",
+                  opacity: 0.7,
+                  transition: "filter 0.3s cubic-bezier(0.25,1,0.5,1), opacity 0.3s cubic-bezier(0.25,1,0.5,1)",
                 },
-                "&:hover img": {
-                  filter: "none",
-                  opacity: 1,
-                },
+                "&:hover img": { filter: "none", opacity: 1 },
+                // Invert after greyscale so logos drawn on white keep a
+                // dark ground that disappears into the panel.
+                ".dark & img": { filter: "grayscale(1) invert(1)", opacity: 0.7 },
+                ".dark &:hover img": { filter: "grayscale(1) invert(1)", opacity: 1 },
               }}
             >
               <Image
@@ -88,27 +51,19 @@ export default function Sponsors() {
                 alt={`${sponsor.name} logo`}
                 width={150}
                 height={80}
-                style={{
-                  maxWidth: "140px",
-                  maxHeight: "64px",
-                  width: "auto",
-                  height: "auto",
-                  objectFit: "contain",
-                }}
+                style={{ maxWidth: "120px", maxHeight: "52px", width: "auto", height: "auto", objectFit: "contain" }}
               />
             </Box>
           ))}
-          {/* Filler cell keeps the ruled grid rectangular and doubles as a
-              partnership invitation. */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: "#fff",
-              minHeight: { xs: "6.5rem", md: "8rem" },
-              px: 3,
-              py: 2.5,
+              backgroundColor: "background.paper",
+              minHeight: { xs: "5.5rem", md: "6.5rem" },
+              px: 2.5,
+              py: 2,
               textAlign: "center",
             }}
           >
@@ -116,20 +71,14 @@ export default function Sponsors() {
               Interested in sponsoring?{" "}
               <MuiLink
                 href="mailto:cheng.2066@osu.edu"
-                sx={{
-                  color: "primary.main",
-                  fontWeight: 600,
-                  textDecoration: "underline",
-                  textUnderlineOffset: "3px",
-                  "&:hover": { color: "primary.dark" },
-                }}
+                sx={{ color: "signal.main", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: "3px" }}
               >
                 Partner with IBE
               </MuiLink>
             </Typography>
           </Box>
-        </Reveal>
-      </Container>
+        </Panel>
+      </Wrap>
     </Box>
   );
 }

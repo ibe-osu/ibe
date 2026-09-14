@@ -8,6 +8,7 @@ export default function StudentLifeHeader() {
       subtitle="Program treks, keynote speakers, and socials — while we strive for excellence, we build lasting relationships and enjoy the journey along the way."
       image={studentLifeImg}
       imageAlt="IBE students gathered with corporate hosts during the Cleveland trek"
+      imageTag="Cleveland trek · March 2025"
     />
   );
 }

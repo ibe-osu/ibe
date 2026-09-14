@@ -1,3 +1,4 @@
+import Compare from "@/components/home/Compare";
 import FourYearJourney from "@/components/home/FourYearJourney";
 import JoinBand from "@/components/home/JoinBand";
 import OurStats from "@/components/home/OurStats";
@@ -12,6 +13,7 @@ export default function Home() {
       <OurStats />
       <WhoAreWe />
       <FourYearJourney />
+      <Compare />
       <Sponsors />
       <JoinBand />
     </>

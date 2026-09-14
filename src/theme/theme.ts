@@ -1,241 +1,216 @@
 import { createTheme } from "@mui/material/styles";
-import { sansFamily as sans, serifFamily as serif } from "./fonts";
+import { bodyFamily, displayFamily, monoFamily } from "./fonts";
 
 declare module "@mui/material/styles" {
   interface Palette {
-    ink: Palette["primary"];
+    /** Scarlet tuned for text and rules on the current ground. */
+    signal: Palette["primary"];
   }
   interface PaletteOptions {
-    ink?: PaletteOptions["primary"];
+    signal?: PaletteOptions["primary"];
+  }
+  interface TypeBackground {
+    /** A second, slightly deeper panel tint. */
+    panel: string;
   }
 }
 
+const scarlet = "#ba0c2f";
+const scarletDark = "#8e0a24";
+const scarletBright = "#ff3b5c";
+
 const theme = createTheme({
+  cssVariables: { colorSchemeSelector: "class" },
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: scarlet,
+          dark: scarletDark,
+          light: scarletBright,
+          contrastText: "#ffffff",
+        },
+        signal: {
+          main: scarlet,
+          dark: scarletDark,
+          light: scarletBright,
+          contrastText: "#ffffff",
+        },
+        secondary: { main: "#121114" },
+        background: { default: "#ffffff", paper: "#fbf9f9", panel: "#f4f1f2" },
+        text: { primary: "#121114", secondary: "#5d5358", disabled: "#8b8085" },
+        divider: "rgba(18, 17, 20, 0.12)",
+        action: { hover: "rgba(18, 17, 20, 0.04)" },
+        error: { main: "#c62828" },
+        success: { main: "#2e7d32" },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          main: scarlet,
+          dark: scarletDark,
+          light: scarletBright,
+          contrastText: "#ffffff",
+        },
+        signal: {
+          main: scarletBright,
+          dark: scarlet,
+          light: "#ff7088",
+          contrastText: "#0b0b0d",
+        },
+        secondary: { main: "#f3f1f2" },
+        background: { default: "#0b0b0d", paper: "#121214", panel: "#18181b" },
+        text: { primary: "#f3f1f2", secondary: "#a9a1a4", disabled: "#75696e" },
+        divider: "rgba(255, 255, 255, 0.11)",
+        action: { hover: "rgba(255, 255, 255, 0.06)" },
+        error: { main: "#ef5350" },
+        success: { main: "#66bb6a" },
+      },
+    },
+  },
+  shape: { borderRadius: 4 },
   typography: {
-    fontFamily: sans,
+    fontFamily: bodyFamily,
     h1: {
-      fontFamily: serif,
-      fontSize: "clamp(2.75rem, 5vw + 1rem, 5.5rem)",
-      lineHeight: 1.02,
-      letterSpacing: "-0.02em",
+      fontFamily: displayFamily,
+      fontWeight: 600,
+      fontSize: "clamp(2.25rem, 4.6vw, 3.4rem)",
+      lineHeight: 1.05,
+      letterSpacing: "-0.035em",
     },
     h2: {
-      fontFamily: serif,
-      fontSize: "clamp(2.125rem, 3.2vw + 1rem, 3.75rem)",
-      lineHeight: 1.06,
-      letterSpacing: "-0.015em",
+      fontFamily: displayFamily,
+      fontWeight: 600,
+      fontSize: "clamp(1.6rem, 3vw, 2.25rem)",
+      lineHeight: 1.1,
+      letterSpacing: "-0.03em",
     },
     h3: {
-      fontFamily: serif,
-      fontSize: "clamp(1.625rem, 1.8vw + 0.9rem, 2.375rem)",
-      lineHeight: 1.15,
-      letterSpacing: "-0.01em",
+      fontFamily: displayFamily,
+      fontWeight: 600,
+      fontSize: "clamp(1.2rem, 1.6vw, 1.5rem)",
+      lineHeight: 1.2,
+      letterSpacing: "-0.02em",
     },
     h4: {
-      fontFamily: serif,
-      fontSize: "clamp(1.35rem, 1.2vw + 0.9rem, 1.75rem)",
-      lineHeight: 1.3,
-    },
-    h5: {
-      fontFamily: sans,
-      fontSize: "1.25rem",
+      fontFamily: displayFamily,
       fontWeight: 600,
-      lineHeight: 1.4,
+      fontSize: "1.15rem",
+      lineHeight: 1.25,
+      letterSpacing: "-0.015em",
     },
-    h6: {
-      fontFamily: sans,
-      fontSize: "1.1rem",
-      fontWeight: 600,
-      lineHeight: 1.45,
-    },
-    subtitle1: {
-      fontFamily: sans,
-      fontSize: "1.125rem",
-      lineHeight: 1.6,
-    },
-    body1: {
-      fontFamily: sans,
-      fontSize: "1.0625rem",
-      lineHeight: 1.65,
-    },
-    body2: {
-      fontFamily: sans,
-      fontSize: "0.9375rem",
-      lineHeight: 1.6,
-    },
+    h5: { fontFamily: bodyFamily, fontWeight: 600, fontSize: "1.05rem", lineHeight: 1.4 },
+    h6: { fontFamily: bodyFamily, fontWeight: 600, fontSize: "1rem", lineHeight: 1.45 },
+    subtitle1: { fontFamily: bodyFamily, fontSize: "1.125rem", lineHeight: 1.6 },
+    body1: { fontFamily: bodyFamily, fontSize: "1.0625rem", lineHeight: 1.6 },
+    body2: { fontFamily: bodyFamily, fontSize: "0.9375rem", lineHeight: 1.55 },
     overline: {
-      fontFamily: sans,
-      fontSize: "0.75rem",
-      fontWeight: 600,
-      letterSpacing: "0.14em",
+      fontFamily: monoFamily,
+      fontSize: "0.72rem",
+      fontWeight: 500,
+      letterSpacing: "0.12em",
       lineHeight: 1.5,
       textTransform: "uppercase",
     },
-    button: {
-      fontFamily: sans,
-      fontWeight: 600,
-      letterSpacing: "0.01em",
-    },
-  },
-  palette: {
-    primary: {
-      light: "#DD8697",
-      main: "#ba0c2f",
-      dark: "#8e0a24",
-    },
-    secondary: {
-      main: "#fff",
-      light: "#646A6E",
-      dark: "#000",
-    },
-    ink: {
-      main: "#17181a",
-      light: "#2b2d30",
-      dark: "#0e0f10",
-      contrastText: "#ffffff",
-    },
-    grey: {
-      50: "#fafafa",
-      100: "#f5f5f5",
-      200: "#eeeeee",
-      300: "#e0e0e0",
-      400: "#bdbdbd",
-      500: "#9e9e9e",
-      600: "#757575",
-      700: "#616161",
-      800: "#424242",
-      900: "#212121",
-    },
-    text: {
-      primary: "#17181a",
-      secondary: "#494f53",
-    },
-    background: {
-      default: "#ffffff",
-      paper: "#ffffff",
-    },
-    divider: "rgba(23, 24, 26, 0.14)",
-    // Deliberately distinct from primary scarlet (#ba0c2f) so a form error
-    // never reads as a brand accent. Standard Material red/green 800s —
-    // desaturated enough to sit quietly next to the brand color.
-    error: {
-      light: "#e57373",
-      main: "#c62828",
-      dark: "#8e0000",
-    },
-    success: {
-      light: "#66bb6a",
-      main: "#2e7d32",
-      dark: "#1b5e20",
-    },
-  },
-  shape: {
-    borderRadius: 0,
+    button: { fontFamily: bodyFamily, fontWeight: 600, letterSpacing: "0" },
   },
   components: {
-    MuiButton: {
-      defaultProps: {
-        variant: "contained",
-        disableElevation: true,
-      },
+    MuiCssBaseline: {
       styleOverrides: {
-        root: {
-          textTransform: "none",
-          fontSize: "1rem",
-          borderRadius: 0,
-          boxShadow: "none",
-          padding: "0.75rem 1.5rem",
-          transition:
-            "background-color 0.18s cubic-bezier(0.25, 1, 0.5, 1), color 0.18s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.18s cubic-bezier(0.25, 1, 0.5, 1), transform 0.12s cubic-bezier(0.25, 1, 0.5, 1)",
-          "&:active": {
-            transform: "translateY(1px)",
-          },
-          "&:focus-visible": {
-            outline: "2px solid #ba0c2f",
-            outlineOffset: "3px",
-          },
-        },
-        containedPrimary: {
-          "&:hover": {
-            backgroundColor: "#8e0a24",
-            boxShadow: "none",
-          },
-        },
-        outlinedPrimary: {
-          borderWidth: "2px",
-          "&:hover": {
-            borderWidth: "2px",
-            backgroundColor: "rgba(186, 12, 47, 0.06)",
-          },
-        },
+        body: { WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" },
       },
     },
-    MuiAppBar: {
+    MuiPaper: {
+      defaultProps: { elevation: 0 },
+      styleOverrides: { root: { backgroundImage: "none" } },
+    },
+    MuiButton: {
+      defaultProps: { variant: "contained", disableElevation: true },
       styleOverrides: {
-        root: {
-          backgroundColor: "rgba(255, 255, 255, 0.96)",
-          backdropFilter: "blur(10px)",
-          color: "#17181a",
+        root: ({ theme }) => ({
+          textTransform: "none",
+          fontSize: "0.95rem",
+          padding: "0.625rem 1rem",
+          borderRadius: theme.shape.borderRadius,
           boxShadow: "none",
-          borderTop: "3px solid #ba0c2f",
-          borderBottom: "1px solid rgba(23, 24, 26, 0.12)",
-        },
+          transition:
+            "background-color 160ms cubic-bezier(0.25,1,0.5,1), border-color 160ms cubic-bezier(0.25,1,0.5,1), color 160ms cubic-bezier(0.25,1,0.5,1), transform 120ms cubic-bezier(0.25,1,0.5,1)",
+          "&:hover": { transform: "translateY(-1px)" },
+          "&:active": { transform: "translateY(0)" },
+          "&:focus-visible": {
+            outline: `2px solid ${theme.vars.palette.signal.main}`,
+            outlineOffset: 3,
+          },
+          "@media (prefers-reduced-motion: reduce)": { transition: "none", "&:hover": { transform: "none" } },
+        }),
+        containedPrimary: { "&:hover": { backgroundColor: scarletDark, boxShadow: "none" } },
+        outlined: ({ theme }) => ({
+          borderColor: theme.vars.palette.divider,
+          color: theme.vars.palette.text.primary,
+          backgroundColor: theme.vars.palette.background.paper,
+          "&:hover": {
+            borderColor: theme.vars.palette.text.primary,
+            backgroundColor: theme.vars.palette.background.paper,
+          },
+        }),
+        sizeLarge: { padding: "0.8rem 1.25rem", fontSize: "1rem" },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          "&:focus-visible": {
+            outline: `2px solid ${theme.vars.palette.signal.main}`,
+            outlineOffset: 2,
+          },
+        }),
       },
     },
     MuiLink: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           "&:focus-visible": {
-            outline: "2px solid #ba0c2f",
-            outlineOffset: "2px",
+            outline: `2px solid ${theme.vars.palette.signal.main}`,
+            outlineOffset: 2,
           },
-        },
+        }),
       },
     },
-    // First form inputs in the repo — square corners and a scarlet focus
-    // ring to match MuiButton, since nothing here inherits those for free.
     MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          borderRadius: 0,
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "rgba(23, 24, 26, 0.23)",
-          },
+        root: ({ theme }) => ({
+          backgroundColor: theme.vars.palette.background.paper,
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: theme.vars.palette.divider },
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#17181a",
+            borderColor: theme.vars.palette.text.primary,
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#ba0c2f",
-            borderWidth: "2px",
+            borderColor: theme.vars.palette.signal.main,
+            borderWidth: 2,
           },
-          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#c62828",
-          },
-        },
-        input: {
-          "&:-webkit-autofill": {
-            // Square-corner-compatible override of Chrome's autofill yellow,
-            // which otherwise ignores border-radius and looks out of place.
-            boxShadow: "0 0 0 1000px #ffffff inset",
-            WebkitTextFillColor: "#17181a",
-          },
-        },
+        }),
       },
     },
     MuiFormLabel: {
       styleOverrides: {
-        root: {
-          "&.Mui-focused": { color: "#ba0c2f" },
-          "&.Mui-error": { color: "#c62828" },
-        },
+        root: ({ theme }) => ({
+          "&.Mui-focused": { color: theme.vars.palette.signal.main },
+        }),
       },
     },
-    MuiFormHelperText: {
+    MuiFormHelperText: { styleOverrides: { root: { marginLeft: 0, fontSize: "0.8125rem" } } },
+    MuiDrawer: {
       styleOverrides: {
-        root: {
-          marginLeft: 0,
-          fontSize: "0.8125rem",
-        },
+        paper: ({ theme }) => ({ backgroundColor: theme.vars.palette.background.default }),
+      },
+    },
+    MuiMenu: {
+      styleOverrides: {
+        paper: ({ theme }) => ({
+          border: `1px solid ${theme.vars.palette.divider}`,
+          backgroundColor: theme.vars.palette.background.paper,
+        }),
       },
     },
   },

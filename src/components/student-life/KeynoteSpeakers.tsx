@@ -1,6 +1,8 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import SpeakerCarousel from "./SpeakerCarousel";
 import { Speaker } from "./SpeakerCard";
+import Wrap from "@/components/ui/Wrap";
+import SectionHead from "@/components/ui/SectionHead";
 
 const speakers: Speaker[] = [
   {
@@ -49,48 +51,16 @@ const speakers: Speaker[] = [
 
 export default function KeynoteSpeakers() {
   return (
-    <Box
-      component="section"
-      aria-labelledby="keynote-speakers"
-      sx={{
-        py: { xs: 7, md: 11 },
-        backgroundColor: "#f9f6f6",
-        borderBottom: "1px solid",
-        borderColor: "divider",
-      }}
-    >
-      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "5fr 7fr" },
-            columnGap: { md: 6, lg: 10 },
-            rowGap: 2,
-            alignItems: "end",
-            mb: { xs: 4, md: 6 },
-          }}
-        >
-          <Typography
-            variant="h2"
-            id="keynote-speakers"
-            sx={{ maxWidth: "12ch" }}
-          >
-            Recent Keynote Speakers
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.secondary",
-              maxWidth: "52ch",
-              fontSize: { md: "1.125rem" },
-            }}
-          >
-            Industry leaders and entrepreneurs regularly join IBE keynote events
-            to share insights with the cohort.
-          </Typography>
-        </Box>
+    <Box component="section" aria-labelledby="keynote-speakers" sx={{ pt: { xs: 8, md: 12 } }}>
+      <Wrap sx={{ display: "grid", gap: { xs: 3, md: 4 } }}>
+        <SectionHead
+          id="keynote-speakers"
+          label="Keynotes"
+          title="Recent keynote speakers"
+          lede="Industry leaders and entrepreneurs regularly join IBE keynote events to share insights with the cohort."
+        />
         <SpeakerCarousel speakers={speakers} />
-      </Container>
+      </Wrap>
     </Box>
   );
 }

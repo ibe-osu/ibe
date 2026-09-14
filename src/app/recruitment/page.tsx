@@ -3,6 +3,7 @@ import AdmissionOverview from "@/components/recruitment/AdmissionOverview";
 import ApplicationTimeline from "@/components/recruitment/ApplicationTimeline";
 import InfoCardSection from "@/components/recruitment/InfoCardSection";
 import FAQSection, { faqItems } from "@/components/recruitment/FAQSection";
+import JoinBand from "@/components/home/JoinBand";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -30,15 +31,13 @@ const faqJsonLd = {
 export default function Recruitment() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <RecruitmentTop />
       <AdmissionOverview />
       <ApplicationTimeline />
       <InfoCardSection />
       <FAQSection />
+      <JoinBand />
     </>
   );
 }

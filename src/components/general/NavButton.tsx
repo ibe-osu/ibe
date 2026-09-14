@@ -16,40 +16,19 @@ export default function NavButton({ children, href }: NavButtonProps) {
   return (
     <Button
       variant="text"
-      color="inherit"
       component={Link}
       href={href}
       aria-current={active ? "page" : undefined}
       sx={{
-        position: "relative",
-        color: active ? "primary.main" : "text.primary",
-        fontSize: "0.75rem",
-        fontWeight: 600,
-        letterSpacing: "0.12em",
-        textTransform: "uppercase",
-        backgroundColor: "transparent",
-        transition: "color 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
-        padding: "0.5rem 0.5rem",
+        color: active ? "text.primary" : "text.secondary",
+        fontSize: "0.9rem",
+        fontWeight: active ? 600 : 500,
+        px: 1.25,
+        py: 0.75,
         minWidth: 0,
-        "&::after": {
-          content: '""',
-          position: "absolute",
-          left: "0.5rem",
-          right: "0.5rem",
-          bottom: 4,
-          height: "1.5px",
-          backgroundColor: "primary.main",
-          transform: active ? "scaleX(1)" : "scaleX(0)",
-          transformOrigin: "left",
-          transition: "transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)",
-        },
-        "&:hover::after": {
-          transform: "scaleX(1)",
-        },
-        "&:hover": {
-          color: "primary.main",
-          backgroundColor: "transparent",
-        },
+        borderRadius: 999,
+        backgroundColor: active ? "action.hover" : "transparent",
+        "&:hover": { color: "text.primary", backgroundColor: "action.hover", transform: "none" },
       }}
     >
       {children}

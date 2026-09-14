@@ -1,6 +1,7 @@
 import StudentLifeHeader from "@/components/student-life/StudentLife";
 import KeynoteSpeakers from "@/components/student-life/KeynoteSpeakers";
 import Happenings from "@/components/student-life/Happenings";
+import JoinBand from "@/components/home/JoinBand";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function StudentLife() {
       <StudentLifeHeader />
       <KeynoteSpeakers />
       <Happenings />
+      <JoinBand />
     </>
   );
 }

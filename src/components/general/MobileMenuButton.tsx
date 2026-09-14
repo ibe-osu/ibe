@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Drawer, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,7 +9,7 @@ import Image from "next/image";
 import { useAuthState } from "@/lib/auth/useAuthState";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { serifFamily } from "@/theme/fonts";
+import { displayFamily } from "@/theme/fonts";
 
 export default function MobileMenuButton() {
   const [open, setOpen] = useState(false);
@@ -30,9 +21,9 @@ export default function MobileMenuButton() {
     { href: "/about", label: "About" },
     { href: "/alumni", label: "Alumni" },
     { href: "/student-life", label: "Student Life" },
-    // "Resources" and "Alumni Database" are signed-in-only, same rule as
-    // the desktop nav (src/components/auth/AuthNavLinks.tsx) — nothing
-    // security-sensitive rides on this list, just what's shown.
+    // Signed-in-only links follow the same cosmetic rule as the desktop
+    // nav (src/components/auth/AuthNavLinks.tsx); the real gate is on the
+    // /members pages themselves.
     ...(auth.status === "signed-in"
       ? [
           { href: "/members", label: "Resources" },
@@ -49,89 +40,46 @@ export default function MobileMenuButton() {
     router.refresh();
   }
 
-  const linkSx = {
-    px: 0,
-    py: 2,
-    borderBottom: "1px solid",
-    borderColor: "divider",
-    "&:hover": { backgroundColor: "transparent", color: "primary.main" },
-  };
-
-  const labelSx = {
-    fontFamily: serifFamily,
-    fontSize: "2rem",
-    lineHeight: 1.1,
-    letterSpacing: "-0.01em",
-    color: "inherit",
-  };
-
   return (
     <>
       <IconButton
         onClick={() => setOpen(true)}
         aria-label="open menu"
-        sx={{ py: 2.5, color: "text.primary" }}
+        size="small"
+        sx={{ width: 34, height: 34, color: "text.primary", border: "1px solid", borderColor: "divider" }}
       >
-        <MenuIcon />
+        <MenuIcon sx={{ fontSize: 20 }} />
       </IconButton>
 
-      <Drawer
-        anchor="right"
-        open={open}
-        onClose={() => setOpen(false)}
-        PaperProps={{
-          sx: { width: "100vw", borderTop: "3px solid", borderColor: "primary.main" },
-        }}
-      >
-        <Box
-          sx={{
-            px: 2.5,
-            pb: 4,
-            minHeight: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              minHeight: 61,
-              mb: 2,
-            }}
-          >
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)} PaperProps={{ sx: { width: "100vw" } }}>
+        <Box sx={{ px: 2.5, pb: 4, minHeight: "100%", display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: 64, mb: 2 }}>
             <Image
               src="/altLogo.png"
               alt="IBE Honors Program at The Ohio State University"
-              width={131}
-              height={44}
-              priority
+              width={112}
+              height={38}
+              className="invert-on-dark"
+              style={{ height: 34, width: "auto" }}
             />
-            <IconButton
-              onClick={() => setOpen(false)}
-              aria-label="close menu"
-              sx={{ color: "text.primary", mr: -1 }}
-            >
-              <CloseIcon sx={{ fontSize: 28 }} />
+            <IconButton onClick={() => setOpen(false)} aria-label="close menu" sx={{ color: "text.primary", mr: -1 }}>
+              <CloseIcon sx={{ fontSize: 26 }} />
             </IconButton>
           </Box>
 
-          <List
-            component="nav"
-            aria-label="Mobile"
-            disablePadding
-            sx={{ borderTop: "1px solid", borderColor: "divider" }}
-          >
+          <List component="nav" aria-label="Mobile" disablePadding sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             {navLinks.map((link) => (
               <ListItem key={link.href} disablePadding>
                 <ListItemButton
                   component={Link}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  sx={linkSx}
+                  sx={{ px: 0, py: 1.75, borderBottom: "1px solid", borderColor: "divider" }}
                 >
-                  <Typography component="span" sx={labelSx}>
+                  <Typography
+                    component="span"
+                    sx={{ fontFamily: displayFamily, fontWeight: 600, fontSize: "1.75rem", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                  >
                     {link.label}
                   </Typography>
                 </ListItemButton>
@@ -140,27 +88,15 @@ export default function MobileMenuButton() {
           </List>
 
           <Box sx={{ mt: "auto", pt: 4, display: "flex", flexDirection: "column", gap: 1.5 }}>
-            <Button
-              component={Link}
-              href="/recruitment"
-              onClick={() => setOpen(false)}
-              size="large"
-              sx={{ py: "0.9rem" }}
-            >
+            <Button component={Link} href="/recruitment" onClick={() => setOpen(false)} size="large">
               Join Us
             </Button>
             {auth.status === "signed-in" ? (
-              <Button variant="outlined" onClick={signOut} sx={{ py: "0.9rem" }}>
+              <Button variant="outlined" size="large" onClick={signOut}>
                 Sign Out
               </Button>
             ) : (
-              <Button
-                component={Link}
-                href="/login"
-                variant="outlined"
-                onClick={() => setOpen(false)}
-                sx={{ py: "0.9rem" }}
-              >
+              <Button component={Link} href="/login" variant="outlined" size="large" onClick={() => setOpen(false)}>
                 Log In
               </Button>
             )}

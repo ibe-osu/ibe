@@ -2,6 +2,7 @@ import Companies from "@/components/alumni/Companies";
 import OurIBEAlumni from "@/components/alumni/OurIBEAlumni";
 import AlumniSpotlights from "@/components/alumni/AlumniSpotlights";
 import StudentTestimonials from "@/components/alumni/StudentTestimonials";
+import JoinBand from "@/components/home/JoinBand";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function Alumni() {
       <Companies />
       <AlumniSpotlights />
       <StudentTestimonials />
+      <JoinBand />
     </>
   );
 }

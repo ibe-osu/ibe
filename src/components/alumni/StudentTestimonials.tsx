@@ -1,5 +1,7 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import TestimonialCarousel, { Testimonial } from "./TestimonialCarousel";
+import Wrap from "@/components/ui/Wrap";
+import SectionHead from "@/components/ui/SectionHead";
 
 const testimonials: Testimonial[] = [
   {
@@ -9,8 +11,7 @@ const testimonials: Testimonial[] = [
   },
   {
     text: "I credit so much of my professional development and success to the IBE program. It has allowed me to try various engineering and business internships. The mentorship I've received from the IBE network has been invaluable and I am so excited to take my knowledge with me into industry",
-    author:
-      "Rachel Sapola, Incoming Associate @ Boston Consulting Group, IBE 10th Cohort",
+    author: "Rachel Sapola, Incoming Associate @ Boston Consulting Group, IBE 10th Cohort",
     imageUrl: "/testimonial/RachelSapola.jpeg",
   },
   {
@@ -22,33 +23,11 @@ const testimonials: Testimonial[] = [
 
 export default function StudentTestimonials() {
   return (
-    <Box
-      component="section"
-      aria-labelledby="student-testimonials"
-      sx={{ py: { xs: 7, md: 11 } }}
-    >
-      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
-            columnGap: { md: 6, lg: 10 },
-            rowGap: 4,
-            alignItems: "start",
-          }}
-        >
-          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
-            <Typography
-              variant="h2"
-              id="student-testimonials"
-              sx={{ maxWidth: "10ch" }}
-            >
-              Student Testimonials
-            </Typography>
-          </Box>
-          <TestimonialCarousel testimonials={testimonials} />
-        </Box>
-      </Container>
+    <Box component="section" aria-labelledby="student-testimonials" sx={{ pt: { xs: 8, md: 12 } }}>
+      <Wrap sx={{ display: "grid", gap: { xs: 3, md: 4 } }}>
+        <SectionHead id="student-testimonials" label="In their words" title="Student testimonials" />
+        <TestimonialCarousel testimonials={testimonials} />
+      </Wrap>
     </Box>
   );
 }

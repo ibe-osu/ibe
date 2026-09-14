@@ -1,13 +1,8 @@
-"use client";
-
-import { useRef } from "react";
-import { Box, Container, Typography } from "@mui/material";
-import Image, { type StaticImageData } from "next/image";
-import gsap from "gsap";
-import { SplitText } from "gsap/SplitText";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(useGSAP, SplitText);
+import { Box, Typography } from "@mui/material";
+import type { StaticImageData } from "next/image";
+import Wrap from "@/components/ui/Wrap";
+import Chip from "@/components/ui/Chip";
+import PhotoPanel from "@/components/ui/PhotoPanel";
 
 interface PageHeroProps {
   title: string;
@@ -15,159 +10,36 @@ interface PageHeroProps {
   kicker?: string;
   image: StaticImageData;
   imageAlt: string;
+  imageTag?: string;
   objectPosition?: string;
-  height?: { xs: string; md: string };
 }
 
 /**
- * Shared full-bleed page hero: true-color photo, a neutral scrim rising from
- * the bottom edge, and the page h1 set flush-left on the grid. Static imports
- * give every banner an instant blur placeholder so client-side navigation
- * never shows a blank band while the photo streams in. The line-mask entrance
- * only runs for motion-tolerant visitors; the DOM is complete without it.
+ * Page opener: centered title and lede, then the page's photograph in a
+ * bordered panel. No scrim, no full-bleed, no entrance choreography beyond
+ * a single rise.
  */
-export default function PageHero({
-  title,
-  subtitle,
-  kicker,
-  image,
-  imageAlt,
-  objectPosition = "center",
-  height = { xs: "62svh", md: "72vh" },
-}: PageHeroProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const el = ref.current;
-      if (!el) return;
-      if (
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-        document.hidden
-      ) {
-        return;
-      }
-
-      const heading = el.querySelector<HTMLElement>("[data-hero-title]");
-      const photo = el.querySelector<HTMLElement>("[data-hero-photo]");
-      const rest = el.querySelectorAll<HTMLElement>("[data-hero-rest]");
-      if (!heading) return;
-
-      let split: SplitText | undefined;
-      const tl = gsap.timeline({
-        defaults: { ease: "power4.out" },
-        onComplete: () => split?.revert(),
-      });
-
-      if (photo) {
-        tl.fromTo(
-          photo,
-          { scale: 1.06 },
-          { scale: 1, duration: 1.6, ease: "power3.out" },
-          0,
-        );
-      }
-
-      document.fonts.ready.then(() => {
-        split = SplitText.create(heading, { type: "lines", mask: "lines" });
-        tl.from(
-          split.lines,
-          { yPercent: 105, duration: 1, stagger: 0.09 },
-          0.15,
-        ).from(rest, { y: 18, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.5);
-      });
-    },
-    { scope: ref },
-  );
-
+export default function PageHero({ title, subtitle, kicker, image, imageAlt, imageTag, objectPosition = "center" }: PageHeroProps) {
   return (
-    <Box
-      ref={ref}
-      component="section"
-      sx={{
-        position: "relative",
-        height,
-        minHeight: "420px",
-        maxHeight: "860px",
-        overflow: "hidden",
-        backgroundColor: "ink.main",
-      }}
-    >
-      <Box
-        data-hero-photo
-        sx={{ position: "absolute", inset: 0, transformOrigin: "center" }}
-      >
-        <Image
-          src={image}
-          alt={imageAlt}
-          priority
-          placeholder="blur"
-          sizes="100vw"
-          style={{
-            objectFit: "cover",
-            objectPosition,
-            pointerEvents: "none",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-      </Box>
-      <Box
-        aria-hidden="true"
-        sx={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(to top, rgba(12, 12, 14, 0.78) 0%, rgba(12, 12, 14, 0.38) 42%, rgba(12, 12, 14, 0.06) 100%)",
-        }}
-      />
-
-      <Container
-        maxWidth="xl"
-        sx={{
-          position: "relative",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          px: { xs: 2.5, md: 4, lg: 6 },
-          pb: { xs: 4, md: 7 },
-        }}
-      >
-        {kicker && (
-          <Typography
-            variant="overline"
-            component="p"
-            data-hero-rest
-            sx={{ color: "rgba(255, 255, 255, 0.82)", mb: 1.5 }}
-          >
-            {kicker}
+    <Box component="section" sx={{ pt: { xs: 3, md: 6 } }}>
+      <Wrap sx={{ display: "grid", gap: { xs: 4, md: 5 } }}>
+        <Box className="rise" sx={{ display: "grid", gap: 2, justifyItems: "center", textAlign: "center" }}>
+          {kicker && <Chip>{kicker}</Chip>}
+          <Typography variant="h1" sx={{ maxWidth: "20ch" }}>
+            {title}
           </Typography>
-        )}
-        <Typography
-          variant="h1"
-          data-hero-title
-          sx={{ color: "#fff", maxWidth: "14ch" }}
-        >
-          {title}
-        </Typography>
-        {subtitle && (
-          <Typography
-            variant="subtitle1"
-            component="p"
-            data-hero-rest
-            sx={{
-              color: "rgba(255, 255, 255, 0.88)",
-              maxWidth: "58ch",
-              mt: { xs: 2, md: 2.5 },
-              fontSize: { xs: "1.0625rem", md: "1.25rem" },
-              lineHeight: 1.55,
-            }}
-          >
-            {subtitle}
-          </Typography>
-        )}
-      </Container>
+          {subtitle && (
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ color: "text.secondary", maxWidth: "62ch", fontSize: { xs: "1.0625rem", md: "1.2rem" }, lineHeight: 1.55 }}
+            >
+              {subtitle}
+            </Typography>
+          )}
+        </Box>
+        <PhotoPanel image={image} alt={imageAlt} tag={imageTag} objectPosition={objectPosition} priority settle />
+      </Wrap>
     </Box>
   );
 }

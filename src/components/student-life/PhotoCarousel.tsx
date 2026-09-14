@@ -64,7 +64,7 @@ export default function PhotoCarousel(props: IProps) {
         position: "relative",
         overflow: "hidden",
         isolation: "isolate",
-        backgroundColor: "grey.100",
+        backgroundColor: "background.panel",
       }}
     >
       {/* Slide Container */}

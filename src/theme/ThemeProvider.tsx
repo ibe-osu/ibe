@@ -5,7 +5,7 @@ import theme from "./theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

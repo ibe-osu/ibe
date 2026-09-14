@@ -1,41 +1,20 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import InfoCard from "./InfoCard";
 import CARDS from "./cardsData";
+import Wrap from "@/components/ui/Wrap";
+import SectionHead from "@/components/ui/SectionHead";
 
 export default function InfoCardSection() {
   return (
-    <Box
-      component="section"
-      aria-labelledby="keep-exploring"
-      sx={{ py: { xs: 7, md: 11 } }}
-    >
-      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
-        <Typography
-          variant="h2"
-          id="keep-exploring"
-          sx={{ mb: { xs: 4, md: 6 } }}
-        >
-          Keep Exploring
-        </Typography>
-
-        {/* Ruled row: 1px gaps over the divider color draw the hairlines
-            between entries, so nothing needs a box of its own. */}
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
-            gap: "1px",
-            backgroundColor: "divider",
-            borderTop: "1px solid",
-            borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
-        >
+    <Box component="section" aria-labelledby="keep-exploring" sx={{ pt: { xs: 8, md: 12 } }}>
+      <Wrap sx={{ display: "grid", gap: { xs: 3, md: 4 } }}>
+        <SectionHead id="keep-exploring" title="Keep exploring" />
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" }, gap: 2 }}>
           {CARDS.map((c) => (
             <InfoCard key={c.header} {...c} />
           ))}
         </Box>
-      </Container>
+      </Wrap>
     </Box>
   );
 }

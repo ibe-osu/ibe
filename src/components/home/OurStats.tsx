@@ -1,130 +1,86 @@
 "use client";
 
-import { useRef } from "react";
-import { Box, Container, Typography } from "@mui/material";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { serifFamily } from "@/theme/fonts";
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+import { Box, Typography } from "@mui/material";
+import Wrap from "@/components/ui/Wrap";
+import Panel from "@/components/ui/Panel";
+import Label from "@/components/ui/Label";
+import { displayFamily } from "@/theme/fonts";
+import { useCountUp } from "@/components/ui/useCountUp";
 
 const FIGURES = [
   { value: "3.8", label: "Average GPA" },
   { value: "34", label: "Average ACT" },
-  { value: "100%", label: "Job Placement" },
-  { value: "$96k", label: "Avg. Starting Salary" },
+  { value: "100%", label: "Job placement", signal: true },
+  { value: "$96k", label: "Avg. starting salary" },
 ];
 
-/**
- * The ledger: the program's proof set as large scarlet figures in ruled
- * rows. Figures count up on scroll for motion-tolerant visitors; the final
- * values are in the DOM from the start.
- */
-export default function OurStats() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const el = ref.current;
-      if (!el) return;
-      if (
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-        document.hidden
-      ) {
-        return;
-      }
-
-      el.querySelectorAll<HTMLElement>("[data-figure]").forEach((node) => {
-        const target = node.dataset.figure ?? "";
-        const match = target.match(/^([^0-9]*)([0-9.]+)(.*)$/);
-        if (!match) return;
-        const [, prefix, num, suffix] = match;
-        const decimals = num.includes(".") ? num.split(".")[1].length : 0;
-        const counter = { v: 0 };
-
-        gsap.to(counter, {
-          v: parseFloat(num),
-          duration: 1.6,
-          ease: "power3.out",
-          scrollTrigger: { trigger: node, start: "top 85%", once: true },
-          onUpdate: () => {
-            node.textContent = `${prefix}${counter.v.toFixed(decimals)}${suffix}`;
-          },
-        });
-      });
-    },
-    { scope: ref },
-  );
-
+function Figure({ value, label, signal }: { value: string; label: string; signal?: boolean }) {
+  const ref = useCountUp<HTMLSpanElement>(value);
   return (
     <Box
-      ref={ref}
-      component="section"
-      aria-label="Program outcomes"
-      sx={{ py: { xs: 7, md: 11 } }}
+      sx={{
+        display: "grid",
+        gap: 0.75,
+        justifyItems: "center",
+        textAlign: "center",
+        px: 2,
+        py: { xs: 2.5, md: 3 },
+        borderRight: { sm: "1px solid" },
+        borderColor: { sm: "divider" },
+        "&:last-of-type": { borderRight: 0 },
+      }}
     >
-      <Container maxWidth="xl" sx={{ px: { xs: 2.5, md: 4, lg: 6 } }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "4fr 8fr" },
-            columnGap: { md: 6, lg: 10 },
-            rowGap: 4,
-            alignItems: "start",
-          }}
-        >
-          <Box sx={{ position: { md: "sticky" }, top: { md: 104 } }}>
-            <Typography variant="h2" sx={{ maxWidth: "10ch" }}>
-              Program by the Numbers
-            </Typography>
-          </Box>
+      <Label component="dt">{label}</Label>
+      <Typography
+        component="dd"
+        ref={ref}
+        sx={{
+          m: 0,
+          fontFamily: displayFamily,
+          fontWeight: 600,
+          fontSize: "clamp(1.9rem, 3.6vw, 2.6rem)",
+          lineHeight: 1,
+          letterSpacing: "-0.03em",
+          fontVariantNumeric: "tabular-nums",
+          color: signal ? "signal.main" : "text.primary",
+        }}
+      >
+        {value}
+      </Typography>
+    </Box>
+  );
+}
 
-          <Box component="dl" sx={{ m: 0 }}>
-            {FIGURES.map((figure) => (
-              <Box
-                key={figure.label}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: { xs: "1fr", sm: "minmax(0, 1fr) minmax(0, 1fr)" },
-                  alignItems: "baseline",
-                  columnGap: 3,
-                  py: { xs: 2.5, md: 3 },
-                  borderTop: "1px solid",
-                  borderColor: "divider",
-                  "&:last-of-type": {
-                    borderBottom: "1px solid",
-                    borderBottomColor: "divider",
-                  },
-                }}
-              >
-                <Typography
-                  component="dd"
-                  data-figure={figure.value}
-                  sx={{
-                    m: 0,
-                    fontFamily: serifFamily,
-                    fontSize: "clamp(3.25rem, 6vw, 5.5rem)",
-                    lineHeight: 1,
-                    letterSpacing: "-0.03em",
-                    color: "primary.main",
-                    fontVariantNumeric: "tabular-nums",
-                  }}
-                >
-                  {figure.value}
-                </Typography>
-                <Typography
-                  component="dt"
-                  variant="h5"
-                  sx={{ color: "text.primary", mt: { xs: 1, sm: 0 } }}
-                >
-                  {figure.label}
-                </Typography>
-              </Box>
+export default function OurStats() {
+  return (
+    <Box component="section" aria-label="Program outcomes" sx={{ pt: { xs: 5, md: 7 } }}>
+      <Wrap>
+        <Panel>
+          <Box sx={{ px: 2, py: 1.25, borderBottom: "1px solid", borderColor: "divider" }}>
+            <Label>Every cohort</Label>
+          </Box>
+          <Box
+            component="dl"
+            sx={{
+              m: 0,
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr 1fr", sm: "repeat(4, 1fr)" },
+              "& > div:nth-of-type(-n+2)": { borderBottom: { xs: "1px solid", sm: 0 }, borderBottomColor: { xs: "divider" } },
+              "& > div:nth-of-type(odd)": { borderRight: { xs: "1px solid", sm: "1px solid" }, borderRightColor: "divider" },
+            }}
+          >
+            {FIGURES.map((f) => (
+              <Figure key={f.label} {...f} />
             ))}
           </Box>
-        </Box>
-      </Container>
+          <Box sx={{ px: 2, py: 1.5, borderTop: "1px solid", borderColor: "divider", textAlign: "center" }}>
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              Thirty-six Traditional and thirty-six Software Innovation seats, filled once a year from admitted Ohio
+              State Honors students.
+            </Typography>
+          </Box>
+        </Panel>
+      </Wrap>
     </Box>
   );
 }
