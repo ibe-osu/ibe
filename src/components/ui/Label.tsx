@@ -7,7 +7,7 @@ export default function Label({ sx, children, ...rest }: TypographyProps) {
       variant="overline"
       component="span"
       {...rest}
-      sx={[{ display: "block", color: "text.disabled" }, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]}
+      sx={[{ display: "block", color: "text.secondary" }, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]}
     >
       {children}
     </Typography>

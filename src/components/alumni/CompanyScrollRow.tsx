@@ -60,7 +60,10 @@ export default function CompanyScrollRow(props: IProps) {
         WebkitMaskImage: animated
           ? "linear-gradient(90deg, transparent, white 20%, white 80%, transparent)"
           : undefined,
-        bgcolor: "background.paper",
+        bgcolor: "background.default",
+        // Dark wordmarks vanish on the dark ground; greyscale-then-invert
+        // keeps every logo legible without inventing colours.
+        ".dark & img": { filter: "grayscale(1) invert(1)", opacity: 0.85 },
       }}
       data-animated={animated ? "true" : undefined}
       data-direction={direction === "reverse" ? "right" : "left"}
@@ -100,10 +103,7 @@ export default function CompanyScrollRow(props: IProps) {
           >
             <Image
               src={logo.src}
-              alt={
-                logo.src.split("/").pop()?.replace(/[-.]/g, " ") ||
-                "company logo"
-              }
+              alt={`${(logo.src.split("/").pop() ?? "").replace(/\.[a-z]+$/, "").replace(/-/g, " ")} logo`}
               height={
                 typeof cellHeight === "number"
                   ? Math.round(cellHeight * 0.7)
@@ -111,7 +111,7 @@ export default function CompanyScrollRow(props: IProps) {
               }
               width={0}
               aria-hidden={logo.ariaHidden || undefined}
-              priority={i < logos.length}
+              loading="lazy"
               style={{
                 objectFit: "contain",
                 width: "auto",

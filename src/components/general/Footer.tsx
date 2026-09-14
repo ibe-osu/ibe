@@ -105,10 +105,10 @@ export default function Footer() {
           spacing={1}
           sx={{ mt: { xs: 4, md: 5 }, pt: 2.5, borderTop: "1px solid", borderColor: "divider", justifyContent: "space-between" }}
         >
-          <Typography variant="body2" sx={{ color: "text.disabled" }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             © {new Date().getFullYear()} IBE Honors Program · The Ohio State University
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.disabled" }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             Made with ❤️ in Columbus
           </Typography>
         </Stack>

@@ -17,6 +17,10 @@ export default function HeroAtmosphere() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Desktop-class devices only: a live WebGL field is a poor trade on a
+    // phone's battery and on software renderers.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if ((navigator.hardwareConcurrency ?? 0) < 4) return;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     if (conn?.saveData || conn?.effectiveType === "2g" || conn?.effectiveType === "slow-2g") return;
     const id = window.requestIdleCallback

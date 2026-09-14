@@ -38,7 +38,8 @@ const theme = createTheme({
         },
         secondary: { main: "#121114" },
         background: { default: "#ffffff", paper: "#fbf9f9", panel: "#f4f1f2" },
-        text: { primary: "#121114", secondary: "#5d5358", disabled: "#8b8085" },
+        // "disabled" doubles as the quietest legible text, so it stays ≥ 4.5:1.
+        text: { primary: "#121114", secondary: "#5d5358", disabled: "#6f6469" },
         divider: "rgba(18, 17, 20, 0.12)",
         action: { hover: "rgba(18, 17, 20, 0.04)" },
         error: { main: "#c62828" },
@@ -61,7 +62,7 @@ const theme = createTheme({
         },
         secondary: { main: "#f3f1f2" },
         background: { default: "#0b0b0d", paper: "#121214", panel: "#18181b" },
-        text: { primary: "#f3f1f2", secondary: "#a9a1a4", disabled: "#75696e" },
+        text: { primary: "#f3f1f2", secondary: "#a9a1a4", disabled: "#8f858a" },
         divider: "rgba(255, 255, 255, 0.11)",
         action: { hover: "rgba(255, 255, 255, 0.06)" },
         error: { main: "#ef5350" },
