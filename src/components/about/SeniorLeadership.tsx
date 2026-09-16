@@ -23,13 +23,13 @@ export default function SeniorLeadership() {
           {[
             {
               name: "Kristina Kennedy",
-              role: "Senior Program Director",
+              role: "Engineering Faculty Director",
               email: "kennedy.443@osu.edu",
             },
             {
-              name: "Michael Leiblein",
-              role: "Founding Director",
-              email: "leiblein.1@osu.edu",
+              name: "Robin Soster",
+              role: "Business Faculty Director",
+              email: "soster.4@osu.edu",
             },
             {
               name: "Heather Shepherd",
