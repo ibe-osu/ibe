@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Link as MuiLink,
@@ -36,14 +36,19 @@ const MODES: { value: CalendarMode; label: string }[] = [
  */
 export default function MembersCalendar() {
   const theme = useTheme();
-  // noSsr: resolve the media query on the first client render instead of
-  // defaulting to false, then flipping. Without it every phone would mount
-  // the MONTH iframe, throw it away, and mount AGENDA — two Google loads.
-  // The server still renders MONTH; hydration reconciles the src attribute
-  // without remounting because the key is stable until the user chooses.
-  const isNarrow = useMediaQuery(theme.breakpoints.down("md"), { noSsr: true });
+  const isNarrow = useMediaQuery(theme.breakpoints.down("md"));
   const [chosen, setChosen] = useState<CalendarMode | null>(null);
-  const mode: CalendarMode = chosen ?? (isNarrow ? "AGENDA" : "MONTH");
+  // The iframe only mounts after hydration. The server can't know the
+  // viewport, so rendering it during SSR means every phone would load the
+  // MONTH view, throw it away, and load AGENDA — two full Google loads. By
+  // the time this effect runs, useMediaQuery has resolved, so the frame
+  // mounts exactly once with the right view. (Google's embed needs JS to
+  // render anyway, so there's nothing to lose for a no-JS visitor; they
+  // still get the "open in a new tab" link below.)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const mode: CalendarMode =
+    chosen ?? (mounted && isNarrow ? "AGENDA" : "MONTH");
 
   return (
     <Box>
@@ -114,14 +119,17 @@ export default function MembersCalendar() {
           minHeight: 480,
         }}
       >
-        <Box
-          component="iframe"
-          key={chosen ?? "default"}
-          src={calendarEmbedUrl(mode)}
-          title="IBE calendar"
-          loading="lazy"
-          sx={{ display: "block", width: "100%", height: "100%", border: 0 }}
-        />
+        {mounted && (
+          <Box
+            component="iframe"
+            // Remount only when the member picks a view — not when the
+            // media query settles, which would be a second load for nothing.
+            key={chosen ?? "default"}
+            src={calendarEmbedUrl(mode)}
+            title="IBE calendar"
+            sx={{ display: "block", width: "100%", height: "100%", border: 0 }}
+          />
+        )}
       </Box>
 
       <Typography variant="body2" sx={{ color: "text.secondary", mt: 1.5 }}>
