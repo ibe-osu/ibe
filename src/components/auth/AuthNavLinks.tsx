@@ -4,7 +4,7 @@ import NavButton from "@/components/general/NavButton";
 import { useAuthState } from "@/lib/auth/useAuthState";
 
 /**
- * "Resources" and "Alumni Database" — signed-in members only. Deliberately
+ * "Members" (calendar, resources) and "Alumni Database" — signed-in members only. Deliberately
  * render nothing while signed out or loading, rather than a disabled state:
  * these links don't exist for a signed-out visitor, full stop.
  *
@@ -18,7 +18,7 @@ export default function AuthNavLinks() {
 
   return (
     <>
-      <NavButton href="/members">Resources</NavButton>
+      <NavButton href="/members">Members</NavButton>
       <NavButton href="/members/alumni-database">Alumni Database</NavButton>
     </>
   );
