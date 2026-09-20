@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { NAV_LABEL_TYPOGRAPHY } from "@/theme/theme";
 import {
   CALENDAR_ADD_URL,
   CALENDAR_ICS_URL,
@@ -35,7 +36,12 @@ const MODES: { value: CalendarMode; label: string }[] = [
  */
 export default function MembersCalendar() {
   const theme = useTheme();
-  const isNarrow = useMediaQuery(theme.breakpoints.down("md"));
+  // noSsr: resolve the media query on the first client render instead of
+  // defaulting to false, then flipping. Without it every phone would mount
+  // the MONTH iframe, throw it away, and mount AGENDA — two Google loads.
+  // The server still renders MONTH; hydration reconciles the src attribute
+  // without remounting because the key is stable until the user chooses.
+  const isNarrow = useMediaQuery(theme.breakpoints.down("md"), { noSsr: true });
   const [chosen, setChosen] = useState<CalendarMode | null>(null);
   const mode: CalendarMode = chosen ?? (isNarrow ? "AGENDA" : "MONTH");
 
@@ -63,10 +69,7 @@ export default function MembersCalendar() {
               value={m.value}
               sx={{
                 px: 2,
-                fontSize: "0.8125rem",
-                fontWeight: 700,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
+                ...NAV_LABEL_TYPOGRAPHY,
                 "&.Mui-selected": {
                   color: "#fff",
                   backgroundColor: "primary.main",
@@ -113,7 +116,7 @@ export default function MembersCalendar() {
       >
         <Box
           component="iframe"
-          key={mode}
+          key={chosen ?? "default"}
           src={calendarEmbedUrl(mode)}
           title="IBE calendar"
           loading="lazy"

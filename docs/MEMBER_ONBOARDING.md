@@ -18,6 +18,21 @@ wait ~2–3 minutes.
 To stop this happening at all, either upgrade `ibe-prod` to Pro or keep
 traffic on it (a signed-in member visiting weekly is enough).
 
+## 1b. One-time: make the confirmation email work from any device
+
+Supabase's default confirmation link only works in the browser that filled in
+the signup form. Most people sign up on a laptop and open the email on their
+phone, so switch the template once per project (already done on staging?
+check). In **Authentication → Email Templates → Confirm signup**, replace the
+link with:
+
+```html
+<p><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email">Confirm email address</a></p>
+```
+
+The site's `/auth/callback` understands both the new `token_hash` link and
+the old `code` link, so nothing breaks while you switch.
+
 ## 2. Issue a membership code
 
 In **ibe-prod → SQL Editor**, run:
@@ -53,7 +68,7 @@ Common failures and what they mean:
 | "That membership code is not valid." | Typo, expired, revoked, or used up. Check `select label, use_count, max_uses, expires_at, revoked_at from invite_codes;` |
 | "Too many attempts." | 5 failed signups from one IP in an hour. Wait. |
 | "email rate limit exceeded" | Supabase's hourly send cap (30/hour with Resend). Wait, or raise it under Authentication → Rate Limits. |
-| Confirmation link opens `/login?reason=confirm-failed` | Link expired (24h) or already used. Have them log in — if that fails, delete the user under Authentication → Users and let them sign up again. |
+| Confirmation link opens `/login?reason=confirm-failed` | Almost always: they opened the link on a different device and the template hasn't been switched (step 1b) — their email *is* confirmed, so logging in works. Otherwise the link expired (24h): delete the user under Authentication → Users and let them sign up again. |
 | No email at all | Spam folder first. Then Authentication → Logs, and Resend's dashboard. |
 
 ## 4. Promote an officer to admin (optional, for later)

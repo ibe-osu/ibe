@@ -11,9 +11,6 @@ export const CALENDAR_TIMEZONE = "America/New_York";
 
 const encodedId = encodeURIComponent(CALENDAR_ID);
 
-/** Google's own full-page view of the calendar. */
-export const CALENDAR_PAGE_URL = `https://calendar.google.com/calendar/embed?src=${encodedId}&ctz=${encodeURIComponent(CALENDAR_TIMEZONE)}`;
-
 /** "Add to my Google Calendar" — subscribes the signed-in Google account. */
 export const CALENDAR_ADD_URL = `https://calendar.google.com/calendar/u/0/r?cid=${encodedId}`;
 
@@ -28,17 +25,23 @@ export type CalendarMode = "MONTH" | "WEEK" | "AGENDA";
  * the frame reads as part of the page rather than a widget dropped into it;
  * the view switcher lives in our own UI instead (MembersCalendar.tsx).
  */
-export function calendarEmbedUrl(mode: CalendarMode) {
+export function calendarEmbedUrl(
+  mode: CalendarMode,
+  { chrome = false }: { chrome?: boolean } = {},
+) {
   const params = new URLSearchParams({
     src: CALENDAR_ID,
     ctz: CALENDAR_TIMEZONE,
     mode,
     wkst: "1",
-    showTitle: "0",
-    showPrint: "0",
-    showTabs: "0",
-    showCalendars: "0",
-    showTz: "0",
   });
+  if (!chrome) {
+    for (const flag of ["showTitle", "showPrint", "showTabs", "showCalendars", "showTz"]) {
+      params.set(flag, "0");
+    }
+  }
   return `https://calendar.google.com/calendar/embed?${params.toString()}`;
 }
+
+/** Google's own full-page view of the calendar, chrome and all. */
+export const CALENDAR_PAGE_URL = calendarEmbedUrl("MONTH", { chrome: true });

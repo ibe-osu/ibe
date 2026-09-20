@@ -29,7 +29,9 @@ setup**, which the app can't do for itself:
 3. Auth config: Site URL `https://ibeosu.com`; redirect URLs
    `https://ibeosu.com/**` and `https://www.ibeosu.com/**`; register the
    `before_user_created` hook (`pg-functions://postgres/public/before_user_created`);
-   SMTP via Resend (mirror staging); email rate limit ≥ 30/hour.
+   SMTP via Resend (mirror staging); email rate limit ≥ 30/hour; **Confirm
+   signup email template** → `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email`
+   (on staging too — the 2026-09-20 test hit the cross-device failure).
 4. `select public.issue_invite_code('e-board 2026-27', 15, interval '14 days');`
    and send the code. Runbook: `docs/MEMBER_ONBOARDING.md`.
 5. Make the Google Calendar public (Settings → Access permissions → "Make
@@ -159,6 +161,12 @@ deliberately vague so the form can't be used to enumerate accounts.
 - **Vercel previews are behind deployment protection** — `curl` gets a 302 to
   SSO, so preview state can't be verified from the CLI. The user has to check in
   a browser where they're logged into Vercel.
+- **Confirmation links are device-bound until the template is switched.**
+  The default `{{ .ConfirmationURL }}` is a PKCE link: it only works in the
+  browser that submitted the signup form. Supabase still confirms the email,
+  so logging in works — but the person sees "link didn't work". The
+  `token_hash` template (see step 3 above) plus `/auth/callback`'s
+  `verifyOtp` path removes the problem.
 - **Never test signup with `curl`.** It bypasses the JS SDK's PKCE setup, so
   Supabase falls back to a different confirmation-link format that
   `/auth/callback` isn't built for. Cost two rounds of false debugging. Test

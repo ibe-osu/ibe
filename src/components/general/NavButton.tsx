@@ -3,6 +3,7 @@
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { NAV_LABEL_TYPOGRAPHY } from "@/theme/theme";
 
 interface NavButtonProps {
   href: string;
@@ -24,10 +25,7 @@ export default function NavButton({ children, href }: NavButtonProps) {
         position: "relative",
         overflow: "hidden",
         color: active ? "primary.main" : "text.primary",
-        fontSize: "0.8125rem",
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
+        ...NAV_LABEL_TYPOGRAPHY,
         backgroundColor: "transparent",
         transition: "color 0.25s ease",
         padding: "0.5rem 0.625rem",

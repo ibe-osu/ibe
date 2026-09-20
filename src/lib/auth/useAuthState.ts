@@ -10,7 +10,7 @@ export type AuthState =
 
 /**
  * Client-side auth state for the header nav ONLY. This is cosmetic — it
- * decides whether to show "Log In" or "Resources" / "Alumni Database" /
+ * decides whether to show "Log In" or "Members" / "Alumni Database" /
  * an account menu. It is never the security boundary: someone could forge
  * "signed-in" here and get nothing more than a link that 302s them to
  * /login, because every page under /members independently re-verifies via

@@ -50,6 +50,10 @@ begin
     raise exception 'max_uses must be at least 1';
   end if;
 
+  if p_valid_for is null or p_valid_for <= interval '0' then
+    raise exception 'valid_for must be a positive interval (e.g. 14 days)';
+  end if;
+
   loop
     -- 20 random bytes -> 8 prefix + 12 secret characters. The alphabet has
     -- exactly 32 letters, so `byte % 32` is uniform, not biased.

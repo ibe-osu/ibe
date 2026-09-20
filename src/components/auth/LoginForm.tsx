@@ -20,8 +20,11 @@ type FormValues = z.infer<typeof schema>;
 const REASON_MESSAGES: Record<string, string> = {
   inactive:
     "Your account isn't active yet. If you think this is a mistake, contact an IBE officer.",
+  // Usually the link was opened on a different device than the one that
+  // signed up, in which case Supabase has already confirmed the email and
+  // logging in just works. Only a genuinely expired link needs an officer.
   "confirm-failed":
-    "That confirmation link didn't work — it may have expired. Try signing in, or request a new link from Signup.",
+    "That confirmation link couldn't finish signing you in, but your email is most likely confirmed — try logging in below. If that fails too, the link has expired; ask an IBE officer for help.",
 };
 
 /**
