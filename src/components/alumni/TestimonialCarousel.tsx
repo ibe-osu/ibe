@@ -161,7 +161,10 @@ export default function TestimonialCarousel(props: IProps) {
         sx={{
           position: "absolute",
           top: "50%",
-          left: "-1.5rem", // pulls the arrow outward for visual balance
+          // Pulls the arrow outward for visual balance on wide screens; on a
+          // phone the section's own 1.5rem padding is all the room there is,
+          // so stay inside it rather than sitting flush against the edge.
+          left: { xs: "-0.5rem", sm: "-1.5rem" },
           transform: "translateY(-50%)",
           zIndex: 2,
         }}
@@ -175,7 +178,7 @@ export default function TestimonialCarousel(props: IProps) {
         sx={{
           position: "absolute",
           top: "50%",
-          right: "-1.5rem",
+          right: { xs: "-0.5rem", sm: "-1.5rem" },
           transform: "translateY(-50%)",
           zIndex: 2,
         }}
