@@ -28,11 +28,19 @@ const MODES: { value: CalendarMode; label: string }[] = [
 ];
 
 /**
+ * Everything on the page above the calendar frame, in px, on a desktop
+ * viewport: sticky header (72) + page top padding (32) + title block
+ * (~78 + 16 margin) + view toggle row (~36 + 12 margin) + the caption
+ * below the frame (~28) + bottom breathing room (~16). The frame takes
+ * whatever is left of the viewport, within sane bounds, so the whole
+ * calendar sits on one screen instead of forcing a page scroll.
+ */
+const DESKTOP_CHROME_PX = 290;
+
+/**
  * The IBE Google Calendar, embedded. Google's month grid is unreadable on a
  * phone, so the default view follows the viewport — agenda on small screens,
- * month on large — until the member picks one themselves. The iframe itself
- * is plain HTML with no JS gating, so the calendar is visible even if
- * hydration never happens; the toggle just swaps the src.
+ * month on large — until the member picks one themselves.
  */
 export default function MembersCalendar() {
   const theme = useTheme();
@@ -52,71 +60,47 @@ export default function MembersCalendar() {
 
   return (
     <Box>
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        alignItems={{ xs: "flex-start", sm: "center" }}
-        justifyContent="space-between"
-        spacing={2}
-        sx={{ mb: 2 }}
+      <ToggleButtonGroup
+        exclusive
+        size="small"
+        value={mode}
+        onChange={(_event, next: CalendarMode | null) => {
+          if (next) setChosen(next);
+        }}
+        aria-label="Calendar view"
+        sx={{ mb: 1.5 }}
       >
-        <ToggleButtonGroup
-          exclusive
-          size="small"
-          value={mode}
-          onChange={(_event, next: CalendarMode | null) => {
-            if (next) setChosen(next);
-          }}
-          aria-label="Calendar view"
-        >
-          {MODES.map((m) => (
-            <ToggleButton
-              key={m.value}
-              value={m.value}
-              sx={{
-                px: 2,
-                ...NAV_LABEL_TYPOGRAPHY,
-                "&.Mui-selected": {
-                  color: "#fff",
-                  backgroundColor: "primary.main",
-                  "&:hover": { backgroundColor: "primary.dark" },
-                },
-              }}
-            >
-              {m.label}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-
-        <Stack direction="row" spacing={3} flexWrap="wrap" useFlexGap>
-          <MuiLink
-            href={CALENDAR_ADD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            sx={{ fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 0.5 }}
+        {MODES.map((m) => (
+          <ToggleButton
+            key={m.value}
+            value={m.value}
+            sx={{
+              px: 2,
+              ...NAV_LABEL_TYPOGRAPHY,
+              "&.Mui-selected": {
+                color: "#fff",
+                backgroundColor: "primary.main",
+                "&:hover": { backgroundColor: "primary.dark" },
+              },
+            }}
           >
-            Add to Google Calendar
-            <OpenInNewIcon sx={{ fontSize: 16 }} />
-          </MuiLink>
-          <MuiLink
-            href={CALENDAR_ICS_URL}
-            underline="hover"
-            sx={{ fontWeight: 600 }}
-          >
-            Subscribe (.ics)
-          </MuiLink>
-        </Stack>
-      </Stack>
+            {m.label}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
 
       <Box
         sx={{
           border: "1px solid",
           borderColor: "grey.300",
           backgroundColor: "#fff",
-          // Google's embed has a fixed internal layout; give it real height
-          // rather than an aspect ratio so the month grid isn't squashed.
-          height: { xs: "70svh", md: 720 },
-          minHeight: 480,
+          // Viewport-relative so the grid fits on one screen; clamped so a
+          // short laptop window still gets a usable grid and a tall monitor
+          // doesn't stretch Google's layout past what it's designed for.
+          height: {
+            xs: "68svh",
+            md: `clamp(440px, calc(100svh - ${DESKTOP_CHROME_PX}px), 720px)`,
+          },
         }}
       >
         {mounted && (
@@ -132,18 +116,48 @@ export default function MembersCalendar() {
         )}
       </Box>
 
-      <Typography variant="body2" sx={{ color: "text.secondary", mt: 1.5 }}>
-        Times are shown in Eastern Time. Not loading?{" "}
-        <MuiLink
-          href={CALENDAR_PAGE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          underline="hover"
-        >
-          Open the calendar in a new tab
-        </MuiLink>
-        .
-      </Typography>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        alignItems={{ xs: "flex-start", sm: "center" }}
+        spacing={{ xs: 1, sm: 3 }}
+        sx={{ mt: 1.5 }}
+      >
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          Times are shown in Eastern Time.
+        </Typography>
+        <Stack direction="row" spacing={3} flexWrap="wrap" useFlexGap>
+          <MuiLink
+            href={CALENDAR_ADD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            variant="body2"
+            sx={{ fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 0.5 }}
+          >
+            Add to Google Calendar
+            <OpenInNewIcon sx={{ fontSize: 15 }} />
+          </MuiLink>
+          <MuiLink
+            href={CALENDAR_ICS_URL}
+            underline="hover"
+            variant="body2"
+            sx={{ fontWeight: 600 }}
+          >
+            Subscribe (.ics)
+          </MuiLink>
+          <MuiLink
+            href={CALENDAR_PAGE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            variant="body2"
+            sx={{ fontWeight: 600 }}
+          >
+            Open in new tab
+          </MuiLink>
+        </Stack>
+      </Stack>
     </Box>
   );
 }
