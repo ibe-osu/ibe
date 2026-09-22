@@ -37,7 +37,7 @@ export default function IndividualCard(props: IndividualCardProps) {
     <Box
       sx={{
         py: { xs: "0rem", sm: "1rem" },
-        px: "1rem",
+        px: { xs: "0.25rem", sm: "1rem" },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -129,6 +129,9 @@ export default function IndividualCard(props: IndividualCardProps) {
           href={`mailto:${email}`}
           sx={{
             display: "block",
+            // Two-up on phones leaves ~150px per card; a long OSU address
+            // must wrap rather than run under the neighbouring card.
+            overflowWrap: "anywhere",
             textDecoration: "underline",
             textUnderlineOffset: "3px",
             textDecorationColor:

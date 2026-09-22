@@ -15,6 +15,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Rubber-band overscroll and the strip behind Safari's floating toolbar
+     show the html background, not the body's. White at the top (the
+     header is white), scarlet at the bottom (the footer is scarlet). */
+  background: linear-gradient(to bottom, #ffffff 50%, var(--scarlet) 50%);
 }
 
 html,

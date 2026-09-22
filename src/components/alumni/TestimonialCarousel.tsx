@@ -86,8 +86,11 @@ export default function TestimonialCarousel(props: IProps) {
               display: "flex",
               alignItems: "center",
               gap: "2rem",
-              flexDirection: { xs: "column", md: "row" },
-              justifyContent: "center",
+              // Photo above the quote on phones: the photo is a fixed
+              // size, so everything above the fold stays put when the
+              // quote length changes from slide to slide.
+              flexDirection: { xs: "column-reverse", md: "row" },
+              justifyContent: { xs: "flex-end", md: "center" },
               opacity: i === index ? 1 : 0,
               transition: "opacity 0.4s ease",
             }}
@@ -161,7 +164,10 @@ export default function TestimonialCarousel(props: IProps) {
         sx={{
           position: "absolute",
           top: "50%",
-          left: "-1.5rem", // pulls the arrow outward for visual balance
+          // Pulls the arrow outward for visual balance on wide screens; on a
+          // phone the section's own 1.5rem padding is all the room there is,
+          // so stay inside it rather than sitting flush against the edge.
+          left: { xs: "-0.5rem", sm: "-1.5rem" },
           transform: "translateY(-50%)",
           zIndex: 2,
         }}
@@ -175,7 +181,7 @@ export default function TestimonialCarousel(props: IProps) {
         sx={{
           position: "absolute",
           top: "50%",
-          right: "-1.5rem",
+          right: { xs: "-0.5rem", sm: "-1.5rem" },
           transform: "translateY(-50%)",
           zIndex: 2,
         }}
