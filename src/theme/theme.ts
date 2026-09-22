@@ -3,6 +3,18 @@ import { createTheme } from "@mui/material/styles";
 const serif = `var(--font-pt-serif-caption), "PT Serif Caption", Georgia, serif`;
 const sans = `var(--font-source-sans), "Source Sans 3", "Helvetica Neue", Arial, sans-serif`;
 
+/**
+ * The collegiate uppercase label used by the header nav, the Join Us button,
+ * and the members-calendar view toggle. One definition so a brand tweak
+ * lands everywhere at once.
+ */
+export const NAV_LABEL_TYPOGRAPHY = {
+  fontSize: "0.8125rem",
+  fontWeight: 700,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+} as const;
+
 const theme = createTheme({
   typography: {
     fontFamily: sans,

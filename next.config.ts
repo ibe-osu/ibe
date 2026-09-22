@@ -52,10 +52,11 @@ const contentSecurityPolicy = [
 
   `img-src 'self' blob: data:`,
 
-  // The homepage embeds a YouTube video (src/components/home/IBEVideo.tsx).
-  // Without this, default-src would block it. Swap in youtube-nocookie.com here
-  // and in the component if you'd rather not set cookies for visitors.
-  `frame-src https://www.youtube.com`,
+  // The homepage embeds a YouTube video (src/components/home/IBEVideo.tsx),
+  // and /members embeds the IBE Google Calendar (src/data/calendar.ts).
+  // Without these, default-src would block them. Swap in youtube-nocookie.com
+  // here and in the component if you'd rather not set cookies for visitors.
+  `frame-src https://www.youtube.com https://calendar.google.com`,
 
   [
     `connect-src 'self'`,

@@ -5,6 +5,7 @@ import NavButton from "./NavButton";
 import MobileMenuButton from "./MobileMenuButton";
 import AuthNavLinks from "@/components/auth/AuthNavLinks";
 import AccountMenu from "@/components/auth/AccountMenu";
+import { NAV_LABEL_TYPOGRAPHY } from "@/theme/theme";
 
 export default function Header() {
   return (
@@ -54,10 +55,7 @@ export default function Header() {
               ml: { xs: 0.5, md: 1 },
               px: "1.25rem",
               py: "0.5625rem",
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
+              ...NAV_LABEL_TYPOGRAPHY,
             }}
           >
             Join Us

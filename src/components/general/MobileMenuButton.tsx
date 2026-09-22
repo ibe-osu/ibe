@@ -29,12 +29,12 @@ export default function MobileMenuButton() {
     { href: "/recruitment", label: "Join Us" },
     { href: "/alumni", label: "Alumni" },
     { href: "/student-life", label: "Student Life" },
-    // "Resources" and "Alumni Database" are signed-in-only, same rule as
+    // "Members" and "Alumni Database" are signed-in-only, same rule as
     // the desktop nav (src/components/auth/AuthNavLinks.tsx) — nothing
     // security-sensitive rides on this list, just what's shown.
     ...(auth.status === "signed-in"
       ? [
-          { href: "/members", label: "Resources" },
+          { href: "/members", label: "Members" },
           { href: "/members/alumni-database", label: "Alumni Database" },
         ]
       : []),
