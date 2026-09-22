@@ -86,7 +86,11 @@ export default function MembersCalendar() {
                 "&.Mui-selected": {
                   color: "#fff",
                   backgroundColor: "primary.main",
-                  "&:hover": { backgroundColor: "primary.dark" },
+                  // Hover-only devices: a touch tap would otherwise leave
+                  // the darker hover shade stuck on the selected button.
+                  "@media (hover: hover)": {
+                    "&:hover": { backgroundColor: "primary.dark" },
+                  },
                 },
               }}
             >
@@ -94,7 +98,12 @@ export default function MembersCalendar() {
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
-        <Stack direction="row" spacing={3} flexWrap="wrap" useFlexGap>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          useFlexGap
+          sx={{ columnGap: 3, rowGap: 0.5 }}
+        >
           <MuiLink
             href={CALENDAR_ADD_URL}
             target="_blank"

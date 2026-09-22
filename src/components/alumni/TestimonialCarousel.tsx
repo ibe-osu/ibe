@@ -86,8 +86,11 @@ export default function TestimonialCarousel(props: IProps) {
               display: "flex",
               alignItems: "center",
               gap: "2rem",
-              flexDirection: { xs: "column", md: "row" },
-              justifyContent: "center",
+              // Photo above the quote on phones: the photo is a fixed
+              // size, so everything above the fold stays put when the
+              // quote length changes from slide to slide.
+              flexDirection: { xs: "column-reverse", md: "row" },
+              justifyContent: { xs: "flex-end", md: "center" },
               opacity: i === index ? 1 : 0,
               transition: "opacity 0.4s ease",
             }}

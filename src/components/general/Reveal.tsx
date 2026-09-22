@@ -54,9 +54,13 @@ export default function Reveal({
         return;
       }
 
+      // 92%, not 85%: on a phone 15% of the viewport is ~130px, so the
+      // marker of a section could sit on screen for a full thumb-scroll
+      // with its text still invisible. Firing as soon as the element
+      // clears the bottom edge keeps the reveal without the blank band.
       const scrollTrigger = {
         trigger: el,
-        start: "top 85%",
+        start: "top 92%",
         once: true,
       };
 
@@ -69,7 +73,9 @@ export default function Reveal({
           opacity: 0,
           duration: 0.7,
           ease: "power3.out",
-          stagger: 0.09,
+          // Cap the total stagger: ten cards at 0.09s each left the last
+          // ones invisible for almost a second after the trigger fired.
+          stagger: { amount: Math.min(0.09 * items.length, 0.5) },
           delay,
           clearProps: "opacity,transform",
           scrollTrigger,
