@@ -27,33 +27,22 @@ export default function SpeakerCard(props: IProps) {
   const { speaker } = props;
   const [open, setOpen] = useState(false);
 
+  const bioId = `speaker-bio-${speaker.name.replace(/\s+/g, "-").toLowerCase()}`;
+
   return (
     <Box
-      tabIndex={0}
-      role="button"
-      aria-expanded={open}
-      aria-label={`${speaker.name} — ${open ? "hide" : "show"} bio`}
+      // The card itself keeps ordinary semantics (heading, text, image) so
+      // assistive tech reads the name and role; the tap/keyboard toggle is
+      // the real <button> under the portrait, not the whole card.
       onClick={() => setOpen((value) => !value)}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          setOpen((value) => !value);
-        }
-      }}
       data-open={open ? "true" : undefined}
       sx={{
-        outline: "none",
         cursor: "pointer",
-        "&:focus-visible": {
-          outline: "2px solid",
-          outlineColor: "primary.main",
-          outlineOffset: "3px",
-        },
-        "&:hover [data-speaker-bio], &:focus-visible [data-speaker-bio], &[data-open] [data-speaker-bio]":
+        "&:hover [data-speaker-bio], &:focus-within [data-speaker-bio], &[data-open] [data-speaker-bio]":
           {
             opacity: 1,
           },
-        "&:hover img, &:focus-visible img, &[data-open] img": {
+        "&:hover img, &:focus-within img, &[data-open] img": {
           transform: "scale(1.04)",
         },
       }}
@@ -78,6 +67,7 @@ export default function SpeakerCard(props: IProps) {
         />
         <Box
           data-speaker-bio
+          id={bioId}
           sx={{
             position: "absolute",
             inset: 0,
@@ -102,6 +92,37 @@ export default function SpeakerCard(props: IProps) {
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {speaker.position}
         </Typography>
+        <Box
+          component="button"
+          type="button"
+          aria-expanded={open}
+          aria-controls={bioId}
+          onClick={(event) => {
+            // The card's onClick already toggles; don't double-toggle.
+            event.stopPropagation();
+            setOpen((value) => !value);
+          }}
+          sx={{
+            mt: 0.5,
+            p: 0,
+            border: 0,
+            background: "none",
+            font: "inherit",
+            fontSize: "0.8125rem",
+            fontWeight: 600,
+            color: "primary.main",
+            cursor: "pointer",
+            textDecoration: "underline",
+            textUnderlineOffset: "3px",
+            "&:focus-visible": {
+              outline: "2px solid",
+              outlineColor: "primary.main",
+              outlineOffset: "3px",
+            },
+          }}
+        >
+          {open ? "Hide bio" : "Read bio"}
+        </Box>
       </Box>
     </Box>
   );

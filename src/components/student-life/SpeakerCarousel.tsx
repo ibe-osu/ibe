@@ -115,7 +115,7 @@ export default function SpeakerCarousel(props: IProps) {
               lg: "25%", // 4 cards on large desktop
             },
             transition: isTransitioning ? "transform 0.6s ease" : "none",
-            transform: `translateX(calc(-${startIndex} * var(--card-w)))`,
+            transform: `translateX(calc(${-startIndex} * var(--card-w)))`,
           }}
         >
           {extendedSpeakers.map((speaker, idx) => (

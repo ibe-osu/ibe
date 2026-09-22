@@ -82,7 +82,9 @@ export default function TestimonialCarousel(props: IProps) {
             key={i}
             sx={{
               minWidth: "100%",
-              px: 3,
+              // 4 on phones: the arrows sit 8px inside the section padding
+              // there, so the slide needs 32px to keep clear of them.
+              px: { xs: 4, sm: 3 },
               display: "flex",
               alignItems: "center",
               gap: "2rem",
