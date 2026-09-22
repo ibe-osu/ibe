@@ -34,8 +34,8 @@ setup**, which the app can't do for itself:
    (on staging too — the 2026-09-20 test hit the cross-device failure).
 4. `select public.issue_invite_code('e-board 2026-27', 15, interval '14 days');`
    and send the code. Runbook: `docs/MEMBER_ONBOARDING.md`.
-5. Make the Google Calendar public (Settings → Access permissions → "Make
-   available to public"). As of 2026-09-20 it wasn't, so the embed 401s.
+5. ~~Make the Google Calendar public~~ — done 2026-09-22 (embed and iCal
+   feed both return 200 anonymously; the feed is "IBE Event Calendar").
 
 ---
 
