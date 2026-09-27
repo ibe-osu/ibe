@@ -132,9 +132,8 @@ export default function Welcome() {
           }}
         >
           <Box component="span" sx={{ whiteSpace: "nowrap" }}>
-            Fisher College of Business
+            Fisher College of Business{"\u00a0"}·
           </Box>{" "}
-          ·{" "}
           <Box component="span" sx={{ whiteSpace: "nowrap" }}>
             College of Engineering
           </Box>

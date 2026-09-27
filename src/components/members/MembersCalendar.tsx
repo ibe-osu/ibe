@@ -60,34 +60,86 @@ export default function MembersCalendar() {
 
   return (
     <Box>
-      <ToggleButtonGroup
-        exclusive
-        size="small"
-        value={mode}
-        onChange={(_event, next: CalendarMode | null) => {
-          if (next) setChosen(next);
-        }}
-        aria-label="Calendar view"
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        alignItems={{ xs: "flex-start", sm: "center" }}
+        justifyContent="space-between"
+        spacing={{ xs: 1.5, sm: 2 }}
         sx={{ mb: 1.5 }}
       >
-        {MODES.map((m) => (
-          <ToggleButton
-            key={m.value}
-            value={m.value}
+        <ToggleButtonGroup
+          exclusive
+          size="small"
+          value={mode}
+          onChange={(_event, next: CalendarMode | null) => {
+            if (next) setChosen(next);
+          }}
+          aria-label="Calendar view"
+        >
+          {MODES.map((m) => (
+            <ToggleButton
+              key={m.value}
+              value={m.value}
+              sx={{
+                px: 2,
+                ...NAV_LABEL_TYPOGRAPHY,
+                "&.Mui-selected": {
+                  color: "#fff",
+                  backgroundColor: "primary.main",
+                  // Hover-only devices: a touch tap would otherwise leave
+                  // the darker hover shade stuck on the selected button.
+                  "@media (hover: hover)": {
+                    "&:hover": { backgroundColor: "primary.dark" },
+                  },
+                },
+              }}
+            >
+              {m.label}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          useFlexGap
+          sx={{ columnGap: 3, rowGap: 0.5 }}
+        >
+          <MuiLink
+            href={CALENDAR_ADD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            variant="body2"
             sx={{
-              px: 2,
-              ...NAV_LABEL_TYPOGRAPHY,
-              "&.Mui-selected": {
-                color: "#fff",
-                backgroundColor: "primary.main",
-                "&:hover": { backgroundColor: "primary.dark" },
-              },
+              fontWeight: 600,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.5,
             }}
           >
-            {m.label}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+            Add to Google Calendar
+            <OpenInNewIcon sx={{ fontSize: 15 }} />
+          </MuiLink>
+          <MuiLink
+            href={CALENDAR_ICS_URL}
+            underline="hover"
+            variant="body2"
+            sx={{ fontWeight: 600 }}
+          >
+            Subscribe (.ics)
+          </MuiLink>
+          <MuiLink
+            href={CALENDAR_PAGE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            variant="body2"
+            sx={{ fontWeight: 600 }}
+          >
+            Open in new tab
+          </MuiLink>
+        </Stack>
+      </Stack>
 
       <Box
         sx={{
@@ -116,48 +168,9 @@ export default function MembersCalendar() {
         )}
       </Box>
 
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        justifyContent="space-between"
-        alignItems={{ xs: "flex-start", sm: "center" }}
-        spacing={{ xs: 1, sm: 3 }}
-        sx={{ mt: 1.5 }}
-      >
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          Times are shown in Eastern Time.
-        </Typography>
-        <Stack direction="row" spacing={3} flexWrap="wrap" useFlexGap>
-          <MuiLink
-            href={CALENDAR_ADD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            variant="body2"
-            sx={{ fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 0.5 }}
-          >
-            Add to Google Calendar
-            <OpenInNewIcon sx={{ fontSize: 15 }} />
-          </MuiLink>
-          <MuiLink
-            href={CALENDAR_ICS_URL}
-            underline="hover"
-            variant="body2"
-            sx={{ fontWeight: 600 }}
-          >
-            Subscribe (.ics)
-          </MuiLink>
-          <MuiLink
-            href={CALENDAR_PAGE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            variant="body2"
-            sx={{ fontWeight: 600 }}
-          >
-            Open in new tab
-          </MuiLink>
-        </Stack>
-      </Stack>
+      <Typography variant="body2" sx={{ color: "text.secondary", mt: 1.5 }}>
+        Times are shown in Eastern Time.
+      </Typography>
     </Box>
   );
 }

@@ -139,7 +139,10 @@ export default function FourYearJourney() {
           clearProps: "opacity,transform",
           scrollTrigger: {
             trigger: node,
-            start: "top 74%",
+            // Earlier than the dot's 62%: the dot is always drawn, so
+            // waiting on the text left a blank band beside each marker on
+            // phones until the node had scrolled a quarter of the way up.
+            start: "top 90%",
             once: true,
           },
         });

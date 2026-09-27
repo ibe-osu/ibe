@@ -8,7 +8,7 @@ const testimonials: Testimonial[] = [
     imageUrl: "/testimonial/PauldHyver.png",
   },
   {
-    text: "I credit so much of my professional development and success to the IBE program. It has allowed me to try various engineering and business internships. The mentorship I've received from the IBE network has been invaluable and I am so excited to take my knowledge with me into industry",
+    text: "I credit so much of my professional development and success to the IBE program. It has allowed me to try various engineering and business internships. The mentorship I've received from the IBE network has been invaluable and I am so excited to take my knowledge with me into industry.",
     author:
       "Rachel Sapola, Incoming Associate @ Boston Consulting Group, IBE 10th Cohort",
     imageUrl: "/testimonial/RachelSapola.jpeg",

@@ -11,12 +11,17 @@ export default function SeniorLeadership() {
       <Reveal variant="stagger" targets=".MuiGrid-container > *">
         <Grid
           container
-          spacing={4}
+          spacing={{ xs: 2, sm: 4 }}
           justifyContent="center"
           justifyItems="center"
           sx={{
             mb: 4,
-            width: { xs: "14rem", sm: "28rem", md: "42rem", lg: "48rem" },
+            // Phones: two people per row across the full width (a 14rem
+            // single column left 40% of the screen empty on each side and
+            // made ten officers a very long scroll). Wider: fixed rem so
+            // the grid stays a tidy centred block.
+            width: { xs: "100%", sm: "28rem", md: "42rem", lg: "48rem" },
+            px: { xs: 2, sm: 0 },
             margin: "auto",
           }}
         >
@@ -37,7 +42,7 @@ export default function SeniorLeadership() {
               email: "shepherd.550@osu.edu",
             },
           ].map((person) => (
-            <Grid key={person.email} size={{ xs: 12, sm: 6, md: 4 }}>
+            <Grid key={person.email} size={{ xs: 6, md: 4 }}>
               <IndividualCard {...person} />
             </Grid>
           ))}

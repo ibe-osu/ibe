@@ -43,10 +43,13 @@ export default function Sponsors() {
           variant="stagger"
           sx={{
             display: "grid",
+            // minmax(0, 1fr), not 1fr: a bare 1fr can't shrink below the
+            // logo's intrinsic width, so two columns of 140px logos plus
+            // padding overflowed a 375px phone and the right column clipped.
             gridTemplateColumns: {
-              xs: "repeat(2, 1fr)",
-              sm: "repeat(3, 1fr)",
-              md: "repeat(4, 1fr)",
+              xs: "repeat(2, minmax(0, 1fr))",
+              sm: "repeat(3, minmax(0, 1fr))",
+              md: "repeat(4, minmax(0, 1fr))",
             },
             gap: "1px",
             backgroundColor: "divider",
@@ -65,7 +68,7 @@ export default function Sponsors() {
                 justifyContent: "center",
                 backgroundColor: "#fff",
                 minHeight: { xs: "6.5rem", md: "8rem" },
-                px: 3,
+                px: { xs: 2, md: 3 },
                 py: 2.5,
                 "& img": {
                   filter: "grayscale(1)",
@@ -85,7 +88,7 @@ export default function Sponsors() {
                 width={150}
                 height={80}
                 style={{
-                  maxWidth: "140px",
+                  maxWidth: "min(140px, 100%)",
                   maxHeight: "64px",
                   width: "auto",
                   height: "auto",
