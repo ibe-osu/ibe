@@ -1,0 +1,41 @@
+name: Supabase keep-alive
+
+# Free-tier Supabase projects pause after 7 days without API traffic, and a
+# paused ibe-prod means every login on ibeosu.com fails. Until the site has
+# steady member traffic (or the project is on Pro), this pings both
+# projects' REST endpoints twice a week so they never go idle.
+#
+# The publishable keys are public by design (they ship in the browser
+# bundle); RLS is the access control, not key secrecy — see src/lib/env.ts.
+# The request is a bare, unauthenticated hit on the API root: it touches no
+# data, it just counts as activity.
+
+on:
+  schedule:
+    - cron: "17 9 * * 1,4" # Mon + Thu, 09:17 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: ping
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ibe-prod
+            url: https://ygofoziyvusykfykpdyy.supabase.co
+            key: sb_publishable_eUSEnxTgPS1BphEYbp0DWg_Ytiea0B2
+          - name: ibe-staging
+            url: https://bvpohtlczjqzasdhwgwe.supabase.co
+            key: sb_publishable_qCN-o8s1-P95euy4p1T1xw_09VG3qwi
+    steps:
+      - name: Ping ${{ matrix.name }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: ${{ matrix.key }}" \
+            "${{ matrix.url }}/rest/v1/")
+          echo "${{ matrix.name }} -> HTTP $code"
+          # 200 = awake. Anything else (paused projects don't even resolve
+          # DNS, so curl returns 000) fails the job so it shows up red.
+          test "$code" = "200"
