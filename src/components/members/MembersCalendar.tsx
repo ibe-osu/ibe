@@ -21,9 +21,13 @@ import {
   type CalendarMode,
 } from "@/data/calendar";
 
+// No Week view on purpose. It's the only view with an hour grid, Google's
+// embed always opens it scrolled to midnight with no parameter to hide the
+// overnight hours or set the scroll position, and IBE events never happen
+// at 3 AM — so it showed a screen of empty rows. Month and Agenda only
+// show hours that have events.
 const MODES: { value: CalendarMode; label: string }[] = [
   { value: "MONTH", label: "Month" },
-  { value: "WEEK", label: "Week" },
   { value: "AGENDA", label: "Agenda" },
 ];
 

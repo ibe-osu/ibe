@@ -17,7 +17,7 @@ export const CALENDAR_ADD_URL = `https://calendar.google.com/calendar/u/0/r?cid=
 /** iCal feed for Apple Calendar, Outlook, and anything else that speaks .ics. */
 export const CALENDAR_ICS_URL = `https://calendar.google.com/calendar/ical/${encodedId}/public/basic.ics`;
 
-export type CalendarMode = "MONTH" | "WEEK" | "AGENDA";
+export type CalendarMode = "MONTH" | "AGENDA";
 
 /**
  * The embed URL for a given view. The show* flags strip Google's chrome
