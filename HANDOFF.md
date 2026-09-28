@@ -1,79 +1,65 @@
-# Handoff: IBE Website — auth system, members area, e-board onboarding
+# Handoff: IBE Website — e-board onboarding, blocked on prod setup
 
-Replaces the previous handoff (auth build-out + GitHub org migration; both
-done). Last full audit: 2026-09-20 — lint, build, `npm audit` (patched via
-lockfile bump of `next`), production crawl (all routes 200, security headers
-present, sitemap/robots correct), and the signup flow re-tested on staging.
+Replaces the 2026-09-20 handoff. Everything below is current as of
+**2026-09-28**. Read `CLAUDE.md` first for the deploy flow and design system.
 
 ---
 
 ## ⏭️ Pick up here
 
-**The GitHub org migration is done.** The repo lives under the org, the Vercel
-team `ohiostateibes-projects` deploys it, and PR #58 verified previews after
-the move. (Not a hosting problem, never was: OSU's Azure/AWS suggestion
-wouldn't have fixed GitHub ownership. Alumni PII lives in Supabase, so hosting
-is also the wrong lever for any data-residency ask.)
+**Goal:** IBE's e-board signs up on ibeosu.com with a membership code and
+lands on the members calendar. The code, the members area, the signup flow,
+and the docs are all done and merged. **The only blocker is `ibe-prod`, and
+it is currently PAUSED.** Nothing can be tested on ibeosu.com until it is
+restored and configured.
 
-**Current push: onboarding the e-board (2026-09-20 audit session).** The
-members area now has real content — the IBE Google Calendar on `/members` —
-and `issue_invite_code()` (migration 0004) replaces hand-written SQL for
-codes. The signup flow was re-tested end to end on staging on 2026-09-20.
-What's left before exec can sign up on ibeosu.com is entirely **ibe-prod
-setup**, which the app can't do for itself:
+Do these in order. Steps 1–3 are dashboard/CLI actions **only the user can
+do** (the coding agent's auto-mode classifier denies every write to prod,
+including unpausing it via the Management API).
 
-1. Unpause `ibe-prod` (it auto-pauses after 7 idle days — *both* projects
-   were found paused on 2026-09-20).
-2. Apply migrations 0001–0004:
-   `supabase link --project-ref ygofoziyvusykfykpdyy && supabase db push`.
-3. Auth config: Site URL `https://ibeosu.com`; redirect URLs
-   `https://ibeosu.com/**` and `https://www.ibeosu.com/**`; register the
-   `before_user_created` hook (`pg-functions://postgres/public/before_user_created`);
-   SMTP via Resend (mirror staging); email rate limit ≥ 30/hour; **Confirm
-   signup email template** → `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email`
-   (on staging too — the 2026-09-20 test hit the cross-device failure).
-4. `select public.issue_invite_code('e-board 2026-27', 15, interval '14 days');`
-   and send the code. Runbook: `docs/MEMBER_ONBOARDING.md`.
-5. ~~Make the Google Calendar public~~ — done 2026-09-22 (embed and iCal
-   feed both return 200 anonymously; the feed is "IBE Event Calendar").
+1. **Unpause prod:** https://supabase.com/dashboard/project/ygofoziyvusykfykpdyy
+   → *Restore project*, wait ~3 min. (`supabase link` fails with "project is
+   paused" until then — the user hit exactly this on 2026-09-27 and 09-28.)
+2. **Push migrations 0001–0004** from a checkout of `main`:
+   `npx supabase link --project-ref ygofoziyvusykfykpdyy && npx supabase db push`
+   (asks for the prod DB password).
+3. **Prod auth config** (dashboard → Authentication):
+   - URL Configuration: Site URL `https://ibeosu.com`; redirect URLs
+     `https://ibeosu.com/**`, `https://www.ibeosu.com/**`
+   - Hooks → Before User Created → Postgres function `public.before_user_created`
+   - Rate Limits → emails sent: 30/hour
+   - Email Templates → Confirm signup → link must be
+     `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email`
+     (device-independent; the default PKCE link only works in the browser
+     that submitted the form — bit us live). **Do this on staging too.**
+   - Project Settings → Authentication → SMTP: `smtp.resend.com`, 465, user
+     `resend`, password = Resend API key, sender `noreply@ibeosu.com`,
+     name `IBE Honors Program`
+4. **Verify prod end to end** through the real signup form on ibeosu.com
+   (never curl — see Gotchas), with a real inbox.
+5. **Issue the e-board code** in the prod SQL editor:
+   `select public.issue_invite_code('e-board 2026-27', 25, interval '30 days');`
+   and send it with the message in `docs/MEMBER_ONBOARDING.md`.
+
+Once prod is restored, the **keep-alive workflow** (`.github/workflows/keepalive.yml`,
+Mon + Thu) pings both projects so they stop auto-pausing. Until then its
+prod leg runs red — expected.
 
 ---
 
-## What's built (Phase 1 auth — PRs #52, #53, #54, #56, all merged)
+## What shipped this cycle (all merged to `main`)
 
-Account creation works end to end, verified live: signup with a membership code
-→ confirmation email → `/auth/callback` → session → gated `/members`.
+| PR | What |
+|---|---|
+| #62 | Members calendar on `/members`; `issue_invite_code()` (migration 0004); login errors distinguish unconfirmed / unreachable / wrong password; `/auth/callback` accepts `token_hash` links; npm audit fix; `docs/MEMBER_ONBOARDING.md` |
+| #63 | Calendar frame sized to the viewport (`clamp(440px, 100svh − chrome, 720px)`) |
+| #64 | Mobile walkthrough fixes (Opus on iPhone 17 simulator + Sonnet static audit): sponsor grid clipping, scroll-reveal thresholds, speaker carousel swipe + no hydration jump, testimonial photo-first on phones, 2-up leadership grid, arrow gutters, tap-to-reveal speaker bios, hero eyebrow wrap |
+| #65 | Week view removed from the calendar (Google's embed can't hide overnight hours); toggle is Month / Agenda |
+| #66 | Supabase keep-alive workflow |
 
-- **Security headers** (`next.config.ts`) — CSP in **report-only**; flip
-  `enforceCsp` to `true` to enforce (that's PR 5, the whole diff)
-- **Supabase wiring** — `src/lib/supabase/{client,server,middleware}.ts`,
-  `src/middleware.ts`
-- **Auth** — `/login`, `/signup`, `/auth/callback`, `/members`,
-  `/members/alumni-database` (still "Under Construction")
-- **Members area** — `/members` shows the IBE Google Calendar.
-  `src/data/calendar.ts` holds the calendar id and derives every URL;
-  `src/components/members/MembersCalendar.tsx` is the embed with a
-  Month/Week/Agenda toggle (agenda by default on phones). The signed-in nav
-  link is "Members" (was "Resources").
-- **Gating** — `requireMember()` / `requireAdmin()` in `src/lib/auth/guards.ts`
-- **Migrations** — `supabase/migrations/0001` (app_users, roles, rate limiting),
-  `0002` (invite codes, signup hook, provisioning trigger), `0003` (pgcrypto
-  search_path fix), `0004` (`issue_invite_code(label, max_uses, valid_for)`:
-  generates, bcrypts, stores, and returns a code in one call — callable from
-  the SQL editor or by an active admin, never anonymously)
-
-### Decisions — settled, don't re-litigate
-- **Middleware is not the security boundary.** It only refreshes sessions. Real
-  gating = per-page `requireMember()` + RLS. Next.js middleware has a history of
-  bypass CVEs (PR #53 patched several).
-- **No `SUPABASE_SECRET_KEY` in the app or CI, ever.** The only thing needing it
-  is the invite Edge Function (PR 4), where Supabase injects it.
-- **The publishable key is public by design** — it's plaintext in `ci.yml`
-  deliberately. Access control is RLS, not key secrecy.
-- **The code is an invitation; the account is the boundary.** Per-person invites
-  (PR 4) become primary; the shared code stays a fallback.
-- **Alumni PII:** drop `phone` and `gender` at import. Never commit the JSON —
-  a static import compiles it into a CDN-served chunk that is *not* behind login.
+Nav link for the members area is **"Members"** (was "Resources").
+`/members/alumni-database` is still "Under Construction" — that's correct,
+Phase 2 is deferred.
 
 ---
 
@@ -83,118 +69,110 @@ Account creation works end to end, verified live: signup with a membership code
 |---|---|---|
 | URL | `bvpohtlczjqzasdhwgwe.supabase.co` | `ygofoziyvusykfykpdyy.supabase.co` |
 | Publishable key | `sb_publishable_qCN-o8s1-P95euy4p1T1xw_09VG3qwi` | `sb_publishable_eUSEnxTgPS1BphEYbp0DWg_Ytiea0B2` |
-| Migrations 0001–0004 | ✅ applied | ❌ none |
-| `before_user_created` hook | ✅ registered | ❌ |
-| Custom SMTP (Resend) | ✅ | ❌ |
-| Site URL | `http://localhost:3000` | must be `https://ibeosu.com` |
-| Redirect URLs | ✅ localhost + `*-ohiostateibes-projects.vercel.app` + ibeosu.com | ❌ |
-| Status | restored 2026-09-20 | restored 2026-09-20 |
+| Status (2026-09-28) | ACTIVE_HEALTHY | **PAUSED** |
+| Migrations 0001–0004 | ✅ | ❌ none |
+| `before_user_created` hook | ✅ | ❌ |
+| SMTP (Resend) | ✅ | ❌ |
+| Site URL / redirects | localhost + `*-ohiostateibes-projects.vercel.app` + ibeosu.com | ❌ |
+| Confirm-signup template | ❌ still default PKCE link | ❌ |
 
-**Both projects auto-pause after 7 idle days** (free tier). Check the dashboard
-before any onboarding push; restore takes ~2–3 minutes.
-
-- **Vercel env vars**: Preview → staging, Production → prod. Set as **Config**,
-  not Secret (they're `NEXT_PUBLIC_`, so public by definition).
-- **Resend**: account `ibevptech@gmail.com`, `ibeosu.com` verified via Vercel's
-  native Resend integration (auto-added the DNS records). Sender
-  `noreply@ibeosu.com`, SMTP `smtp.resend.com:465`, username literally `resend`.
-- **Email rate limit**: was 2/hour (Supabase default), now **30/hour** with
-  custom SMTP. Still Supabase-side and adjustable — raise it before inviting 200
-  people.
-- **Test invite codes** on staging: the one labelled `audit test 2026-09-20`
-  (5 uses, expires 2026-09-27) is in the 2026-09-20 session transcript. Issue
-  a fresh one with
-  `select public.issue_invite_code('testing', 5, interval '7 days');` —
-  no more hand-rolled `crypt()` inserts. Generated codes are uppercase by
-  construction (the alphabet also drops 0/O/1/I), which matters because
-  `normalizeInviteCode()` uppercases input and a lowercase code would be
-  unredeemable.
-- **Test accounts on staging**: `yuviatre+ibetest{,2,3,4,5}@gmail.com`,
-  `yuviatre+preview1@gmail.com`
+- **Vercel**: team `ohiostateibes-projects`, project `ibe`. Preview env →
+  staging, Production env → prod. Previews are behind Vercel SSO, so
+  **e-board members cannot open previews** — only a configured prod lets
+  them test.
+- **Google Calendar** ("IBE Event Calendar") is public as of 2026-09-22.
+  Ops contact: Devhuti Patel. ID lives in `src/data/calendar.ts`.
+- **Staging codes**: label `e-board testing (staging)` (25 uses, expires
+  2026-10-27) was issued 2026-09-27 — plaintext is in that session's
+  transcript. Only usable on localhost / previews. Issue another with
+  `select public.issue_invite_code('label', N, interval '30 days');`.
+- **Staging test account**: `yuviatre+ibetest5@gmail.com` (confirmed; the
+  password is in the 2026-09-20 transcript, or reset it). Older
+  `yuviatre+ibetest{,2,3,4}` / `+preview1` accounts have unknown passwords.
+- Local dev: the worktree
+  `/Users/yuvia/IBE Website/.claude/worktrees/ibe-audit-eboard-setup-a0f4ed`
+  has a gitignored `.env.local` pointing at staging. The main checkout does not.
 
 ---
 
-## What's next
+## Open items the user still has to decide (surfaced by the mobile walkthrough)
 
-- **Prod setup** — the five steps under "Pick up here". Nothing else blocks
-  e-board onboarding.
-- **PR 4 — admin UI + bulk invites.** Paste an email list and invite everyone,
-  issue/revoke codes, promote to admin, suspend. `issue_invite_code()` is the
-  first piece of it (an admin can already call it through PostgREST). Needs a
-  Supabase **Edge Function** to hold the secret key (keeps it out of Vercel).
-- **PR 5 — enforce CSP.** One-line flip of `enforceCsp` in `next.config.ts`.
-  `frame-src` now also allows `calendar.google.com`.
-- **Canonical host mismatch (SEO, low priority).** Vercel redirects
-  `ibeosu.com` → `www.ibeosu.com`, but `metadataBase`, the sitemap, and every
-  canonical say `https://ibeosu.com`. Pick one: make the apex primary in
-  Vercel (Settings → Domains) or switch the code to `www`. Search Console
-  should match whichever wins.
-- **Phase 2 — alumni directory.** Deferred entirely. Note the source data in
-  `ibe-connect` was **replaced with a 268-record CSV-derived set** (was 288), so
-  re-profile before importing; the earlier duplicate/data-quality analysis is
-  stale.
+- Home stats say **"90% job placement"**; Year Four in the journey says
+  **"100%"**. Which is true?
+- Kristina Kennedy is "Engineering Faculty Director" on `/about` but
+  "Senior Director of the IBE Program" on `/recruitment`.
+- `/recruitment` still shows the **April 3, 2026** deadline — needs the
+  2027 date.
+- The course-plan diagram's season tags (rounded corners, off-brand red)
+  are inside `public/coursework/coursework*.svg`, not code — needs a
+  redrawn asset.
+- **Design-system folder**: the user asked whether we have a `DESIGN.md` +
+  `.impeccable/design.json` like the Relantic `core-mobile` repo. We don't;
+  offered to generate one with the impeccable documenter from `theme.ts`.
+  Not started.
 
-### Login errors now say what's actually wrong
-`LoginForm` distinguishes `email_not_confirmed` ("confirm your email first")
-and an unreachable backend ("can't reach the sign-in service", i.e. the
-project is paused) from a genuinely wrong password. Everything else stays
-deliberately vague so the form can't be used to enumerate accounts.
+## Smaller polish left from the walkthrough (not done)
+
+- Photo carousels on `/student-life` show a half-blank frame when autoplay
+  wraps; dots are white-on-photo and hard to see.
+- Mobile drawer: logo/close sit ~8pt lower than the header's; current page
+  not highlighted; Sign Out styled like a nav link.
+- Sticky hover states on touch (tapped cards/logos stay "hovered") — only
+  the calendar toggle was wrapped in `@media (hover: hover)`.
+- Canonical host mismatch: Vercel redirects apex → `www.ibeosu.com`, but
+  `metadataBase`/sitemap/canonicals say the apex. Pick one.
+
+## Next big pieces (unchanged)
+
+- **PR 4 — admin UI + bulk invites** (`issue_invite_code()` is the first
+  piece; needs an Edge Function for the secret key).
+- **PR 5 — enforce CSP** (`enforceCsp` flip in `next.config.ts`).
+- **Phase 2 — alumni directory** (re-profile the 268-record source first).
 
 ---
 
-## Gotchas (hard-won; several cost real time this session)
+## Gotchas (hard-won)
 
-- **Paused Supabase looks like a wrong password.** `supabase projects list`
-  shows `INACTIVE`; the dashboard shows **Restore project**. Fixed in the UI
-  by the LoginForm change, but the backend still needs waking.
-- **Read-only checks of a cloud DB** work without the DB password through the
-  Management API (`POST /v1/projects/{ref}/database/query`) using the CLI's
-  login token. Handy for "did the trigger fire?" without opening the dashboard.
-- **The Google Calendar must be "available to public"** or the embed shows a
-  permission error to everyone. Quick check: `curl -sI` on the embed URL
-  returns 200 when public, 401 when not.
-- **`npm run build` clobbers a running dev server's `.next`** → the dev server
-  starts 500ing on every route. Restart it. This bit us twice.
-- **Browser-pane `computer` clicks hang** intermittently while `read_page`,
-  `navigate`, and screenshots keep working. Use `javascript_tool` to click via
-  `document.querySelector(...).click()` and inspect the DOM instead.
-- **Vercel previews are behind deployment protection** — `curl` gets a 302 to
-  SSO, so preview state can't be verified from the CLI. The user has to check in
-  a browser where they're logged into Vercel.
-- **Confirmation links are device-bound until the template is switched.**
-  The default `{{ .ConfirmationURL }}` is a PKCE link: it only works in the
-  browser that submitted the signup form. Supabase still confirms the email,
-  so logging in works — but the person sees "link didn't work". The
-  `token_hash` template (see step 3 above) plus `/auth/callback`'s
-  `verifyOtp` path removes the problem.
-- **Never test signup with `curl`.** It bypasses the JS SDK's PKCE setup, so
-  Supabase falls back to a different confirmation-link format that
-  `/auth/callback` isn't built for. Cost two rounds of false debugging. Test
-  through the real form.
-- **pgcrypto lives in the `extensions` schema on Supabase, not `public`.** Any
-  `SECURITY DEFINER` function calling `crypt()`/`gen_salt()` must include
-  `extensions` in its pinned `search_path` (that's all migration 0003 is). It
-  works in the SQL Editor regardless, which is exactly how it hides.
-- **MUI's `Menu` rejects a Fragment child** — it walks children directly for
-  focus management. Pass a flat array with keys.
-- **Supabase rejects `@example.com`** as an invalid signup email. Use a real
-  deliverable address.
-- **Vercel only applies env vars to new builds** — changing them requires a
-  redeploy to take effect.
-- A **typo'd env var name now fails silently** (degrades to signed-out) rather
-  than crashing. If auth mysteriously doesn't work, check the variable names
-  first.
+- **Prod pauses every 7 idle days** on the free tier. Symptom: `supabase
+  link` → "project is paused"; CLI `supabase projects list` → `INACTIVE`;
+  logins fail. Keep-alive workflow fixes it going forward, once restored.
+- **The auto-mode classifier denies**: any write to prod (migrations, auth
+  config, restore), staging *auth config* writes (email template), and
+  `gh pr merge` on a PR that hasn't had `/code-review` run in the session.
+  Staging *database* writes via the Management API query endpoint are
+  allowed and were used for migration 0004 and issuing codes.
+- **Confirmation links are device-bound** until the template is switched
+  (step 3). Supabase still confirms the email, so "log in" works — the
+  `confirm-failed` message now says so.
+- **`supabase.auth.signOut()` is global-scope**: signing out in one browser
+  (e.g. the iOS simulator during a walkthrough) revokes the session in
+  every other browser too.
+- **Hidden browser pane doesn't composite**: CSS transitions sit at
+  `currentTime: 0`, so a computed `opacity` never changes. Inject
+  `transition: none !important` before reading, or trust `matches()`.
+- **`useMediaQuery` + `noSsr` on anything rendered on the server** produces
+  a hydration mismatch React refuses to patch. Gate on a mounted flag
+  instead (see `MembersCalendar.tsx`) or move breakpoints to CSS (see
+  `SpeakerCarousel.tsx`'s `--card-w`).
+- **`git checkout main` inside the worktree** succeeds if the main checkout
+  is on another branch — and lands you on a *stale* local main. Always
+  `git pull --ff-only origin main` before branching.
+- **`npm run build` clobbers a running dev server's `.next`.** Restart it.
+- **Never test signup with `curl`** — it bypasses PKCE and produces a
+  different link format. Use the real form.
+- **pgcrypto lives in `extensions`**, so SECURITY DEFINER functions that
+  call `crypt()`/`gen_random_bytes()` need `extensions` in `search_path`.
+- **Supabase rejects `@example.com`** signups; use a real inbox.
+- **Vercel applies env vars only to new builds.**
 
 ---
 
 ## Related docs
 
-- `docs/OFFICER_HANDOFF.md` — accounts, credentials-locations, and open risks
-  for the *next VP of Tech* (different audience from this file). Pointers only,
-  never secrets.
-- `docs/DEPLOYMENT.md` — branch → PR → preview → merge flow. **Never push to
-  `main`.**
-- `docs/MEMBER_ONBOARDING.md` — the officer runbook: wake the backend, issue
-  a code, what members see, how to fix the common failures.
+- `docs/MEMBER_ONBOARDING.md` — the officer runbook (wake the backend,
+  issue a code, send the message, fix the common failures).
+- `docs/OFFICER_HANDOFF.md` — accounts and credential *locations* for the
+  next VP of Tech. Pointers only, never secrets.
+- `docs/DEPLOYMENT.md` — branch → PR → preview → merge. **Never push to `main`.**
 - `docs/student_db.md` — Phase 2 schema notes.
-- `CLAUDE.md` / `PRODUCT.md` — design system and brand, both non-negotiable.
+- `CLAUDE.md` / `PRODUCT.md` — design system and brand, non-negotiable.
