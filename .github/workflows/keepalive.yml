@@ -7,8 +7,10 @@ name: Supabase keep-alive
 #
 # The publishable keys are public by design (they ship in the browser
 # bundle); RLS is the access control, not key secrecy — see src/lib/env.ts.
-# The request is a bare, unauthenticated hit on the API root: it touches no
-# data, it just counts as activity.
+# The request is a real PostgREST query on app_users, which is what counts
+# as database activity. RLS gives an anonymous caller zero rows, so the
+# response is always `[]` — nothing is exposed. (The bare /rest/v1/ root
+# answers 401 to a publishable key, which is why the first version failed.)
 
 on:
   schedule:
@@ -34,7 +36,8 @@ jobs:
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: ${{ matrix.key }}" \
-            "${{ matrix.url }}/rest/v1/")
+            -H "Authorization: Bearer ${{ matrix.key }}" \
+            "${{ matrix.url }}/rest/v1/app_users?select=user_id&limit=1")
           echo "${{ matrix.name }} -> HTTP $code"
           # 200 = awake. Anything else (paused projects don't even resolve
           # DNS, so curl returns 000) fails the job so it shows up red.
