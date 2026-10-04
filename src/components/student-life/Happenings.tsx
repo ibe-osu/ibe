@@ -1,84 +1,95 @@
-import { Box, Typography, Divider } from "@mui/material";
-import PhotoCarousel, { Photo } from "./PhotoCarousel";
-import React from "react";
+import { Box, Button, Container, Typography } from "@mui/material";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import Image from "next/image";
 import Reveal from "@/components/general/Reveal";
+import {
+  getInstagramPosts,
+  INSTAGRAM_PROFILE_URL,
+  type InstagramPost,
+} from "@/lib/instagram";
 
-// Event data structure
-interface Event {
-  title: string;
-  date: string;
-  descriptions: React.ReactNode[];
-  photos: Photo[];
+interface Tile {
+  key: string;
+  href: string;
+  imageUrl: string;
+  alt: string;
+  date?: string;
+  caption?: string;
+  mediaType?: InstagramPost["mediaType"];
 }
 
-// Events content
-const events: Event[] = [
+/**
+ * Shown when the live feed is unavailable — no token locally or in CI, an
+ * expired token, or Instagram being down. Real cohort photos, so the section
+ * never renders empty.
+ */
+const fallbackTiles: Tile[] = [
   {
-    title: "IBE Date Party!",
-    date: "11/14/25",
-    descriptions: [
-      "IBE certainly made our Date Party one to remember! From the great music and dancing to the amazing energy and unforgettable moments, the night was a huge success. Until next time, keep the memories alive and the good vibes going! Thanks to Buckeye Undergraduate Consulting Club, Students Consulting for Nonprofit Organizations, Women in Business, and Scarlet Investment Group for partnering with us on this exciting event!",
-    ],
-    photos: [
-      {
-        url: "/happenings/11-25-date-party-1.jpeg",
-        alt: "IBE Date Party - Photo 1",
-      },
-      {
-        url: "/happenings/11-25-date-party-2.jpeg",
-        alt: "IBE Date Party - Photo 2",
-      },
-      {
-        url: "/happenings/11-25-date-party-3.jpeg",
-        alt: "IBE Date Party - Photo 3",
-      },
-    ],
+    url: "/happenings/11-25-date-party-1.jpeg",
+    alt: "IBE students at the fall 2025 date party",
   },
   {
-    title: "IBE Goes to Cleveland!",
-    date: "3/5/25 - 3/7/25",
-    descriptions: [
-      "IBE students recently took a trek to Cleveland, where we met with Deloitte, Sherwin-Williams, and Encore Venture Labs. The trip included a networking event with industry professionals and alumni, plus an exciting chance to see the Cavaliers secure a big win!",
-      <>
-        Huge thank-you to IBE alum{" "}
-        <Box
-          component="a"
-          href="https://www.linkedin.com/in/collin-aldrich-b17108164/"
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            color: "primary.main",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          Collin Aldrich
-        </Box>{" "}
-        at Deloitte!
-      </>,
-    ],
-    photos: [
-      {
-        url: "/happenings/cleveland-1.jpeg",
-        alt: "IBE Cleveland Trip - Photo 1",
-      },
-      {
-        url: "/happenings/cleveland-2.jpeg",
-        alt: "IBE Cleveland Trip - Photo 2",
-      },
-      {
-        url: "/happenings/cleveland-3.jpeg",
-        alt: "IBE Cleveland Trip - Photo 3",
-      },
-      {
-        url: "/happenings/cleveland-4.jpeg",
-        alt: "IBE Cleveland Trip - Photo 4",
-      },
-    ],
+    url: "/happenings/cleveland-2.jpeg",
+    alt: "IBE students on the Cleveland trek",
   },
-];
+  {
+    url: "/happenings/11-25-date-party-2.jpeg",
+    alt: "IBE students at the fall 2025 date party",
+  },
+  {
+    url: "/happenings/cleveland-3.jpeg",
+    alt: "IBE students on the Cleveland trek",
+  },
+  {
+    url: "/happenings/11-25-date-party-3.jpeg",
+    alt: "IBE students at the fall 2025 date party",
+  },
+  {
+    url: "/happenings/cleveland-4.jpeg",
+    alt: "IBE students on the Cleveland trek",
+  },
+].map(({ url, alt }) => ({
+  key: url,
+  href: INSTAGRAM_PROFILE_URL,
+  imageUrl: url,
+  alt,
+}));
 
-export default function Happenings() {
+const dateFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "America/New_York",
+});
+
+function toTile(post: InstagramPost): Tile {
+  const caption = post.caption.replace(/\s+/g, " ").trim();
+  return {
+    key: post.id,
+    href: post.permalink,
+    imageUrl: post.imageUrl,
+    // The caption is rendered as text right under the image, so repeating
+    // it as alt text would make screen readers read it twice.
+    alt: caption ? "" : "Photo from IBE's Instagram",
+    date: dateFormat.format(new Date(post.timestamp)),
+    caption,
+    mediaType: post.mediaType,
+  };
+}
+
+const mediaTypeIcon: Partial<
+  Record<InstagramPost["mediaType"], typeof PlayArrowIcon>
+> = {
+  VIDEO: PlayArrowIcon,
+  CAROUSEL_ALBUM: CollectionsIcon,
+};
+
+export default async function Happenings() {
+  const posts = await getInstagramPosts();
+  const tiles = posts ? posts.map(toTile) : fallbackTiles;
+
   return (
     <Box component="section" sx={{ backgroundColor: "background.paper" }}>
       {/* Header Banner */}
@@ -95,116 +106,143 @@ export default function Happenings() {
         </Typography>
       </Box>
 
-      {/* Content Container */}
-      <Box
-        sx={{
-          maxWidth: "1600px",
-          mx: "auto",
-          px: { xs: 3, md: 6 },
-          py: { xs: 4, md: 6 },
-        }}
-      >
-        {events.map((event, index) => {
-          // Alternate layout: even indices have photo on right, odd indices have photo on left.
-          // Below md the columns stack, so text always reads left-aligned.
-          const isPhotoOnLeft = index % 2 !== 0;
-          const textAlign = {
-            xs: "left",
-            md: isPhotoOnLeft ? "left" : "right",
-          } as const;
+      <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
+        <Typography
+          variant="body1"
+          sx={{
+            textAlign: "center",
+            color: "text.secondary",
+            maxWidth: "58ch",
+            mx: "auto",
+            mb: { xs: 4, md: 5 },
+          }}
+        >
+          Treks, socials, and everything in between — the latest from{" "}
+          <Box
+            component="a"
+            href={INSTAGRAM_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: "primary.main", fontWeight: 600 }}
+          >
+            @ohiostateibe
+          </Box>{" "}
+          on Instagram.
+        </Typography>
 
-          const textContent = (
-            <Box
-              sx={{
-                flex: { xs: "1", md: "0 0 45%" },
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                textAlign: textAlign,
-                order: { xs: 1, md: isPhotoOnLeft ? 2 : 1 },
-              }}
-            >
-              <Typography
-                variant="h4"
-                component="h3"
+        <Reveal
+          variant="stagger"
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
+            columnGap: { xs: 2, md: 3 },
+            rowGap: { xs: 3, md: 4 },
+          }}
+        >
+          {tiles.map((tile) => {
+            const TypeIcon = tile.mediaType && mediaTypeIcon[tile.mediaType];
+
+            return (
+              <Box
+                key={tile.key}
+                component="a"
+                href={tile.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 sx={{
-                  color: "text.primary",
-                  textAlign: textAlign,
+                  display: "block",
+                  color: "inherit",
+                  textDecoration: "none",
+                  "&:focus-visible": {
+                    outline: "2px solid #ba0c2f",
+                    outlineOffset: "3px",
+                  },
+                  "@media (prefers-reduced-motion: no-preference)": {
+                    "&:hover .ig-image": { transform: "scale(1.03)" },
+                  },
                 }}
               >
-                {event.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: "text.secondary",
-                  fontStyle: "italic",
-                  textAlign: textAlign,
-                }}
-              >
-                {event.date}
-              </Typography>
-              {event.descriptions.map((description, descIndex) => (
-                <Typography
-                  key={descIndex}
-                  variant="body1"
+                <Box
                   sx={{
-                    lineHeight: 1.7,
-                    color: "text.primary",
-                    textAlign: textAlign,
+                    position: "relative",
+                    // Instagram's own grid crops to 4:5 portrait; matching it
+                    // keeps posts framed the way they were composed.
+                    aspectRatio: "4 / 5",
+                    overflow: "hidden",
+                    backgroundColor: "grey.100",
                   }}
                 >
-                  {description}
-                </Typography>
-              ))}
-            </Box>
-          );
+                  <Image
+                    src={tile.imageUrl}
+                    alt={tile.alt}
+                    fill
+                    sizes="(min-width: 900px) 380px, 50vw"
+                    className="ig-image"
+                    style={{
+                      objectFit: "cover",
+                      transition: "transform 0.4s ease",
+                    }}
+                  />
+                  {TypeIcon && (
+                    <TypeIcon
+                      aria-hidden
+                      sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        color: "#fff",
+                        fontSize: "1.5rem",
+                        filter: "drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))",
+                      }}
+                    />
+                  )}
+                </Box>
 
-          const photoContent = (
-            <Box
-              sx={{
-                flex: { xs: "1", md: "0 0 50%" },
-                order: { xs: 2, md: isPhotoOnLeft ? 1 : 2 },
-              }}
-            >
-              <PhotoCarousel photos={event.photos} />
-            </Box>
-          );
-
-          return (
-            <React.Fragment key={index}>
-              <Reveal
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  gap: { xs: 3, md: 4 },
-                }}
-              >
-                {isPhotoOnLeft ? (
-                  <>
-                    {photoContent}
-                    {textContent}
-                  </>
-                ) : (
-                  <>
-                    {textContent}
-                    {photoContent}
-                  </>
+                {tile.date && (
+                  <Typography
+                    variant="body2"
+                    component="p"
+                    sx={{
+                      mt: 1.5,
+                      color: "text.secondary",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {tile.date}
+                  </Typography>
                 )}
-              </Reveal>
-              {index < events.length - 1 && (
-                <Divider
-                  sx={{
-                    my: { xs: 4, md: 6 },
-                    borderColor: "grey.400",
-                    borderWidth: 1,
-                  }}
-                />
-              )}
-            </React.Fragment>
-          );
-        })}
-      </Box>
+                {tile.caption && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      mt: 0.5,
+                      color: "text.primary",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: { xs: 2, md: 3 },
+                      overflow: "hidden",
+                    }}
+                  >
+                    {tile.caption}
+                  </Typography>
+                )}
+              </Box>
+            );
+          })}
+        </Reveal>
+
+        <Box sx={{ textAlign: "center", mt: { xs: 5, md: 6 } }}>
+          <Button
+            component="a"
+            href={INSTAGRAM_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            startIcon={<InstagramIcon />}
+          >
+            Follow @ohiostateibe
+          </Button>
+        </Box>
+      </Container>
     </Box>
   );
 }
