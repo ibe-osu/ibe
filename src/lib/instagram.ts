@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const INSTAGRAM_PROFILE_URL = "https://www.instagram.com/ohiostateibe/";
+const mediaTypeSchema = z.enum(["IMAGE", "VIDEO", "CAROUSEL_ALBUM"]);
 
 export interface InstagramPost {
   id: string;
@@ -9,7 +9,7 @@ export interface InstagramPost {
   imageUrl: string;
   permalink: string;
   timestamp: string;
-  mediaType: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
+  mediaType: z.infer<typeof mediaTypeSchema>;
 }
 
 const mediaSchema = z.object({
@@ -17,7 +17,7 @@ const mediaSchema = z.object({
     z.object({
       id: z.string(),
       caption: z.string().optional(),
-      media_type: z.enum(["IMAGE", "VIDEO", "CAROUSEL_ALBUM"]),
+      media_type: mediaTypeSchema,
       media_url: z.string().optional(),
       thumbnail_url: z.string().optional(),
       permalink: z.string(),
@@ -27,12 +27,13 @@ const mediaSchema = z.object({
 });
 
 /**
- * Every 6 hours, not every hour: Instagram's CDN URLs are re-signed on each
- * API call, so every refresh hands next/image a fresh set of source images to
- * optimize. Six hours keeps that well inside Vercel's free image quota and is
- * still same-day for a program account that posts a few times a week.
+ * Twice a day, not hourly: Instagram's CDN URLs are re-signed on each API
+ * call, so every refresh hands next/image six new source images to optimize
+ * at several widths each. 12 hours keeps that to a small slice of Vercel's
+ * free image quota, and is still same-day for an account that posts a few
+ * times a week.
  */
-const REVALIDATE_SECONDS = 6 * 60 * 60;
+const REVALIDATE_SECONDS = 12 * 60 * 60;
 
 /**
  * Latest posts from @ohiostateibe via the Instagram API (Instagram Login).
@@ -58,13 +59,16 @@ export async function getInstagramPosts(
   url.searchParams.set("access_token", token);
 
   try {
-    const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
+    const res = await fetch(url, {
+      next: { revalidate: REVALIDATE_SECONDS },
+      // This runs during the build and ISR regeneration; a hung API must
+      // fall through to the fallback photos, not stall the page.
+      signal: AbortSignal.timeout(5000),
+    });
     if (!res.ok) {
       // The body names the problem (e.g. code 190 = expired token) and never
       // echoes the token back, so it's safe to log.
-      console.error(
-        `Instagram feed: HTTP ${res.status} ${await res.text()}`,
-      );
+      console.error(`Instagram feed: HTTP ${res.status} ${await res.text()}`);
       return null;
     }
 
@@ -75,8 +79,7 @@ export async function getInstagramPosts(
     }
 
     const posts = parsed.data.data.flatMap((m): InstagramPost[] => {
-      const imageUrl =
-        m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url;
+      const imageUrl = m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url;
       if (!imageUrl || new URL(imageUrl).pathname.endsWith(".mp4")) return [];
       return [
         {

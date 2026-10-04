@@ -2,7 +2,7 @@
 
 The **IBE Happenings** section on `/student-life` shows the six latest posts
 from [@ohiostateibe](https://www.instagram.com/ohiostateibe/). New posts show
-up on their own within about 6 hours; nobody has to edit the site.
+up on their own within about 12 hours; nobody has to edit the site.
 
 It reads one environment variable, `INSTAGRAM_ACCESS_TOKEN`. Without it (or
 with an expired one) the section quietly falls back to static cohort photos

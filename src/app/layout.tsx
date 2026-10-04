@@ -8,6 +8,7 @@ import Footer from "@/components/general/Footer";
 import HeroPrefetch from "@/components/general/HeroPrefetch";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL } from "@/data/social";
 
 const ptSerifCaption = PT_Serif_Caption({
   weight: "400",
@@ -102,11 +103,7 @@ const organizationJsonLd = {
     addressRegion: "OH",
     addressCountry: "US",
   },
-  sameAs: [
-    "https://www.instagram.com/ohiostateibe/",
-    "https://www.linkedin.com/company/ibeprogram/",
-    "https://www.facebook.com/ohiostateibe/",
-  ],
+  sameAs: [INSTAGRAM_URL, LINKEDIN_URL, FACEBOOK_URL],
 };
 
 export default function RootLayout({

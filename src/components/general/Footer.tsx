@@ -10,6 +10,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Link from "next/link";
+import { FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL } from "@/data/social";
 
 interface SocialIconProps {
   href: string;
@@ -135,22 +136,13 @@ export default function Footer() {
               Connect
             </Typography>
             <Stack direction="row" spacing={1.5}>
-              <SocialIcon
-                href="https://www.instagram.com/ohiostateibe/"
-                label="IBE on Instagram"
-              >
+              <SocialIcon href={INSTAGRAM_URL} label="IBE on Instagram">
                 <InstagramIcon sx={{ fontSize: "1.5rem" }} />
               </SocialIcon>
-              <SocialIcon
-                href="https://www.linkedin.com/company/ibeprogram/"
-                label="IBE on LinkedIn"
-              >
+              <SocialIcon href={LINKEDIN_URL} label="IBE on LinkedIn">
                 <LinkedInIcon sx={{ fontSize: "1.5rem" }} />
               </SocialIcon>
-              <SocialIcon
-                href="https://www.facebook.com/ohiostateibe/"
-                label="IBE on Facebook"
-              >
+              <SocialIcon href={FACEBOOK_URL} label="IBE on Facebook">
                 <FacebookIcon sx={{ fontSize: "1.5rem" }} />
               </SocialIcon>
             </Stack>
