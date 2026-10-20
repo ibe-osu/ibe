@@ -24,7 +24,7 @@ npm run build    # also type-checks
 ibeosu.com. **Never push directly to `main`** (branch protection blocks it).
 Instead:
 
-1. Branch off `main`: `git checkout main && git pull && git checkout -b my-change`
+1. Branch off `main`: `git checkout main && git pull --ff-only && git checkout -b my-change`
 2. Commit, push, and open a Pull Request (`gh pr create`).
 3. **CI** (GitHub Actions) runs lint + build on the PR — it must be green.
 4. **Vercel** posts a **preview URL** on the PR — open it and verify your
@@ -41,6 +41,21 @@ Full details, including the emergency-bypass procedure, are in
 - After opening a PR, report the CI status and the Vercel preview URL, and
   confirm you visually verified the change (don't rely on the build alone).
 - Keep changes scoped; match the surrounding code's style.
+- Run `npm run lint`, `npm run build`, and the `/simplify` pass before every
+  push. Run `/code-review` before any merge.
+- **No AI attribution** in commits or PR descriptions (no `Co-Authored-By:
+  Claude`, no "Generated with" footer). The repo's `.claude/settings.json`
+  turns the trailer off; the reason and the global setting are in
+  [`docs/agent/WORKFLOW.md`](docs/agent/WORKFLOW.md).
+- **Needs the VP of Tech, always**: any write to `ibe-prod` or to auth
+  config on either Supabase project; Vercel, DNS, GitHub settings, or
+  credentials; merging a PR that has not been reviewed; making the repo
+  private. The full list is in `docs/agent/WORKFLOW.md`.
+- Deep references live in [`docs/agent/`](docs/agent/); read the one that
+  matches the task. Current state and blockers are in
+  [`HANDOFF.md`](HANDOFF.md). The `ibe-tech` Claude Code plugin
+  ([`plugins/ibe-tech/`](plugins/ibe-tech/)) packages the team's workflow
+  as skills and review agents.
 
 ## Design system — these are committed decisions, don't re-litigate them
 
@@ -55,8 +70,14 @@ Full details, including the emergency-bypass procedure, are in
 - **Motion**: GSAP. Every animation needs a `prefers-reduced-motion`
   fallback, and content must be visible without JS (never gate visibility on
   a scroll/reveal animation).
+- **Process**: change one section at a time and show a mockup before
+  building pages. No new typeface, no dark mode, no rounded corners; two
+  redesigns that drifted from the current look were rejected in 2026.
 - **Brand voice, audiences, and anti-references** are in
   [`PRODUCT.md`](PRODUCT.md). Read it before making visual/brand decisions.
+- **Tokens** are mirrored in [`DESIGN.md`](DESIGN.md) for design tooling; the
+  full component catalog, motion rules, and review checklist are in
+  [`docs/agent/DESIGN_SYSTEM.md`](docs/agent/DESIGN_SYSTEM.md).
 
 ## Conventions
 

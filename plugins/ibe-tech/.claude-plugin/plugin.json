@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "ibe-tech",
+  "description": "The IBE tech team's workflow: codebase guide, design system, ship flow, commits, SEO, Supabase, onboarding, and review agents.",
+  "version": "1.0.0",
+  "author": {
+    "name": "IBE Tech"
+  }
+}
