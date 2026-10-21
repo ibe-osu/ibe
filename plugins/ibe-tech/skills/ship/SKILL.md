@@ -24,9 +24,9 @@ behind each step are in `docs/agent/WORKFLOW.md`.
    git push -u origin $(git branch --show-current)
    gh pr create --title "<subject>" --body "$(sed -e 's/<!--.*-->//' .github/pull_request_template.md)"
    ```
-   Fill the template's sections (Problem, Change, Before this shows live
-   when a human must act after merge, Verified). The body must not mention
-   AI tooling.
+   Fill Problem, Change, and Verified. Keep "Before this shows live" only
+   when a human must act after merge; otherwise delete that heading. The
+   body must not mention AI tooling.
 7. **Watch CI.** `gh pr checks --watch`. The required check is `verify`.
    Red means fix on the branch, never merge around it.
 8. **Verify the preview.** Vercel comments a preview URL on the PR.

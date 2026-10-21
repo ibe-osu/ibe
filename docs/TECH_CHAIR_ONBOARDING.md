@@ -29,7 +29,7 @@ required), so write access is safe to give.
 
 1. Invite her to the organization:
    ```bash
-   gh api -X POST orgs/ibe-osu/invitations -f invitee_id="$(gh api users/<GITHUB_USERNAME> --jq .id)" -f role=direct_member
+   gh api -X POST orgs/ibe-osu/invitations -F invitee_id="$(gh api users/<GITHUB_USERNAME> --jq .id)" -f role=direct_member
    ```
    Or in the browser: github.com/orgs/ibe-osu/people → Invite member.
 2. Give the repo write access (org membership alone does not grant it):
@@ -140,7 +140,7 @@ npm run lint && npm run build  # both must pass before any PR
    words: no `Co-Authored-By: Claude`, no "Generated with Claude Code"
    footers, in commits or PR descriptions. The repo's own
    `.claude/settings.json` repeats the setting as a backstop.
-3. Check `/plugin` shows `ibe-tech` with eight skills and three agents.
+3. Check `/plugin` lists `ibe-tech` and its skills.
 
 ### Read, in order
 
@@ -165,8 +165,8 @@ GitHub offers the button.
 
 ## Part 3: the skills and what each is for
 
-The `ibe-tech` plugin's eight skills (`/ibe-tech:<name>`) and three agents
-are described in [`plugins/ibe-tech/README.md`](../plugins/ibe-tech/README.md).
+The `ibe-tech` plugin's skills (`/ibe-tech:<name>`) and agents are
+described in [`plugins/ibe-tech/README.md`](../plugins/ibe-tech/README.md).
 In one line each: `codebase` explains the repo, `design` guards the design
 system, `ship` takes a branch to a verified PR, `commit` writes the
 message, `seo` handles routes and metadata, `db` handles Supabase safely,
