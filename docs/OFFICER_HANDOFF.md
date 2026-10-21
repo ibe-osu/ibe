@@ -27,6 +27,13 @@ sometimes under a tight time limit. Worth sorting out direct access to
 this inbox's 2FA methods for whoever holds the VP of Tech role, so the
 next handoff doesn't inherit the same bottleneck.
 
+## People
+
+| Role | Who | GitHub |
+|---|---|---|
+| VP of Tech | Yuvi Atre | `yuvi-atre` (org owner, repo admin) |
+| Tech Chair | Saanvi Mishra | `CoderSaanvi` (repo write), onboarded Oct 2026 via `docs/TECH_CHAIR_ONBOARDING.md` |
+
 ## Accounts & services
 
 | Service | Account identity | Owned by / where creds live | Notes |

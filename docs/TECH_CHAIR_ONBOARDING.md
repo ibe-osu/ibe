@@ -3,7 +3,7 @@
 The checklist for bringing a new tech officer onto ibeosu.com so they can
 work the way the VP of Tech works: same codebase knowledge, same Claude
 Code setup, same ship flow, same guardrails. Two halves: what the VP does,
-and what the chair does. Replace `<GITHUB_USERNAME>` and `<OSU_EMAIL>` once
+and what the chair does. Replace `CoderSaanvi` and `mishra.saanvi@gmail.com` once
 known.
 
 **Who is who.** The VP of Tech is Yuvi Atre (GitHub `yuvi-atre`, email
@@ -29,16 +29,16 @@ required), so write access is safe to give.
 
 1. Invite her to the organization:
    ```bash
-   gh api -X POST orgs/ibe-osu/invitations -F invitee_id="$(gh api users/<GITHUB_USERNAME> --jq .id)" -f role=direct_member
+   gh api -X POST orgs/ibe-osu/invitations -F invitee_id="$(gh api users/CoderSaanvi --jq .id)" -f role=direct_member
    ```
    Or in the browser: github.com/orgs/ibe-osu/people → Invite member.
 2. Give the repo write access (org membership alone does not grant it):
    ```bash
-   gh api -X PUT repos/ibe-osu/ibe/collaborators/<GITHUB_USERNAME> -f permission=push
+   gh api -X PUT repos/ibe-osu/ibe/collaborators/CoderSaanvi -f permission=push
    ```
 3. Confirm after she accepts:
    ```bash
-   gh api repos/ibe-osu/ibe/collaborators/<GITHUB_USERNAME>/permission --jq .permission
+   gh api repos/ibe-osu/ibe/collaborators/CoderSaanvi/permission --jq .permission
    ```
    Expect `write`. Admin stays with the VP (settings, branch protection,
    secrets).
@@ -53,7 +53,7 @@ Administrator, Developer. There is no read-only role and no per-project
 scoping on Free, so she will see both `ibe-staging` and `ibe-prod`.
 
 1. Supabase dashboard → the IBE organization → Team → Invite. Email:
-   `<OSU_EMAIL>` (or whichever address she will log in with). Role:
+   `mishra.saanvi@gmail.com` (or whichever address she will log in with). Role:
    **Developer**. The invite link expires in 24 hours; tell her to accept
    the same day.
 2. Tell her in words, because permissions cannot enforce it: **staging is
