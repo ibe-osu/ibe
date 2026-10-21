@@ -43,9 +43,11 @@ main ──branch──▶ work ──lint+build──▶ /simplify ──commit
    `npm run dev` at the same widths, writes "preview not opened by me; VP
    to check" in the Verified section, and the VP opens the preview before
    merging.
-8. **Review**: run `/code-review` on the PR before merging (the VP's agent
-   setup refuses `gh pr merge` otherwise). For UI changes also run the design
-   review checklist in `DESIGN_SYSTEM.md`.
+8. **Review**: run `/code-review` on the PR before merging. For UI changes
+   also run the design review checklist in `DESIGN_SYSTEM.md`. Nothing
+   technical stops a contributor with write access from merging; the rule
+   that the VP of Tech merges is the only guard, so it is stated in
+   `CLAUDE.md` and the onboarding doc.
 9. **Merge** (squash is fine). The VP of Tech merges; contributors with
    write access can see the button but do not use it. Production deploys
    in one to two minutes. Open ibeosu.com and confirm.

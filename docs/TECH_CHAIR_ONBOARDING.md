@@ -214,3 +214,8 @@ The "What needs the VP of Tech" list in
 in `CLAUDE.md`, which her agent loads on every turn: no prod or auth-config
 writes, no Vercel / DNS / GitHub settings / credentials, no unreviewed
 merges, no making the repo private, no secrets in the repo.
+
+**Merging is the one line nothing technical enforces.** Write access
+gives her the Merge button on GitHub and lets `gh pr merge` run; branch
+protection only requires CI, not an approval. The rule is the guard: she
+opens the PR, says what she verified, and the VP reviews and merges.

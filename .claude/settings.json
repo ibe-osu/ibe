@@ -44,8 +44,7 @@
       "Read(**/.env.local)",
       "Bash(git push * main)",
       "Bash(git push --force *)",
-      "Bash(git push -f *)",
-      "Bash(gh pr merge *)"
+      "Bash(git push -f *)"
     ]
   }
 }
