@@ -1,0 +1,51 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "extraKnownMarketplaces": {
+    "ibe-skills": {
+      "source": { "source": "github", "repo": "ibe-osu/ibe" }
+    },
+    "impeccable": {
+      "source": { "source": "github", "repo": "pbakaus/impeccable" }
+    },
+    "gsap-skills": {
+      "source": { "source": "github", "repo": "greensock/gsap-skills" }
+    }
+  },
+  "enabledPlugins": {
+    "ibe-tech@ibe-skills": true,
+    "frontend-design@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "claude-security@claude-plugins-official": true,
+    "impeccable@impeccable": true,
+    "gsap-skills@gsap-skills": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git blame *)",
+      "Bash(git branch --show-current)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Bash(git push origin main)",
+      "Bash(git push * main)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)"
+    ]
+  }
+}

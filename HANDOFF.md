@@ -13,9 +13,11 @@ and the docs are all done and merged. **The only blocker is `ibe-prod`, and
 it is currently PAUSED.** Nothing can be tested on ibeosu.com until it is
 restored and configured.
 
-Do these in order. Steps 1–3 are dashboard/CLI actions **only the user can
-do** (the coding agent's auto-mode classifier denies every write to prod,
-including unpausing it via the Management API).
+**These steps are the VP of Tech's (Yuvi Atre, `yuvi-atre`). Tech chair:
+do not run them; skip to "What shipped this cycle".** Steps 1–3 are
+dashboard/CLI actions only the VP does. (The "classifier" below is the
+Claude Code auto-mode permission checker on the VP's machine; it denies
+every write to prod, including unpausing it via the Management API.)
 
 1. **Unpause prod:** https://supabase.com/dashboard/project/ygofoziyvusykfykpdyy
    → *Restore project*, wait ~3 min. (`supabase link` fails with "project is
@@ -136,11 +138,13 @@ Phase 2 is deferred.
 - **Prod pauses every 7 idle days** on the free tier. Symptom: `supabase
   link` → "project is paused"; CLI `supabase projects list` → `INACTIVE`;
   logins fail. Keep-alive workflow fixes it going forward, once restored.
-- **The auto-mode classifier denies**: any write to prod (migrations, auth
-  config, restore), staging *auth config* writes (email template), and
+- **The auto-mode classifier** (Claude Code's permission checker on the
+  VP's machine) **denies**: any write to prod (migrations, auth config,
+  restore), staging *auth config* writes (email template), and
   `gh pr merge` on a PR that hasn't had `/code-review` run in the session.
   Staging *database* writes via the Management API query endpoint are
-  allowed and were used for migration 0004 and issuing codes.
+  allowed and were used for migration 0004 and issuing codes. The rule for
+  humans is the same: prod and auth config are VP-only.
 - **Confirmation links are device-bound** until the template is switched
   (step 3). Supabase still confirms the email, so "log in" works — the
   `confirm-failed` message now says so.
@@ -169,6 +173,10 @@ Phase 2 is deferred.
 
 ## Related docs
 
+- `docs/agent/` — the agent-facing references (architecture, design
+  system, database, SEO, workflow). `docs/TECH_CHAIR_ONBOARDING.md` is the
+  checklist for bringing on the tech chair; `plugins/ibe-tech/` is the
+  Claude Code plugin that packages the team's skills.
 - `docs/MEMBER_ONBOARDING.md` — the officer runbook (wake the backend,
   issue a code, send the message, fix the common failures).
 - `docs/OFFICER_HANDOFF.md` — accounts and credential *locations* for the
