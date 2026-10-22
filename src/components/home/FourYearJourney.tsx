@@ -158,7 +158,7 @@ export default function FourYearJourney() {
       aria-label="The four-year journey"
       sx={{
         py: { xs: 7, md: 11 },
-        backgroundColor: "#f9f6f6",
+        backgroundColor: "background.tint",
         borderTop: "1px solid",
         borderColor: "divider",
       }}
@@ -253,7 +253,8 @@ export default function FourYearJourney() {
                     width: 16,
                     height: 16,
                     backgroundColor: "primary.main",
-                    border: "3px solid #f9f6f6",
+                    border: "3px solid",
+                    borderColor: "background.tint",
                     outline: "1px solid",
                     outlineColor: "grey.400",
                   }}

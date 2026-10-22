@@ -190,18 +190,16 @@ Plugins from outside this repo that the team uses with them:
 
 From `HANDOFF.md`, smallest first. Each is one PR.
 
-1. Replace the `#f9f6f6` literals in three components with a theme token
-   (`docs/agent/DESIGN_SYSTEM.md`, "Known drift").
-2. Wrap card and logo hover colors in `@media (hover: hover)` so tapped
+1. Wrap card and logo hover colors in `@media (hover: hover)` so tapped
    cards do not stay highlighted on phones.
-3. Mobile drawer alignment: logo and close button 8px lower than the
+2. Mobile drawer alignment: logo and close button 8px lower than the
    header's; highlight the current page; style Sign Out as a button.
-4. Recruitment deadline: once the program gives the 2027 date, update
+3. Recruitment deadline: once the program gives the 2027 date, update
    `AdmissionOverview.tsx` and `ApplicationTimeline.tsx`.
-5. Align Kristina Kennedy's title between `/about` and `/recruitment`
+4. Align Kristina Kennedy's title between `/about` and `/recruitment`
    (needs the program's answer; ask the VP, who asks Kristina Kennedy or the
    Student VP of Recruitment).
-6. Carousel polish: half-blank frame on autoplay wrap; dot contrast.
+5. Carousel polish: half-blank frame on autoplay wrap; dot contrast.
 
 Bigger, after the first few: the canonical host decision (code side), the
 CSP enforcement PR (after walking previews clean), the admin UI for invite
