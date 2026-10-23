@@ -104,6 +104,15 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  images: {
+    // The /student-life Instagram feed (src/lib/instagram.ts). Routing these
+    // through next/image keeps img-src at 'self' in the CSP, and sidesteps
+    // Instagram's CDN refusing cross-origin hotlinks.
+    remotePatterns: [
+      { protocol: "https", hostname: "**.cdninstagram.com" },
+      { protocol: "https", hostname: "**.fbcdn.net" },
+    ],
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
