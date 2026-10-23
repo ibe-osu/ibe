@@ -12,7 +12,7 @@ colors:
   ink-muted: '#494f53'          # text.secondary
   osu-gray: '#646A6E'           # secondary.light; university gray, little used
   white: '#ffffff'              # background.default and paper
-  surface-tint: '#f9f6f6'       # warm off-white for alternating sections
+  surface-tint: '#f9f6f6'       # background.tint; warm off-white for alternating sections
   divider: 'rgba(23, 24, 26, 0.12)'
   grey-300: '#e0e0e0'
   grey-400: '#bdbdbd'

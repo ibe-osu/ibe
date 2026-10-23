@@ -1,5 +1,12 @@
 import { createTheme } from "@mui/material/styles";
 
+declare module "@mui/material/styles" {
+  interface TypeBackground {
+    /** Warm off-white for alternating sections (journey, timeline, keynote). */
+    tint: string;
+  }
+}
+
 const serif = `var(--font-pt-serif-caption), "PT Serif Caption", Georgia, serif`;
 const sans = `var(--font-source-sans), "Source Sans 3", "Helvetica Neue", Arial, sans-serif`;
 
@@ -104,6 +111,7 @@ const theme = createTheme({
     background: {
       default: "#ffffff",
       paper: "#ffffff",
+      tint: "#f9f6f6",
     },
     divider: "rgba(23, 24, 26, 0.12)",
     // Deliberately distinct from primary scarlet (#ba0c2f) so a form error

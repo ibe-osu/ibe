@@ -55,7 +55,7 @@ export default function KeynoteSpeakers() {
       aria-label="Recent keynote speakers"
       sx={{
         py: { xs: 6, md: 9 },
-        backgroundColor: "#f9f6f6",
+        backgroundColor: "background.tint",
         borderBottom: "1px solid",
         borderColor: "divider",
       }}

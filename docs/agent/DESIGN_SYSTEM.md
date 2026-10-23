@@ -35,7 +35,7 @@ corners.
 | `text.secondary` / `--ink-muted` | `#494f53` | Supporting copy, captions, roles. |
 | `secondary.light` | `#646A6E` | OSU gray from the university palette. Available, little used. |
 | `background.default` / `paper` | `#ffffff` | The stage. |
-| `--surface-tint` | `#f9f6f6` | Warm off-white for alternating sections (journey, timeline, keynote). Components currently write the hex literally; the CSS variable exists but is unused. Prefer the variable or add a theme token if you touch those files. |
+| `background.tint` | `#f9f6f6` | Warm off-white for alternating sections (journey, timeline, keynote), and the border that cuts timeline dots out of the spine. |
 | `divider` | `rgba(23, 24, 26, 0.12)` | Hairlines, ruled grids, card borders. |
 | `grey.300` / `grey.400` | `#e0e0e0` / `#bdbdbd` | Inactive timeline spine, marker outline. |
 | `error.main` | `#c62828` | Form errors only. Deliberately not scarlet so an error never reads as brand. |
@@ -94,7 +94,7 @@ Conventions:
   cards can shrink on a 375px phone. Two columns on `xs` is the floor for
   card grids (leadership, stats, sponsors).
 - Section separation is a hairline: `borderTop: "1px solid", borderColor:
-  "divider"`, or a background change to `--surface-tint` or scarlet.
+  "divider"`, or a background change to `background.tint` or scarlet.
 - MUI breakpoints are the defaults: xs 0, sm 600, md 900, lg 1200, xl 1536.
   The header switches to the mobile drawer below `sm`.
 
@@ -246,8 +246,6 @@ Contrast: ink on white and white on scarlet both clear AA for body text.
 
 Recorded so an agent does not "fix" them blindly or re-discover them:
 
-- `#f9f6f6` is written as a literal in three components instead of using
-  `--surface-tint` or a theme token.
 - Mobile drawer: logo and close button sit about 8px lower than the header's;
   the current page is not highlighted; Sign Out is styled like a nav link.
 - Sticky hover states on touch for cards and logos (only the calendar toggle

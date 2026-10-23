@@ -131,7 +131,7 @@ export default function ApplicationTimeline() {
       aria-label="Application timeline"
       sx={{
         py: { xs: 6, md: 9 },
-        backgroundColor: "#f9f6f6",
+        backgroundColor: "background.tint",
         borderTop: "1px solid",
         borderColor: "divider",
       }}
@@ -232,7 +232,8 @@ export default function ApplicationTimeline() {
                     width: 16,
                     height: 16,
                     backgroundColor: "primary.main",
-                    border: "3px solid #f9f6f6",
+                    border: "3px solid",
+                    borderColor: "background.tint",
                     outline: "1px solid",
                     outlineColor: "grey.400",
                   }}
