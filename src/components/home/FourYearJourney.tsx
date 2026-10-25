@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Reveal from "@/components/general/Reveal";
+import { EYEBROW_TYPOGRAPHY, serif } from "@/theme/theme";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -17,6 +18,14 @@ interface Milestone {
   body: string;
   highlights: string[];
 }
+
+// Engineers earn a business minor on either track; only the business majors'
+// minor differs. Keep in sync with the recruitment FAQ
+// (src/components/recruitment/FAQSection.tsx).
+const BUSINESS_MINOR_BY_TRACK = [
+  { track: "IBE Traditional", minor: "Engineering sciences minor" },
+  { track: "IBE Software Innovation", minor: "Computer science minor" },
+];
 
 const MILESTONES: Milestone[] = [
   {
@@ -331,41 +340,68 @@ export default function FourYearJourney() {
           <Typography
             variant="h4"
             component="h3"
-            sx={{ textAlign: "center", mb: { xs: 3, md: 4 } }}
+            sx={{ textAlign: "center", mb: 1.5 }}
           >
             Two Tracks, One Cohort
           </Typography>
-
-          <Box
+          <Typography
+            variant="body1"
             sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: { xs: 3, md: 5 },
-              maxWidth: "52rem",
+              textAlign: "center",
+              color: "text.secondary",
+              maxWidth: "52ch",
               mx: "auto",
-              mb: { xs: 4, md: 5 },
+              mb: { xs: 3, md: 4 },
             }}
           >
-            <Box>
-              <Typography variant="h5" component="h4" sx={{ mb: 0.5 }}>
-                IBE Traditional
-              </Typography>
-              <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                <strong>Engineering majors</strong> earn a business minor;{" "}
-                <strong>business majors</strong> earn an engineering sciences
-                minor.
-              </Typography>
-            </Box>
-            <Box>
-              <Typography variant="h5" component="h4" sx={{ mb: 0.5 }}>
-                IBE Software Innovation
-              </Typography>
-              <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                <strong>CSE majors</strong> earn a business minor;{" "}
-                <strong>business and non-CSE majors</strong> earn a computer
-                science minor.
-              </Typography>
-            </Box>
+            Engineering majors earn a <strong>business minor</strong> on either
+            track. Business majors earn a minor based on their track:
+          </Typography>
+
+          <Box
+            component="dl"
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+              maxWidth: "48rem",
+              mx: "auto",
+              mt: 0,
+              mb: { xs: 4, md: 5 },
+              textAlign: "center",
+            }}
+          >
+            {BUSINESS_MINOR_BY_TRACK.map(({ track, minor }) => (
+              <Box
+                key={track}
+                sx={{
+                  px: 3,
+                  py: { xs: 2, sm: 0.5 },
+                  "& + &": {
+                    borderTop: { xs: "1px solid", sm: "none" },
+                    borderLeft: { xs: "none", sm: "1px solid" },
+                    borderColor: "divider",
+                  },
+                }}
+              >
+                <Typography
+                  component="dt"
+                  sx={{ ...EYEBROW_TYPOGRAPHY, mb: 0.75 }}
+                >
+                  {track}
+                </Typography>
+                <Typography
+                  component="dd"
+                  sx={{
+                    m: 0,
+                    fontFamily: serif,
+                    fontSize: { xs: "1.25rem", md: "1.4rem" },
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {minor}
+                </Typography>
+              </Box>
+            ))}
           </Box>
 
           <Box sx={{ maxWidth: "52rem", mx: "auto" }}>
