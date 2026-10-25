@@ -183,14 +183,13 @@ create temp table seed_alumni on commit drop as
 select ${columns.join(", ")}
 from jsonb_populate_recordset(null::public.alumni, ${jsonLiteral(alumni)});
 
-insert into public.alumni as a (${columns.join(", ")})
+insert into public.alumni (${columns.join(", ")})
 select ${columns.join(", ")} from seed_alumni
 on conflict (source_row) do update set
   ${updated.map((c) => `${c} = excluded.${c}`).join(",\n  ")},
-  updated_at = now()
--- Unchanged rows keep their updated_at.
-where (${updated.map((c) => `a.${c}`).join(", ")})
-  is distinct from (${updated.map((c) => `excluded.${c}`).join(", ")});
+  -- Every run stamps every row, so the directory's "Last updated" date is
+  -- the last load, including loads that only changed job history.
+  updated_at = now();
 
 delete from public.alumni where source_row not in (select source_row from seed_alumni);
 

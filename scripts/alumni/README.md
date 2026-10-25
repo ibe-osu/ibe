@@ -40,8 +40,9 @@ One transaction that syncs the tables to the CSV:
 4. Rolls back unless the final counts equal the CSV's, so a partial load
    can't happen.
 
-Re-running the same file changes nothing (`updated_at` moves only for
-alumni whose fields changed). Re-running a newer CSV is how corrections
+Every run stamps `updated_at` on every row, and the directory's "Last
+updated" date is the newest `updated_at`. So re-running the same file
+changes no data, only that date. Re-running a newer CSV is how corrections
 ship until there is an admin UI. Any edit made directly in the database is
 overwritten by the next run, so fix the CSV instead.
 
