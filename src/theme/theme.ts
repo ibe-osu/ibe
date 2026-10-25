@@ -87,10 +87,12 @@ const theme = createTheme({
       fontSize: "0.9375rem",
       lineHeight: 1.6,
     },
-    // The uppercase kicker above a title ("Members") and on section labels.
+    // variant="overline" is the eyebrow too ("Members", directory section
+    // labels), so it shares EYEBROW_TYPOGRAPHY's weight and tracking. Color
+    // stays at the call site: filter labels use ink, not scarlet.
     overline: {
-      fontWeight: 700,
-      letterSpacing: "0.12em",
+      fontWeight: EYEBROW_TYPOGRAPHY.fontWeight,
+      letterSpacing: EYEBROW_TYPOGRAPHY.letterSpacing,
       lineHeight: 1.6,
     },
     button: {
