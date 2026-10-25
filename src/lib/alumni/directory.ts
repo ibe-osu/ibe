@@ -273,7 +273,6 @@ export function searchableText(a: DirectoryAlum): string {
     a.currentEmployer,
     a.currentCity,
     a.currentState && locationLabel(a.currentState),
-    a.industry,
     ...a.jobs.flatMap((j) => [j.title, j.company, j.location]),
     ...a.education.flatMap((e) => [e.institution, e.program]),
     ...a.involvements,

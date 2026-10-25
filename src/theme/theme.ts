@@ -25,6 +25,13 @@ export const NAV_LABEL_TYPOGRAPHY = {
 /** The sticky header's height (Header.tsx); sticky content sits below it. */
 export const HEADER_HEIGHT = { xs: 64, md: 72 } as const;
 
+/**
+ * Paper for popups (menus, autocomplete lists): a hairline instead of MUI's
+ * elevation shadow, since the design system uses none. Applied per component
+ * for now; AccountMenu still has the default shadow.
+ */
+export const POPUP_PAPER_SX = { boxShadow: "none", border: "1px solid", borderColor: "divider" } as const;
+
 /** The small scarlet uppercase kicker above a heading or label (DESIGN.md "eyebrow"). */
 export const EYEBROW_TYPOGRAPHY = {
   color: "primary.main",
@@ -267,18 +274,19 @@ const theme = createTheme({
       },
     },
     // Scarlet selected state for every view toggle (members calendar,
-    // alumni directory). Hover-only devices get the darker hover, so a tap
-    // doesn't leave it stuck on the selected button.
+    // alumni directory). `:hover` is listed too because MUI's own
+    // `.Mui-selected:hover` rule is more specific and, on touch screens where
+    // a tap leaves :hover stuck, would swap in a pale grey under white text.
+    // Only hover-capable devices get the darker shade.
     MuiToggleButton: {
       styleOverrides: {
         root: {
-          borderRadius: 0,
-          "&.Mui-selected": {
+          "&.Mui-selected, &.Mui-selected:hover": {
             color: "#fff",
             backgroundColor: "#ba0c2f",
-            "@media (hover: hover)": {
-              "&:hover": { backgroundColor: "#8e0a24" },
-            },
+          },
+          "@media (hover: hover)": {
+            "&.Mui-selected:hover": { backgroundColor: "#8e0a24" },
           },
         },
       },

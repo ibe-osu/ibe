@@ -105,7 +105,7 @@ export default async function AlumniDatabasePage() {
     .select(SELECT)
     .order("last_name")
     .order("first_name")
-    .returns<AlumniQueryRow[]>();
+    .overrideTypes<AlumniQueryRow[], { merge: false }>();
 
   if (error) {
     console.error("alumni directory query failed:", error.code, error.message);

@@ -119,6 +119,7 @@ export default function AlumniProfileDialog({ alum, similar, onClose, onOpen }: 
       maxWidth="sm"
       fullWidth
       aria-labelledby="alumni-profile-name"
+      slotProps={{ paper: { elevation: 0 } }}
     >
       <IconButton
         onClick={onClose}
@@ -127,7 +128,8 @@ export default function AlumniProfileDialog({ alum, similar, onClose, onOpen }: 
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent sx={{ px: { xs: 2.5, sm: 4 }, py: { xs: 3, sm: 4 } }}>
+      {/* Keyed by person so opening a Similar IBEer starts at the top. */}
+      <DialogContent key={alum.id} sx={{ px: { xs: 2.5, sm: 4 }, py: { xs: 3, sm: 4 } }}>
         <Stack direction="row" spacing={2} sx={{ alignItems: "flex-start", pr: 5 }}>
           <Initials alum={alum} size={64} />
           <Box sx={{ minWidth: 0 }}>

@@ -60,8 +60,9 @@ prod leg runs red — expected.
 | #66 | Supabase keep-alive workflow |
 
 Nav link for the members area is **"Members"** (was "Resources").
-`/members/alumni-database` is still "Under Construction" — that's correct,
-Phase 2 is deferred.
+`/members/alumni-database` is the alumni directory (#79 schema, #80 seed
+script, #81 page). It goes live once migration 0005 and the seed are run on
+prod; see `scripts/alumni/README.md`.
 
 ---
 

@@ -71,6 +71,11 @@ export function inferIndustry(
   employer: string | null,
   inGradSchool: boolean,
 ): Industry {
-  if (inGradSchool) return "Graduate School";
-  return firstMatch(EMPLOYER_PATTERNS, employer) ?? firstMatch(TITLE_PATTERNS, title) ?? "Other";
+  // A current job wins over an in-progress degree: someone working at
+  // Microsoft through a part-time MS belongs under Technology.
+  return (
+    firstMatch(EMPLOYER_PATTERNS, employer) ??
+    firstMatch(TITLE_PATTERNS, title) ??
+    (inGradSchool ? "Graduate School" : "Other")
+  );
 }

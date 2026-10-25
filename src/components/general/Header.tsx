@@ -4,9 +4,8 @@ import Image from "next/image";
 import NavButton from "./NavButton";
 import MobileMenuButton from "./MobileMenuButton";
 import AuthNavLinks from "@/components/auth/AuthNavLinks";
-import { HEADER_HEIGHT } from "@/theme/theme";
 import AccountMenu from "@/components/auth/AccountMenu";
-import { NAV_LABEL_TYPOGRAPHY } from "@/theme/theme";
+import { HEADER_HEIGHT, NAV_LABEL_TYPOGRAPHY } from "@/theme/theme";
 
 export default function Header() {
   return (

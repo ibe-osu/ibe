@@ -39,7 +39,7 @@ import {
 import FilterPanel from "./FilterPanel";
 import { AlumniCard, AlumniRow } from "./AlumniCard";
 import AlumniProfileDialog from "./AlumniProfileDialog";
-import { HEADER_HEIGHT } from "@/theme/theme";
+import { HEADER_HEIGHT, POPUP_PAPER_SX } from "@/theme/theme";
 
 type View = "grid" | "list";
 type Sort = "name" | "newest" | "oldest";
@@ -209,6 +209,7 @@ export default function AlumniDirectory({ alumni }: { alumni: DirectoryAlum[] })
               }
             }}
             getOptionLabel={(o) => (typeof o === "string" ? o : o.label)}
+            slotProps={{ paper: { sx: POPUP_PAPER_SX } }}
             renderOption={({ key, ...props }, o) => (
               <li key={key} {...props}>
                 <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -267,7 +268,10 @@ export default function AlumniDirectory({ alumni }: { alumni: DirectoryAlum[] })
               onChange={(e) => setSort(e.target.value as Sort)}
               slotProps={{
                 htmlInput: { "aria-label": "Sort by" },
-                select: { renderValue: (v) => `Sort: ${SORTS[v as Sort].short}` },
+                select: {
+                  renderValue: (v) => `Sort: ${SORTS[v as Sort].short}`,
+                  MenuProps: { slotProps: { paper: { sx: POPUP_PAPER_SX } } },
+                },
               }}
               // Phones: fills the gap between Filters and the layout toggle.
               sx={{ minWidth: { xs: 0, sm: 150 }, flex: { xs: 1, sm: "none" } }}
@@ -347,7 +351,7 @@ export default function AlumniDirectory({ alumni }: { alumni: DirectoryAlum[] })
         anchor="bottom"
         open={filtersOpen}
         onClose={() => setFiltersOpen(false)}
-        slotProps={{ paper: { sx: { maxHeight: "85vh" } } }}
+        slotProps={{ paper: { elevation: 0, sx: { maxHeight: "85vh" } } }}
       >
         <Stack
           direction="row"
