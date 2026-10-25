@@ -55,6 +55,17 @@ Functions, all `security definer` with a pinned `search_path`:
 | `handle_new_user()` | 0002 | `after insert on auth.users` trigger. Re-validates the code, increments `use_count`, inserts `invite_redemptions` and `app_users` in the same transaction. Fails closed if the hook was never registered. |
 | `issue_invite_code(label, max_uses, valid_for)` | 0004 | Generates a code from a 32-letter alphabet without 0/O/1/I, bcrypts the secret, stores the row, returns the plaintext once. Callable by `postgres` (the SQL editor) or an active admin. |
 
+Who may call them (0007): PostgREST exposes every `public` function the
+caller can execute at `/rest/v1/rpc/<name>`, so grants are the access
+control. `anon` and `authenticated` can execute only `is_active_member()`
+and `is_admin()` (RLS policies run them as the querying role; the
+keep-alive calls one), plus `issue_invite_code()` for `authenticated`.
+Everything else has no caller grants; the definer functions that call
+them run as `postgres`. New functions created by `postgres` start with
+none either, so a migration that adds one must `grant execute` to whoever
+calls it. An RLS helper needs `authenticated`, or every policy that uses
+it fails with `permission denied for function`.
+
 Policies:
 
 - `app_users`: a user reads their own row; admins read and write all rows.
@@ -178,3 +189,5 @@ tracked in `HANDOFF.md`.
   Users and let them sign up again.
 - An account can authenticate but have no `app_users` row (suspended or
   created outside the flow). It sees nothing, by design.
+- `permission denied for function <name>` after adding a function: it has
+  no grants yet. See "Who may call them" above.
