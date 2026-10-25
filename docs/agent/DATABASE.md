@@ -84,8 +84,9 @@ Policies:
   `for all` admin policy would be a second SELECT policy on every read).
 - Grants (0006): `anon` has none on any `public` table; `authenticated`
   has only `select`, `insert`, `update`, `delete`, which RLS filters. New
-  tables start this way, so they need no per-table `revoke`. Functions and
-  sequences still get Supabase's default grants.
+  tables start this way, so they need no per-table `revoke`. Sequences
+  still get Supabase's default grants; functions are covered by 0007 (see
+  "Who may call them" above).
 
 Why bcrypt and not SHA-256: a leaked table of unsalted hashes of short codes
 falls to a GPU in hours. Why the code is uppercase: the signup form
