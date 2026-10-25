@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, type Theme } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
   interface TypeBackground {
@@ -30,6 +30,12 @@ export const EYEBROW_TYPOGRAPHY = {
   letterSpacing: "0.14em",
   textTransform: "uppercase",
 } as const;
+
+/** Popups that float over the page get a hairline instead of a shadow. */
+const floatingPaper = ({ theme }: { theme: Theme }) => ({
+  boxShadow: "none",
+  border: `1px solid ${theme.palette.divider}`,
+});
 
 const theme = createTheme({
   typography: {
@@ -183,6 +189,28 @@ const theme = createTheme({
           boxShadow: "none",
           borderBottom: "1px solid rgba(23, 24, 26, 0.1)",
         },
+      },
+    },
+    // No shadows (DESIGN.md) on Paper overlays. MuiPopover covers MuiMenu
+    // and Select; dialogs and drawers sit on a backdrop, so no hairline.
+    MuiPopover: {
+      styleOverrides: {
+        paper: floatingPaper,
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: floatingPaper,
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: { boxShadow: "none" },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: { boxShadow: "none" },
       },
     },
     MuiLink: {

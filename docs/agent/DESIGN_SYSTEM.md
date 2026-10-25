@@ -100,7 +100,11 @@ Conventions:
 
 ### Elevation and borders
 
-No shadows. `MuiButton` has `disableElevation` and `boxShadow: "none"`. The
+No shadows. `MuiButton` has `disableElevation` and `boxShadow: "none"`.
+Overlays drop MUI's elevation in the theme: menus, selects and autocomplete
+lists (`MuiPopover`, `MuiAutocomplete`) get a 1px divider hairline instead,
+and dialogs and drawers (`MuiDialog`, `MuiDrawer`) sit flat on their
+backdrop, so components don't need per-instance `elevation` or `sx`. The
 AppBar is a translucent white with `backdropFilter: blur(12px)` and a
 hairline bottom border. Depth comes from borders, tints, and photography.
 
