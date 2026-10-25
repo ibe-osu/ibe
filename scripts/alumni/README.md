@@ -12,7 +12,8 @@ contact details into a PR, issue or commit message: this repo is public.
 
 ## Run it
 
-From the repo root (Node 22.6 or newer runs `.ts` directly):
+From the repo root (Node 22.18 or newer runs `.ts` directly; on older 22.x
+add `--experimental-strip-types`):
 
 ```bash
 node scripts/alumni/build-seed.ts private/alumni-db-import.csv private/experience-db-import.csv private/alumni-seed.sql
