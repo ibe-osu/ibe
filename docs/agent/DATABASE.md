@@ -71,6 +71,9 @@ them run as `postgres`. New functions created by `postgres` start with
 none either, so a migration that adds one must `grant execute` to whoever
 calls it. An RLS helper needs `authenticated`, or every policy that uses
 it fails with `permission denied for function`.
+Extension functions a migration installs as `postgres` (say `pg_trgm`) are
+no exception, since the PUBLIC default can't be scoped to a schema: grant
+the ones the app calls.
 
 Policies:
 
