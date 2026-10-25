@@ -41,3 +41,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Student PII (rosters, issued codes). Never commit; see docs/MEMBER_ONBOARDING.md.
+/private/
