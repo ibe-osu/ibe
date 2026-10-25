@@ -3,7 +3,7 @@ import { Alert, Container } from "@mui/material";
 import { requireMember } from "@/lib/auth/guards";
 import { createClient } from "@/lib/supabase/server";
 import { inferIndustry } from "@/lib/alumni/industry";
-import type { DirectoryAlum } from "@/lib/alumni/directory";
+import type { DirectoryAlum, DirectoryJob } from "@/lib/alumni/directory";
 import AlumniDirectory from "@/components/members/alumni/AlumniDirectory";
 
 export const metadata: Metadata = {
@@ -53,6 +53,18 @@ interface AlumniQueryRow {
   }[];
 }
 
+// Some LinkedIn histories stop short of the current role (a med student whose
+// last listed job ended in 2024). Lead with it, so jobs[0] is always the
+// current role for the card, the search context and the profile alike.
+function withCurrentRole(row: AlumniQueryRow, jobs: DirectoryJob[]): DirectoryJob[] {
+  const { current_title: title, current_employer: company } = row;
+  const first = jobs[0];
+  const listed = first?.end === "Present" && (first.company === company || first.title === title);
+  return (title || company) && !listed
+    ? [{ title, company, start: null, end: "Present", location: null }, ...jobs]
+    : jobs;
+}
+
 function toDirectoryAlum(row: AlumniQueryRow): DirectoryAlum {
   const education = row.alumni_education.map((e) => ({
     institution: e.institution,
@@ -76,16 +88,19 @@ function toDirectoryAlum(row: AlumniQueryRow): DirectoryAlum {
     involvements: row.involvements,
     // Note rows ("older roles behind Load more") are import bookkeeping, not
     // roles; they stay in the database and out of the page.
-    jobs: row.alumni_jobs
-      .filter((j) => j.note === null)
-      .sort((a, b) => a.position - b.position)
-      .map((j) => ({
-        title: j.title,
-        company: j.company,
-        start: j.start_label,
-        end: j.end_label,
-        location: j.location,
-      })),
+    jobs: withCurrentRole(
+      row,
+      row.alumni_jobs
+        .filter((j) => j.note === null)
+        .sort((a, b) => a.position - b.position)
+        .map((j) => ({
+          title: j.title,
+          company: j.company,
+          start: j.start_label,
+          end: j.end_label,
+          location: j.location,
+        })),
+    ),
     education,
     industry: inferIndustry(
       row.current_title,

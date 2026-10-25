@@ -42,8 +42,8 @@ export interface DirectoryAlum {
 }
 
 export const COLLEGE_LABELS = {
-  UENG: { short: "Engineering", long: "College of Engineering" },
-  UBUS: { short: "Business", long: "Fisher College of Business" },
+  UENG: { abbr: "ENG", short: "Engineering", long: "College of Engineering" },
+  UBUS: { abbr: "BUS", short: "Business", long: "Fisher College of Business" },
 } as const;
 
 const STATE_NAMES: Record<string, string> = {
@@ -68,11 +68,20 @@ export const fullName = (a: DirectoryAlum) => `${a.firstName} ${a.lastName}`;
 export const initials = (a: DirectoryAlum) =>
   `${a.firstName[0] ?? ""}${a.lastName[0] ?? ""}`.toUpperCase();
 
+/** First letters of the first two words: "Grant Street Group" -> "GS". */
+export const initialsOf = (name: string) =>
+  name
+    .replace(/^the\s+/i, "")
+    .split(/[\s&/-]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]!.toUpperCase())
+    .join("");
+
+export const majorsLine = (a: DirectoryAlum) => a.majors.join(" & ");
+
 export const currentLocation = (a: DirectoryAlum) =>
   [a.currentCity, a.currentState].filter(Boolean).join(", ");
-
-export const currentRole = (a: DirectoryAlum) =>
-  [a.currentTitle, a.currentEmployer].filter(Boolean).join(", ");
 
 /** "Class of 2022 · Engineering" */
 export const classLine = (a: DirectoryAlum) =>

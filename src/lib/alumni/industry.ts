@@ -7,6 +7,8 @@
  * Kraft Heinz" is consumer goods, not finance.
  */
 
+import { wholeWords } from "./match";
+
 export const INDUSTRIES = [
   "Consulting",
   "Finance & Banking",
@@ -50,15 +52,8 @@ const TITLES: KeywordMap = [
   ["Engineering & Manufacturing", ["mechanical engineer", "manufacturing", "process engineer", "quality engineer", "supply chain", "operations engineer", "chemical engineer", "industrial engineer", "plant", "design engineer", "systems engineer", "engineer"]],
 ];
 
-const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-// Whole-word match: letters or digits on either side mean "inside a word".
-function compile(map: KeywordMap): [Industry, RegExp][] {
-  return map.map(([industry, words]) => [
-    industry,
-    new RegExp(`(?<![\\p{L}\\p{N}])(?:${words.map(escape).join("|")})(?![\\p{L}\\p{N}])`, "iu"),
-  ]);
-}
+const compile = (map: KeywordMap): [Industry, RegExp][] =>
+  map.map(([industry, words]) => [industry, wholeWords(words)]);
 
 const EMPLOYER_PATTERNS = compile(EMPLOYERS);
 const TITLE_PATTERNS = compile(TITLES);

@@ -154,7 +154,8 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
   );
 
   return (
-    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 5 } }}>
+    // xl, not lg: three cards wide enough to keep a name and its badge on one line.
+    <Container maxWidth="xl" sx={{ py: { xs: 4, md: 5 } }}>
       <Box sx={{ mb: { xs: 3, md: 4 } }}>
         <Typography
           variant="overline"
@@ -348,7 +349,7 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
                 display: "grid",
                 gap: view === "grid" ? 2 : 1,
                 gridTemplateColumns:
-                  view === "grid" ? "repeat(auto-fill, minmax(min(100%, 250px), 1fr))" : "minmax(0, 1fr)",
+                  view === "grid" ? "repeat(auto-fill, minmax(min(100%, 320px), 1fr))" : "minmax(0, 1fr)",
               }}
             >
               {list}
