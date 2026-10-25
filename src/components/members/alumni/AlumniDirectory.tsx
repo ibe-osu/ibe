@@ -70,7 +70,13 @@ const SORTS: Record<Sort, { label: string; short: string; compare: (a: Directory
  * are no further requests. With no query and no filters the full list
  * renders on the server, so the directory reads without JavaScript.
  */
-export default function AlumniDirectory({ alumni }: { alumni: DirectoryAlum[] }) {
+interface AlumniDirectoryProps {
+  alumni: DirectoryAlum[];
+  /** Formatted date the data was last loaded; null for an empty directory. */
+  lastUpdated: string | null;
+}
+
+export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectoryProps) {
   const [query, setQuery] = useState("");
   // The input updates on every keystroke; filtering 200 cards follows at
   // React's pace, which keeps typing smooth on phones.
@@ -162,9 +168,13 @@ export default function AlumniDirectory({ alumni }: { alumni: DirectoryAlum[] })
         </Typography>
         <Typography variant="body1" sx={{ color: "text.secondary", maxWidth: "62ch", mt: 1 }}>
           {alumni.length} IBE alumni and where they are now. Search by name,
-          company, role, major, or club. Career details come from LinkedIn, so
-          the newest moves may not be here yet.
+          company, role, major, or club.
         </Typography>
+        {lastUpdated && (
+          <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
+            Last updated {lastUpdated}
+          </Typography>
+        )}
       </Box>
 
       <Box

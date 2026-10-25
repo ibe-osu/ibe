@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 const SELECT = `
   id, first_name, last_name, class_year, college, majors, minors, linkedin_url,
   current_title, current_employer, current_city, current_state, involvements,
+  updated_at,
   alumni_jobs ( position, title, company, start_label, end_label, location, note ),
   alumni_education ( institution, program, year, in_progress )
 `;
@@ -34,6 +35,7 @@ interface AlumniQueryRow {
   current_city: string | null;
   current_state: string | null;
   involvements: string[];
+  updated_at: string;
   alumni_jobs: {
     position: number;
     title: string | null;
@@ -119,5 +121,12 @@ export default async function AlumniDatabasePage() {
     );
   }
 
-  return <AlumniDirectory alumni={data.map(toDirectoryAlum)} />;
+  // The seed stamps every row each time it runs, so the newest updated_at is
+  // when the data was last loaded. Formatted here; the browser gets one string.
+  const newest = data.reduce((max, row) => (row.updated_at > max ? row.updated_at : max), "");
+  const lastUpdated = newest
+    ? new Date(newest).toLocaleDateString("en-US", { dateStyle: "long", timeZone: "America/New_York" })
+    : null;
+
+  return <AlumniDirectory alumni={data.map(toDirectoryAlum)} lastUpdated={lastUpdated} />;
 }
