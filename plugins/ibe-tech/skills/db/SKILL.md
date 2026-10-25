@@ -45,8 +45,8 @@ linked ref: `cat supabase/.temp/project-ref` must print
 
 ## Common tasks
 
-**New migration**: `supabase/migrations/0005_<topic>.sql`, header comment
-with the why, one concern. Apply with `npx supabase link --project-ref
+**New migration**: `supabase/migrations/<next free number>_<topic>.sql`
+(check open PRs too), header comment with the why, one concern. Apply with `npx supabase link --project-ref
 bvpohtlczjqzasdhwgwe && npx supabase db push` (it asks for the
 `ibe-staging` database password, which the VP hands over at onboarding; if
 you do not have it, paste the migration into the staging SQL editor

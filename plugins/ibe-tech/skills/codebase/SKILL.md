@@ -35,7 +35,7 @@ src/lib/env.ts           the only env reader (two NEXT_PUBLIC_ vars; no secret k
 src/lib/supabase/        client.ts (browser), server.ts (RSC), middleware.ts (cookie refresh only)
 src/lib/auth/guards.ts   requireMember()/requireAdmin(): the real gate for /members
 src/data/                calendar.ts, sponsors.ts
-supabase/migrations/     0001 accounts+RLS+rate limit, 0002 invite codes+hook+trigger, 0003 pgcrypto path, 0004 issue_invite_code()
+supabase/migrations/     the schema, in order; docs/agent/DATABASE.md describes each one
 .github/workflows/       ci.yml (lint+build on PRs), keepalive.yml (Mon+Thu Supabase ping)
 docs/agent/              the deep references above; docs/ holds the runbooks
 plugins/ibe-tech/        this plugin
