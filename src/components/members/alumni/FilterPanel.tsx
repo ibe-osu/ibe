@@ -18,7 +18,6 @@ import {
   type FacetOption,
   type Filters,
 } from "@/lib/alumni/directory";
-import { POPUP_PAPER_SX } from "@/theme/theme";
 
 interface FilterPanelProps {
   options: Record<FacetKey, FacetOption[]>;
@@ -109,7 +108,6 @@ export default memo(function FilterPanel({ options, filters, onChange, idPrefix 
               onKeyDown={(e) => {
                 if (e.key === "Backspace") e.defaultMuiPrevented = true;
               }}
-              slotProps={{ paper: { sx: POPUP_PAPER_SX } }}
               renderOption={({ key, ...props }, value, { selected: isSelected }) => {
                 const count = counts[facet.key].get(value);
                 return (
