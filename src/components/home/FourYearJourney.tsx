@@ -41,7 +41,7 @@ const MILESTONES: Milestone[] = [
   {
     year: "Year Two",
     title: "Take On the Second Discipline",
-    body: "Engineers begin the business core and business majors begin engineering sciences — each earning the minor that makes IBE integrated. The Corporate Strategy Seminar (BUSMHR 2400H) grounds that new coursework in how real companies actually make decisions.",
+    body: "Engineers begin the business core and business majors begin engineering sciences or computer science, depending on their track — each earning the minor that makes IBE integrated. The Corporate Strategy Seminar (BUSMHR 2400H) grounds that new coursework in how real companies actually make decisions.",
     highlights: [
       "Corporate Strategy Seminar (BUSMHR 2400H)",
       "Cross-disciplinary minor coursework",
@@ -376,7 +376,7 @@ export default function FourYearJourney() {
                 sx={{
                   px: 3,
                   py: { xs: 2, sm: 0.5 },
-                  "& + &": {
+                  "&:not(:first-of-type)": {
                     borderTop: { xs: "1px solid", sm: "none" },
                     borderLeft: { xs: "none", sm: "1px solid" },
                     borderColor: "divider",
