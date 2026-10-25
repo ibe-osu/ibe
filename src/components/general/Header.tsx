@@ -4,6 +4,7 @@ import Image from "next/image";
 import NavButton from "./NavButton";
 import MobileMenuButton from "./MobileMenuButton";
 import AuthNavLinks from "@/components/auth/AuthNavLinks";
+import { HEADER_HEIGHT } from "@/theme/theme";
 import AccountMenu from "@/components/auth/AccountMenu";
 import { NAV_LABEL_TYPOGRAPHY } from "@/theme/theme";
 
@@ -13,7 +14,7 @@ export default function Header() {
       <Toolbar
         sx={{
           justifyContent: "space-between",
-          minHeight: { xs: 64, md: 72 },
+          minHeight: HEADER_HEIGHT,
           px: { xs: 2, md: 4 },
         }}
       >

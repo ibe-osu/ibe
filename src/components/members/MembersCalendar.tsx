@@ -84,19 +84,7 @@ export default function MembersCalendar() {
             <ToggleButton
               key={m.value}
               value={m.value}
-              sx={{
-                px: 2,
-                ...NAV_LABEL_TYPOGRAPHY,
-                "&.Mui-selected": {
-                  color: "#fff",
-                  backgroundColor: "primary.main",
-                  // Hover-only devices: a touch tap would otherwise leave
-                  // the darker hover shade stuck on the selected button.
-                  "@media (hover: hover)": {
-                    "&:hover": { backgroundColor: "primary.dark" },
-                  },
-                },
-              }}
+              sx={{ px: 2, ...NAV_LABEL_TYPOGRAPHY }}
             >
               {m.label}
             </ToggleButton>

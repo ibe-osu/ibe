@@ -22,6 +22,9 @@ export const NAV_LABEL_TYPOGRAPHY = {
   textTransform: "uppercase",
 } as const;
 
+/** The sticky header's height (Header.tsx); sticky content sits below it. */
+export const HEADER_HEIGHT = { xs: 64, md: 72 } as const;
+
 const theme = createTheme({
   typography: {
     fontFamily: sans,
@@ -73,6 +76,12 @@ const theme = createTheme({
     body2: {
       fontFamily: sans,
       fontSize: "0.9375rem",
+      lineHeight: 1.6,
+    },
+    // The uppercase kicker above a title ("Members") and on section labels.
+    overline: {
+      fontWeight: 700,
+      letterSpacing: "0.12em",
       lineHeight: 1.6,
     },
     button: {
@@ -230,6 +239,44 @@ const theme = createTheme({
           marginLeft: 0,
           fontSize: "0.8125rem",
         },
+      },
+    },
+    // ButtonBase sets `outline: 0`, which beats the global :focus-visible
+    // ring in globals.css, so anything built on it (cards, icon buttons,
+    // toggles) needs the ring restored here. MuiButton and MuiLink keep
+    // their own, with a larger offset.
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focusVisible": {
+            outline: "2px solid #ba0c2f",
+            outlineOffset: "2px",
+          },
+        },
+      },
+    },
+    // Scarlet selected state for every view toggle (members calendar,
+    // alumni directory). Hover-only devices get the darker hover, so a tap
+    // doesn't leave it stuck on the selected button.
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          "&.Mui-selected": {
+            color: "#fff",
+            backgroundColor: "#ba0c2f",
+            "@media (hover: hover)": {
+              "&:hover": { backgroundColor: "#8e0a24" },
+            },
+          },
+        },
+      },
+    },
+    // First chips in the repo (alumni directory filters). Chip hardcodes a
+    // pill radius instead of reading shape.borderRadius.
+    MuiChip: {
+      styleOverrides: {
+        root: { borderRadius: 0 },
       },
     },
   },
