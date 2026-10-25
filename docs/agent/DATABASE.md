@@ -37,6 +37,12 @@ rate_limits        fixed-window counters keyed by text; only touched by check_ra
 invite_codes       prefix (plaintext, unique), secret_hash (bcrypt), label, max_uses,
                    use_count, expires_at, revoked_at, created_by
 invite_redemptions which code created which user; unique (code_id, user_id)
+alumni             one row per alum: name, class_year (null = unknown), college (UENG|UBUS),
+                   majors[], minors[], linkedin_url, current title/employer/city/state,
+                   involvements[], ibe_evidence; unique source_row (CSV row)
+alumni_jobs        job history, position 0 = most recent; title, company, start_label,
+                   end_label ("Aug 2022", "Present"), location, note
+alumni_education   graduate school: institution, program, year, in_progress
 ```
 
 Enums: `user_role` (`member`, `admin`) and `user_status` (`active`,
@@ -62,6 +68,9 @@ Policies:
 - `invite_codes`, `invite_redemptions`: admin only. App code never reads
   `secret_hash`.
 - `rate_limits`: no policies at all; only the function touches it.
+- `alumni`, `alumni_jobs`, `alumni_education`: any active member selects;
+  insert, update, and delete are admin only, one policy per command (a
+  `for all` admin policy would be a second SELECT policy on every read).
 - Grants (0006): `anon` has none on any `public` table; `authenticated`
   has only `select`, `insert`, `update`, `delete`, which RLS filters. New
   tables start this way, so they need no per-table `revoke`. Functions and
@@ -78,6 +87,19 @@ Why pgcrypto is in `extensions`: Supabase installs it there, not in
 `search_path = public, pg_temp` and could not see `crypt()`. Any new
 `security definer` function that uses `crypt()` or `gen_random_bytes()`
 needs `extensions` in its `search_path`.
+
+## The alumni directory (0005)
+
+The migration's comments explain each choice. The ones that constrain
+future work:
+
+- **No contact details, by design.** Adding phone or email later means a
+  new table with admin-only policies, never new columns on `alumni`, which
+  every member reads.
+- `linkedin_url` only accepts `https://www.linkedin.com/in/<slug>`, so the
+  UI renders it as a link without re-checking.
+- Loading is an officer task (the app has no secret key). The SQL editor
+  and `supabase db query` run as `postgres`, which bypasses RLS.
 
 ## The signup flow, end to end
 
@@ -169,9 +191,10 @@ message and the failure table, in `docs/MEMBER_ONBOARDING.md`. Run them on
 
 ## What is next
 
-The roadmap (admin UI with an Edge Function for invites, the Phase 2 alumni
-directory whose target schema is `docs/student_db.md`, CSP enforcement) is
-tracked in `HANDOFF.md`.
+The roadmap (admin UI with an Edge Function for invites, alumni self-service
+edits once alumni have accounts, CSP enforcement) is tracked in `HANDOFF.md`.
+`docs/student_db.md` is an older sketch of a `profiles`-style schema tied to
+`auth.users`; the shipped directory (0005) does not use it.
 
 ## Gotchas, collected
 
