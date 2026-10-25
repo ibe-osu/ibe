@@ -1,3 +1,4 @@
+import FeaturedStory from "@/components/home/FeaturedStory";
 import FourYearJourney from "@/components/home/FourYearJourney";
 import OurStats from "@/components/home/OurStats";
 import Sponsors from "@/components/home/Sponsors";
@@ -9,6 +10,7 @@ export default function Home() {
     <>
       <Welcome />
       <OurStats />
+      <FeaturedStory />
       <WhoAreWe />
       <FourYearJourney />
       <Sponsors />
