@@ -7,7 +7,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-const serif = `var(--font-pt-serif-caption), "PT Serif Caption", Georgia, serif`;
+export const serif = `var(--font-pt-serif-caption), "PT Serif Caption", Georgia, serif`;
 const sans = `var(--font-source-sans), "Source Sans 3", "Helvetica Neue", Arial, sans-serif`;
 
 /**
@@ -19,6 +19,15 @@ export const NAV_LABEL_TYPOGRAPHY = {
   fontSize: "0.8125rem",
   fontWeight: 700,
   letterSpacing: "0.08em",
+  textTransform: "uppercase",
+} as const;
+
+/** The small scarlet uppercase kicker above a heading or label (DESIGN.md "eyebrow"). */
+export const EYEBROW_TYPOGRAPHY = {
+  color: "primary.main",
+  fontSize: "0.75rem",
+  fontWeight: 600,
+  letterSpacing: "0.14em",
   textTransform: "uppercase",
 } as const;
 
