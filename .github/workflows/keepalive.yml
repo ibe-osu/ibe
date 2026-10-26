@@ -7,10 +7,11 @@ name: Supabase keep-alive
 #
 # The publishable keys are public by design (they ship in the browser
 # bundle); RLS is the access control, not key secrecy — see src/lib/env.ts.
-# The request is a real PostgREST query on app_users, which is what counts
-# as database activity. RLS gives an anonymous caller zero rows, so the
-# response is always `[]` — nothing is exposed. (The bare /rest/v1/ root
-# answers 401 to a publishable key, which is why the first version failed.)
+# The request calls is_active_member() over PostgREST, which runs a real
+# query and so counts as database activity. For an anonymous caller it
+# always answers `false` — nothing is exposed. (The bare /rest/v1/ root
+# answers 401 to a publishable key, and anon has no table grants since
+# migration 0006, so neither works as a ping.)
 
 on:
   schedule:
@@ -37,7 +38,7 @@ jobs:
           code=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: ${{ matrix.key }}" \
             -H "Authorization: Bearer ${{ matrix.key }}" \
-            "${{ matrix.url }}/rest/v1/app_users?select=user_id&limit=1")
+            "${{ matrix.url }}/rest/v1/rpc/is_active_member")
           echo "${{ matrix.name }} -> HTTP $code"
           # 200 = awake. Anything else (paused projects don't even resolve
           # DNS, so curl returns 000) fails the job so it shows up red.
