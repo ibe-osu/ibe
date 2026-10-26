@@ -50,6 +50,49 @@ One shared code with a use limit is fine for a group you trust (e-board).
 For the general membership, issue one code per person with `max_uses = 1`
 so a leaked code can't be reused.
 
+## 2b. Codes for a whole cohort
+
+The roster is student PII and this repo is public. It and the codes live
+only in `private/`, which git ignores, and travel by private OneDrive share.
+
+1. Export the roster (`First Name`, `Last Name`, `OSU email`) to
+   `private/roster.csv`.
+2. `node scripts/cohort-codes-sql.mjs AU26 private/roster.csv > private/codes.sql`.
+   It trims names, lowercases emails, and stops on a duplicate or bad email.
+3. Run `private/codes.sql` in the SQL editor, `ibe-staging` first. Download
+   the result grid as CSV (`first_name,last_name,email,code,expires_on`)
+   and move it from Downloads into `private/`. If the grid shows fewer rows
+   than the roster, run it again and download each batch until it returns
+   none. Codes are only issued for rows shown.
+4. The downloads are the only copy of the codes. If one is lost, revoke
+   the cohort (below) and run again. Once the VP has the CSV, delete your
+   copies of it and the roster.
+
+Each code is single-use, lasts 14 days, and is labelled
+`AU26 member: <email>`, so one person's code can be found and revoked.
+Re-running is safe: anyone with an unrevoked, unexpired code under that
+label is skipped, so a second run returns only people added since.
+To revoke a whole cohort:
+
+```sql
+update public.invite_codes set revoked_at = now() where label like 'AU26 member:%';
+```
+
+Every signup sends a confirmation email, capped at 30/hour (and 100/day
+on Resend's free plan). Send the invites in batches.
+
+The email (mail-merge from the CSV):
+
+> Hi {first_name},
+>
+> Create your IBE account at https://ibeosu.com/signup. Your personal
+> membership code is **{code}**. It works once and is good until
+> {expires_on}.
+>
+> Use any email you'll actually check (OSU or personal) and a password of
+> at least 10 characters. You'll get a confirmation email from
+> noreply@ibeosu.com. Click the link and you're in.
+
 ## 3. Send people to the site
 
 Message:
