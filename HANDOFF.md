@@ -1,51 +1,34 @@
-# Handoff: IBE Website — e-board onboarding, blocked on prod setup
+# Handoff: IBE Website — alumni directory go-live
 
-Replaces the 2026-09-20 handoff. Everything below is current as of
-**2026-09-28**. Read `CLAUDE.md` first for the deploy flow and design system.
+Replaces the 2026-09-28 handoff. The top section is current as of
+**2026-10-25**; the sections below it are from 2026-09-28 unless marked.
+Read `CLAUDE.md` first for the deploy flow and design system.
 
 ---
 
 ## ⏭️ Pick up here
 
-**Goal:** IBE's e-board signs up on ibeosu.com with a membership code and
-lands on the members calendar. The code, the members area, the signup flow,
-and the docs are all done and merged. **The only blocker is `ibe-prod`, and
-it is currently PAUSED.** Nothing can be tested on ibeosu.com until it is
-restored and configured.
+**State:** this file merges with #81, so by the time you read it on `main`
+the members-only alumni directory is live at `/members/alumni-database`
+(migrations 0001–0007 and the alumni data on prod; the go-live checklist is
+in the #81 description). Prod was checked read-only on 2026-10-25: members
+can sign up and log in.
 
-**These steps are the VP of Tech's (Yuvi Atre, `yuvi-atre`). Tech chair:
-do not run them; skip to "What shipped this cycle".** Steps 1–3 are
-dashboard/CLI actions only the VP does. (The "classifier" below is the
-Claude Code auto-mode permission checker on the VP's machine; it denies
-every write to prod, including unpausing it via the Management API.)
+**Left to do (VP of Tech, Yuvi Atre, `yuvi-atre`):**
 
-1. **Unpause prod:** https://supabase.com/dashboard/project/ygofoziyvusykfykpdyy
-   → *Restore project*, wait ~3 min. (`supabase link` fails with "project is
-   paused" until then — the user hit exactly this on 2026-09-27 and 09-28.)
-2. **Push migrations 0001–0004** from a checkout of `main`:
-   `npx supabase link --project-ref ygofoziyvusykfykpdyy && npx supabase db push`
-   (asks for the prod DB password).
-3. **Prod auth config** (dashboard → Authentication):
-   - URL Configuration: Site URL `https://ibeosu.com`; redirect URLs
-     `https://ibeosu.com/**`, `https://www.ibeosu.com/**`
-   - Hooks → Before User Created → Postgres function `public.before_user_created`
-   - Rate Limits → emails sent: 30/hour
-   - Email Templates → Confirm signup → link must be
-     `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email`
-     (device-independent; the default PKCE link only works in the browser
-     that submitted the form — bit us live). **Do this on staging too.**
-   - Project Settings → Authentication → SMTP: `smtp.resend.com`, 465, user
-     `resend`, password = Resend API key, sender `noreply@ibeosu.com`,
-     name `IBE Honors Program`
-4. **Verify prod end to end** through the real signup form on ibeosu.com
-   (never curl — see Gotchas), with a real inbox.
-5. **Issue the e-board code** in the prod SQL editor:
-   `select public.issue_invite_code('e-board 2026-27', 25, interval '30 days');`
-   and send it with the message in `docs/MEMBER_ONBOARDING.md`.
+1. **Tell the e-board.** Anyone without an account signs up with an invite
+   code; issue one with `issue_invite_code()` (`docs/MEMBER_ONBOARDING.md`).
+2. **Retire ibe-connect** (`ibe-osu/ibe-connect`): take its Vercel deploy
+   down and archive the repo. It bundles phone numbers and personal emails
+   into public JavaScript.
+3. **Check the two prod auth settings nobody has confirmed** (dashboard
+   only): URL Configuration and the Confirm-signup email template (see
+   "Live config state").
+4. **Updating the directory:** edit the CSV in `private/` and re-run the
+   seed (`scripts/alumni/README.md`), staging first, then prod.
 
-Once prod is restored, the **keep-alive workflow** (`.github/workflows/keepalive.yml`,
-Mon + Thu) pings both projects so they stop auto-pausing. Until then its
-prod leg runs red — expected.
+If CI fails with an error in `next/font`, it is Google Fonts flaking during
+the build, not the PR: re-run the job.
 
 ---
 
@@ -61,8 +44,7 @@ prod leg runs red — expected.
 
 Nav link for the members area is **"Members"** (was "Resources").
 `/members/alumni-database` is the alumni directory (#79 schema, #80 seed
-script, #81 page). It goes live once migration 0005 and the seed are run on
-prod; see `scripts/alumni/README.md`.
+script, #81 page; #82 and #84 tighten grants).
 
 ---
 
@@ -72,17 +54,16 @@ prod; see `scripts/alumni/README.md`.
 |---|---|---|
 | URL | `bvpohtlczjqzasdhwgwe.supabase.co` | `ygofoziyvusykfykpdyy.supabase.co` |
 | Publishable key | `sb_publishable_qCN-o8s1-P95euy4p1T1xw_09VG3qwi` | `sb_publishable_eUSEnxTgPS1BphEYbp0DWg_Ytiea0B2` |
-| Status (2026-09-28) | ACTIVE_HEALTHY | **PAUSED** |
-| Migrations 0001–0004 | ✅ | ❌ none |
-| `before_user_created` hook | ✅ | ❌ |
-| SMTP (Resend) | ✅ | ❌ |
-| Site URL / redirects | localhost + `*-ohiostateibes-projects.vercel.app` + ibeosu.com | ❌ |
-| Confirm-signup template | ❌ still default PKCE link | ❌ |
+| Status (2026-10-25) | ACTIVE_HEALTHY | ACTIVE_HEALTHY |
+| Migrations | 0001–0007 | 0001–0007 |
+| `before_user_created` hook | ✅ | ✅ |
+| SMTP (Resend) | ✅ | ✅ |
+| Site URL / redirects | localhost + `*-ohiostateibes-projects.vercel.app` + ibeosu.com | not checked (dashboard only) |
+| Confirm-signup template | ❌ still default PKCE link | not checked (dashboard only) |
 
 - **Vercel**: team `ohiostateibes-projects`, project `ibe`. Preview env →
   staging, Production env → prod. Previews are behind Vercel SSO, so
-  **e-board members cannot open previews** — only a configured prod lets
-  them test.
+  **e-board members cannot open previews**; they test on prod.
 - **Google Calendar** ("IBE Event Calendar") is public as of 2026-09-22.
   Ops contact: Devhuti Patel. ID lives in `src/data/calendar.ts`.
 - **Staging codes**: label `e-board testing (staging)` (25 uses, expires
@@ -130,7 +111,6 @@ prod; see `scripts/alumni/README.md`.
 - **PR 4 — admin UI + bulk invites** (`issue_invite_code()` is the first
   piece; needs an Edge Function for the secret key).
 - **PR 5 — enforce CSP** (`enforceCsp` flip in `next.config.ts`).
-- **Phase 2 — alumni directory** (re-profile the 268-record source first).
 
 ---
 
@@ -138,7 +118,7 @@ prod; see `scripts/alumni/README.md`.
 
 - **Prod pauses every 7 idle days** on the free tier. Symptom: `supabase
   link` → "project is paused"; CLI `supabase projects list` → `INACTIVE`;
-  logins fail. Keep-alive workflow fixes it going forward, once restored.
+  logins fail. The keep-alive workflow keeps both awake.
 - **The auto-mode classifier** (Claude Code's permission checker on the
   VP's machine) **denies**: any write to prod (migrations, auth config,
   restore), staging *auth config* writes (email template), and
@@ -146,8 +126,8 @@ prod; see `scripts/alumni/README.md`.
   Staging *database* writes via the Management API query endpoint are
   allowed and were used for migration 0004 and issuing codes. The rule for
   humans is the same: prod and auth config are VP-only.
-- **Confirmation links are device-bound** until the template is switched
-  (step 3). Supabase still confirms the email, so "log in" works — the
+- **Confirmation links are device-bound** until the Confirm-signup template
+  is switched (still unchecked on prod). Supabase still confirms the email, so "log in" works — the
   `confirm-failed` message now says so.
 - **`supabase.auth.signOut()` is global-scope**: signing out in one browser
   (e.g. the iOS simulator during a walkthrough) revokes the session in
