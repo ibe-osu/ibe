@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useDeferredValue, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import {
   Autocomplete,
   Box,
@@ -37,12 +38,17 @@ import {
   type Suggestion,
 } from "@/lib/alumni/directory";
 import FilterPanel from "./FilterPanel";
-import { AlumniCard, AlumniRow } from "./AlumniCard";
+import { AlumniCard, AlumniRow, OPEN_CLASS } from "./AlumniCard";
 import AlumniProfileDialog from "./AlumniProfileDialog";
 import { HEADER_HEIGHT } from "@/theme/theme";
 
 type View = "grid" | "list";
 type Sort = "name" | "newest" | "oldest";
+
+// Cards rendered at first and per scroll step. Rendering all ~200 at once
+// made the server send ~1 MB of HTML and the browser hydrate every card
+// before anything was clickable; search and the count still cover everyone.
+const STEP = 30;
 
 // `short` is what the closed select shows, so it fits beside Filters on a phone.
 const SORTS: Record<Sort, { label: string; short: string; compare: (a: DirectoryAlum, b: DirectoryAlum) => number }> = {
@@ -67,8 +73,8 @@ const SORTS: Record<Sort, { label: string; short: string; compare: (a: Directory
 /**
  * Search, filters, grid/list results and the profile dialog. Everything runs
  * over the rows the server page already fetched (about 200 people), so there
- * are no further requests. With no query and no filters the full list
- * renders on the server, so the directory reads without JavaScript.
+ * are no further requests. The first STEP cards render on the server, so the
+ * directory reads without JavaScript; the rest load as you scroll.
  */
 interface AlumniDirectoryProps {
   alumni: DirectoryAlum[];
@@ -130,12 +136,40 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
     setQuery("");
   };
 
-  // Built only when the results, layout or deferred query change, so a
-  // keystroke or an open dialog doesn't rebuild 200 cards.
+  // How many results are on screen, tied to the results it was counted for, so
+  // new results start back at STEP in the same render (no flash of every card).
+  const [page, setPage] = useState({ results, count: STEP });
+  const shown = page.results === results ? page.count : STEP;
+  const more = useCallback(() => setPage({ results, count: shown + STEP }), [results, shown]);
+  // More cards load as the sentinel below the list nears the viewport. The
+  // observer is rebuilt per step, which is what makes it fire again while the
+  // sentinel is still in view after a load.
+  const sentinel = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  // From the button, also move keyboard focus to the first new card: the
+  // button vanishes after the last batch, which would drop focus to <body>.
+  const showMore = () => {
+    const firstNew = shown;
+    flushSync(more);
+    listRef.current?.children[firstNew]?.querySelector<HTMLElement>(`.${OPEN_CLASS}`)?.focus();
+  };
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => entry.isIntersecting && more(), { rootMargin: "800px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [more]);
+
+  // Why each result matched, worked out once per search rather than per step.
+  const contexts = useMemo(() => new Map(results.map((a) => [a.id, matchContext(a, parsed)])), [results, parsed]);
+
+  // Built only when the results, layout or step change, so a keystroke or an
+  // open dialog doesn't rebuild the cards.
   const list = useMemo(
     () =>
-      results.map((a) => {
-        const context = matchContext(a, parsed);
+      results.slice(0, shown).map((a) => {
+        const context = contexts.get(a.id) ?? null;
         return (
           <li key={a.id}>
             {view === "grid" ? (
@@ -146,7 +180,7 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
           </li>
         );
       }),
-    [results, parsed, view],
+    [results, shown, contexts, view],
   );
 
   const panel = (idPrefix: string) => (
@@ -336,6 +370,7 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
           ) : (
             <Box
               component="ul"
+              ref={listRef}
               aria-label="Alumni"
               sx={{
                 listStyle: "none",
@@ -349,6 +384,13 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
               }}
             >
               {list}
+            </Box>
+          )}
+          {shown < results.length && (
+            <Box ref={sentinel} sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+              <Button variant="outlined" onClick={showMore}>
+                Show more ({results.length - shown} left)
+              </Button>
             </Box>
           )}
         </Box>
