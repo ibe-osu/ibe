@@ -82,7 +82,6 @@ export default function AlumniProfileDialog({ alum, similar, onClose, onOpen }: 
       maxWidth="sm"
       fullWidth
       aria-labelledby="alumni-profile-name"
-      slotProps={{ paper: { elevation: 0 } }}
     >
       <IconButton onClick={onClose} aria-label="Close profile" sx={{ position: "absolute", top: 8, right: 8, zIndex: 1 }}>
         <CloseIcon />
