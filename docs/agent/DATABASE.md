@@ -39,7 +39,7 @@ invite_codes       prefix (plaintext, unique), secret_hash (bcrypt), label, max_
 invite_redemptions which code created which user; unique (code_id, user_id)
 alumni             one row per alum: name, class_year (null = unknown), college (UENG|UBUS),
                    majors[], minors[], linkedin_url, current title/employer/city/state,
-                   involvements[], ibe_evidence; unique source_row (CSV row)
+                   involvements[], ibe_evidence, email (0008); unique source_row (CSV row)
 alumni_jobs        job history, position 0 = most recent; title, company, start_label,
                    end_label ("Aug 2022", "Present"), location, note
 alumni_education   graduate school: institution, program, year, in_progress
@@ -103,14 +103,17 @@ Why pgcrypto is in `extensions`: Supabase installs it there, not in
 `security definer` function that uses `crypt()` or `gen_random_bytes()`
 needs `extensions` in its `search_path`.
 
-## The alumni directory (0005)
+## The alumni directory (0005, 0008)
 
 The migration's comments explain each choice. The ones that constrain
 future work:
 
-- **No contact details, by design.** Adding phone or email later means a
-  new table with admin-only policies, never new columns on `alumni`, which
-  every member reads.
+- **Email, never phone.** `alumni.email` (0008) is readable by every
+  member, by the VP's decision (2026-10-26). The page asks for it only
+  when a profile opens (`actions.ts`), not with the list; that keeps it out
+  of the page, but any member can still read every email directly, so it
+  is not an access control. Phone numbers are never loaded. Anything that should be admin-only goes in a new table with
+  admin-only policies, never a column on `alumni`, which every member reads.
 - `linkedin_url` only accepts `https://www.linkedin.com/in/<slug>`, so the
   UI renders it as a link without re-checking.
 - Loading is an officer task (the app has no secret key). The SQL editor

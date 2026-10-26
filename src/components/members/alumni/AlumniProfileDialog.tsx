@@ -15,7 +15,9 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import type { ReactNode } from "react";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { useEffect, useState, type ReactNode } from "react";
+import { getAlumEmail } from "@/app/members/alumni-database/actions";
 import {
   COLLEGE_LABELS,
   currentLocation,
@@ -67,6 +69,40 @@ function LogoRow({ name, title, lines }: { name: string; title: ReactNode; lines
 const dateRange = (j: DirectoryJob) =>
   j.start && j.end ? `${j.start} – ${j.end}` : (j.start ?? j.end ?? "");
 
+// Emails already fetched this visit, so reopening a profile doesn't ask again.
+const emails = new Map<string, string | null>();
+
+/**
+ * Asks for the alum's email when their profile opens (see actions.ts). It
+ * lives inside the per-person DialogContent, so each profile gets a fresh
+ * instance and a slow answer can't land on the next person.
+ */
+function EmailButton({ id }: { id: string }) {
+  const [email, setEmail] = useState(emails.get(id) ?? null);
+  useEffect(() => {
+    if (emails.has(id)) return;
+    getAlumEmail(id)
+      .then((found) => {
+        emails.set(id, found);
+        setEmail(found);
+      })
+      .catch(() => {}); // no button beats an error for an optional link
+  }, [id]);
+  if (!email) return null;
+  return (
+    <Button
+      variant="outlined"
+      href={`mailto:${email}`}
+      startIcon={<MailOutlineIcon />}
+      size="small"
+      title={email}
+      sx={{ px: 2 }}
+    >
+      Email
+    </Button>
+  );
+}
+
 export default function AlumniProfileDialog({ alum, similar, onClose, onOpen }: AlumniProfileDialogProps) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -102,18 +138,21 @@ export default function AlumniProfileDialog({ alum, similar, onClose, onOpen }: 
                 </Tag>
               )}
             </Box>
-            {alum.linkedinUrl && (
-              <Button
-                href={alum.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                startIcon={<LinkedInIcon />}
-                size="small"
-                sx={{ mt: 1.5, px: 2 }}
-              >
-                LinkedIn
-              </Button>
-            )}
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
+              {alum.linkedinUrl && (
+                <Button
+                  href={alum.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<LinkedInIcon />}
+                  size="small"
+                  sx={{ px: 2 }}
+                >
+                  LinkedIn
+                </Button>
+              )}
+              <EmailButton id={alum.id} />
+            </Box>
           </Box>
         </Stack>
 

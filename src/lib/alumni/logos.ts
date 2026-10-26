@@ -253,5 +253,5 @@ export function logoUrl(name: string | null): string | null {
 }
 
 /** Ohio State gets the scarlet "O" tile instead of a favicon. */
-const OHIO_STATE = wholeWords(["ohio state"]);
+const OHIO_STATE = wholeWords(["ohio state", "osu"]);
 export const isOhioState = (name: string) => OHIO_STATE.test(name);

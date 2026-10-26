@@ -7,9 +7,9 @@
  *     private/alumni-db-import.csv private/experience-db-import.csv \
  *     private/alumni-seed.sql
  *
- * Only the columns the directory shows are read: phone, email and gender are
- * never touched. The output holds personal data, so the script refuses to
- * write it anywhere git would track.
+ * Only the columns the directory shows are read: phone and gender are never
+ * touched, and an email flagged as bounced is left out. The output holds
+ * personal data, so the script refuses to write it anywhere git would track.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -78,6 +78,18 @@ function linkedinUrl(raw: string, sourceRow: number) {
   return `https://www.linkedin.com/in/${slug}`;
 }
 
+// Bounced addresses are left out; anything that isn't shaped like an email
+// stops the build here rather than failing the SQL (the row number, never the
+// address, goes in the error).
+function personalEmail(r: Row, sourceRow: number) {
+  if (r.emailInvalid?.trim().toUpperCase() === "YES") return null;
+  const email = text(r.personalEmail);
+  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    throw new Error(`source row ${sourceRow}: malformed personal email`);
+  }
+  return email;
+}
+
 // "MBA (in progress)" -> "MBA", "MS, CS (part-time, in progress)" -> "MS, CS
 // (part-time)", "MBA (Finance) - in progress" -> "MBA (Finance)". The flag
 // moves to alumni_education.in_progress.
@@ -131,6 +143,7 @@ for (const r of parseCsv(readFileSync(alumniCsv, "utf8"))) {
     current_state: text(r.currentJobState),
     involvements: list(r.involvements),
     ibe_evidence: text(r.ibeEvidence),
+    email: personalEmail(r, sourceRow),
   });
   if (text(r.graduateSchool)) {
     education.push({

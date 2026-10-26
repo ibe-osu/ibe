@@ -49,9 +49,10 @@ overwritten by the next run, so fix the CSV instead.
 
 ## What it reads
 
-Only the columns the directory shows. `phone`, `personalEmail`,
-`osuEmail`, `emailInvalid` and `gender` are never read, so they cannot end
-up in the SQL. LinkedIn URLs are normalized to
+Only the columns the directory shows. `personalEmail` becomes `email`
+(members see it on a profile, migration 0008) unless `emailInvalid` says it
+bounced. `phone`, `osuEmail` and `gender` are never read, so they cannot
+end up in the SQL. LinkedIn URLs are normalized to
 `https://www.linkedin.com/in/<slug>` (the schema rejects anything else),
 "Class of Unknown" becomes a null `class_year`, and "(in progress)" on a
 grad program becomes `in_progress = true`. Job rows with neither a title
