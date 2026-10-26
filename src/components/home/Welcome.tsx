@@ -11,7 +11,7 @@ import welcomeVerticalImg from "../../../public/welcome-vertical.jpeg";
 
 gsap.registerPlugin(useGSAP);
 
-const heroAlt = "IBE Honors Program students gathered on Ohio State's campus";
+const heroAlt = "A group of IBE Honors Program students smiling together";
 
 // Optimized srcsets for both art-directed crops; the raw <source> path used
 // to serve the full unoptimized JPEG on mobile.
