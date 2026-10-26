@@ -41,3 +41,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Officer-only data with personal details (alumni CSVs, generated seed SQL).
+# See scripts/alumni/README.md. Never commit anything from here.
+/private/

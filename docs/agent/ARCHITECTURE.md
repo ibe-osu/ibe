@@ -74,7 +74,7 @@ src/
     ThemeProvider.tsx       Client wrapper: MuiThemeProvider + CssBaseline
 supabase/
   config.toml               Local Supabase config (Postgres 17, min password 10)
-  migrations/0001..0004     The entire schema, in order. See DATABASE.md
+  migrations/               The entire schema, in order. See DATABASE.md
 public/
   people/ spotlight/ testimonial/ happenings/ recruitment/   Real cohort photography
   companies/                SVG logos (alumni marquee + sponsor wall)

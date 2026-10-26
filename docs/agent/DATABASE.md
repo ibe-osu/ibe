@@ -1,7 +1,7 @@
 # Database and auth
 
 Supabase: hosted Postgres, Auth, and row-level security (RLS). The schema is
-four migrations in `supabase/migrations/`, applied in order. Nothing in the
+the numbered migrations in `supabase/migrations/`, applied in order. Nothing in the
 database is hand-edited that is not also in a migration, except the
 dashboard-only auth settings listed at the end.
 
@@ -18,10 +18,10 @@ dashboard-only auth settings listed at the end.
 Both are on the Free plan, which **pauses a project after 7 idle days**. A
 paused project does not resolve DNS, so logins fail with a vague error and
 `supabase link` says "project is paused". The keep-alive workflow
-(`.github/workflows/keepalive.yml`, Monday and Thursday) runs a real
-PostgREST query against `app_users` on both projects so they count as
-active. Restoring a paused project is a dashboard button
-(**Restore project**, about 3 minutes).
+(`.github/workflows/keepalive.yml`, Monday and Thursday) calls
+`rpc/is_active_member` on both projects so they count as active.
+Restoring a paused project is a dashboard button (**Restore project**,
+about 3 minutes).
 
 Free plan members: an organization can have several members with the
 Owner, Administrator, or Developer role. Read-only and project-scoped roles
@@ -37,6 +37,12 @@ rate_limits        fixed-window counters keyed by text; only touched by check_ra
 invite_codes       prefix (plaintext, unique), secret_hash (bcrypt), label, max_uses,
                    use_count, expires_at, revoked_at, created_by
 invite_redemptions which code created which user; unique (code_id, user_id)
+alumni             one row per alum: name, class_year (null = unknown), college (UENG|UBUS),
+                   majors[], minors[], linkedin_url, current title/employer/city/state,
+                   involvements[], ibe_evidence; unique source_row (CSV row)
+alumni_jobs        job history, position 0 = most recent; title, company, start_label,
+                   end_label ("Aug 2022", "Present"), location, note
+alumni_education   graduate school: institution, program, year, in_progress
 ```
 
 Enums: `user_role` (`member`, `admin`) and `user_status` (`active`,
@@ -55,6 +61,20 @@ Functions, all `security definer` with a pinned `search_path`:
 | `handle_new_user()` | 0002 | `after insert on auth.users` trigger. Re-validates the code, increments `use_count`, inserts `invite_redemptions` and `app_users` in the same transaction. Fails closed if the hook was never registered. |
 | `issue_invite_code(label, max_uses, valid_for)` | 0004 | Generates a code from a 32-letter alphabet without 0/O/1/I, bcrypts the secret, stores the row, returns the plaintext once. Callable by `postgres` (the SQL editor) or an active admin. |
 
+Who may call them (0007): PostgREST exposes every `public` function the
+caller can execute at `/rest/v1/rpc/<name>`, so grants are the access
+control. `anon` and `authenticated` can execute only `is_active_member()`
+and `is_admin()` (RLS policies run them as the querying role; the
+keep-alive calls one), plus `issue_invite_code()` for `authenticated`.
+Everything else has no caller grants; the definer functions that call
+them run as `postgres`. New functions created by `postgres` start with
+none either, so a migration that adds one must `grant execute` to whoever
+calls it. An RLS helper needs `authenticated`, or every policy that uses
+it fails with `permission denied for function`.
+Extension functions a migration installs as `postgres` (say `pg_trgm`) are
+no exception, since the PUBLIC default can't be scoped to a schema: grant
+the ones the app calls.
+
 Policies:
 
 - `app_users`: a user reads their own row; admins read and write all rows.
@@ -62,6 +82,14 @@ Policies:
 - `invite_codes`, `invite_redemptions`: admin only. App code never reads
   `secret_hash`.
 - `rate_limits`: no policies at all; only the function touches it.
+- `alumni`, `alumni_jobs`, `alumni_education`: any active member selects;
+  insert, update, and delete are admin only, one policy per command (a
+  `for all` admin policy would be a second SELECT policy on every read).
+- Grants (0006): `anon` has none on any `public` table; `authenticated`
+  has only `select`, `insert`, `update`, `delete`, which RLS filters. New
+  tables start this way, so they need no per-table `revoke`. Sequences
+  still get Supabase's default grants; functions are covered by 0007 (see
+  "Who may call them" above).
 
 Why bcrypt and not SHA-256: a leaked table of unsalted hashes of short codes
 falls to a GPU in hours. Why the code is uppercase: the signup form
@@ -74,6 +102,19 @@ Why pgcrypto is in `extensions`: Supabase installs it there, not in
 `search_path = public, pg_temp` and could not see `crypt()`. Any new
 `security definer` function that uses `crypt()` or `gen_random_bytes()`
 needs `extensions` in its `search_path`.
+
+## The alumni directory (0005)
+
+The migration's comments explain each choice. The ones that constrain
+future work:
+
+- **No contact details, by design.** Adding phone or email later means a
+  new table with admin-only policies, never new columns on `alumni`, which
+  every member reads.
+- `linkedin_url` only accepts `https://www.linkedin.com/in/<slug>`, so the
+  UI renders it as a link without re-checking.
+- Loading is an officer task (the app has no secret key). The SQL editor
+  and `supabase db query` run as `postgres`, which bypasses RLS.
 
 ## The signup flow, end to end
 
@@ -124,8 +165,8 @@ at onboarding (or reset under Project Settings → Database). Without the
 CLI, paste the migration into the project's SQL editor after checking the
 project name in the dashboard header.
 
-Existing migrations are numbered `0001` to `0004`. Keep the sequence when
-adding one (`0005_<topic>.sql`) so `db push` order stays obvious. Rules:
+Migrations are numbered `0001`, `0002`, and so on. Take the next number
+not already used on `main` or in an open PR so `db push` order stays obvious. Rules:
 
 - One concern per migration, with a header comment that says why.
 - Never edit a migration that has been pushed to staging. Add a new one.
@@ -165,9 +206,10 @@ message and the failure table, in `docs/MEMBER_ONBOARDING.md`. Run them on
 
 ## What is next
 
-The roadmap (admin UI with an Edge Function for invites, the Phase 2 alumni
-directory whose target schema is `docs/student_db.md`, CSP enforcement) is
-tracked in `HANDOFF.md`.
+The roadmap (admin UI with an Edge Function for invites, alumni self-service
+edits once alumni have accounts, CSP enforcement) is tracked in `HANDOFF.md`.
+`docs/student_db.md` is an older sketch of a `profiles`-style schema tied to
+`auth.users`; the shipped directory (0005) does not use it.
 
 ## Gotchas, collected
 
@@ -178,3 +220,5 @@ tracked in `HANDOFF.md`.
   Users and let them sign up again.
 - An account can authenticate but have no `app_users` row (suspended or
   created outside the flow). It sees nothing, by design.
+- `permission denied for function <name>` after adding a function: it has
+  no grants yet. See "Who may call them" above.
