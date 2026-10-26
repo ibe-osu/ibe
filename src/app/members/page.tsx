@@ -26,7 +26,7 @@ export default async function MembersPage() {
         <Typography
           variant="overline"
           component="p"
-          sx={{ color: "primary.main", fontWeight: 700, letterSpacing: "0.12em", lineHeight: 1.6 }}
+          sx={{ color: "primary.main" }}
         >
           Members
         </Typography>
@@ -44,8 +44,8 @@ export default async function MembersPage() {
           Coming soon
         </Typography>
         <Typography variant="body1" sx={{ color: "text.secondary", maxWidth: "62ch" }}>
-          Meeting materials, the recruitment handbook, officer contacts, and
-          the alumni database are on the way. Check back here.
+          Meeting materials, the recruitment handbook, and officer contacts
+          are on the way. Check back here.
         </Typography>
       </Stack>
     </Container>

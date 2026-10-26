@@ -50,7 +50,9 @@ const contentSecurityPolicy = [
   // next/font/google self-hosts at build time, so no fonts.gstatic.com entry is needed.
   `font-src 'self' data:`,
 
-  `img-src 'self' blob: data:`,
+  // Company and school logos in the members-only alumni directory come from
+  // Google's favicon service, which redirects to *.gstatic.com.
+  `img-src 'self' blob: data: https://www.google.com https://*.gstatic.com`,
 
   // The homepage embeds a YouTube video (src/components/home/IBEVideo.tsx),
   // and /members embeds the IBE Google Calendar (src/data/calendar.ts).

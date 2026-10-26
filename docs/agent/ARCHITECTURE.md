@@ -43,7 +43,7 @@ src/
     login/page.tsx          /login        noindex
     signup/page.tsx         /signup       noindex
     members/page.tsx        /members      gated by requireMember(), noindex
-    members/alumni-database/page.tsx      gated, "Under construction"
+    members/alumni-database/page.tsx      gated alumni directory (server query + client search)
     auth/callback/route.ts  GET handler that finishes email confirmation
     sitemap.ts robots.ts manifest.ts      SEO + PWA metadata routes
     globals.css             CSS variables, resets, skip link, reduced-motion kill switch
@@ -53,7 +53,8 @@ src/
                             PageHero, Reveal, HeroPrefetch
     home/ about/ recruitment/ alumni/ student-life/   One folder per page, one file per section
     auth/                   LoginForm, SignupForm, AccountMenu, AuthNavLinks
-    members/                MembersCalendar, UnderConstruction
+    members/                MembersCalendar; alumni/ holds the directory (AlumniDirectory,
+                            FilterPanel, AlumniCard, AlumniProfileDialog)
   data/
     calendar.ts             Google Calendar id + URL builders for /members
     sponsors.ts             Sponsor logo list for the home page
@@ -65,6 +66,8 @@ src/
     auth/guards.ts          requireMember(), requireAdmin(): the real gate
     auth/inviteCode.ts      Client-side shape check for IBE-XXXX-XXXX codes
     auth/useAuthState.ts    Cosmetic signed-in state for the header
+    alumni/directory.ts     Directory types, search, facets, suggestions (ported from ibe-connect)
+    alumni/industry.ts      Industry inferred from the current role, for the filter
   middleware.ts             Runs updateSession() on every non-asset request
   theme/
     theme.ts                MUI theme: fonts, fluid type scale, palette, overrides
@@ -180,8 +183,9 @@ page.
 
 - **ibe-connect**: a separate Vite + React + shadcn SPA, a Lovable
   prototype of the alumni directory with statically bundled data, kept by
-  the VP of Tech. It is the reference for Phase 2
-  (`/members/alumni-database`), not something this repo imports.
+  the VP of Tech. Its search and filters were ported into
+  `/members/alumni-database`; nothing imports it. It bundles its data into
+  the page, so it is retired once the directory ships on prod.
 - **Google Calendar** "IBE Event Calendar" is public; officers edit it in
   Google. The id lives in `src/data/calendar.ts`.
 - **Porkbun** holds the domain, with nameservers delegated to Vercel, so DNS
