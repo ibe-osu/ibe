@@ -252,6 +252,9 @@ export function logoUrl(name: string | null): string | null {
   return url;
 }
 
-/** Ohio State gets the scarlet "O" tile instead of a favicon. */
+/**
+ * Ohio State gets the scarlet "O" tile instead of a favicon. A bare "OSU"
+ * counts only as the whole name, since other schools are OSU too.
+ */
 const OHIO_STATE = wholeWords(["ohio state"]);
-export const isOhioState = (name: string) => OHIO_STATE.test(name);
+export const isOhioState = (name: string) => OHIO_STATE.test(name) || name.trim().toUpperCase() === "OSU";
