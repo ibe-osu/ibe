@@ -152,6 +152,11 @@ export const AlumniCard = memo(function AlumniCard({ alum, context, onOpen }: Al
                   fontSize: "1.2rem",
                   textAlign: "left",
                   justifyContent: "flex-start",
+                  // ButtonBase is position: relative by default, which would
+                  // pin the ::after to the name and leave the card unclickable.
+                  // Keep anything between here and the article unpositioned
+                  // too, or the click area shrinks to that box.
+                  position: "static",
                   "&.Mui-focusVisible": { outline: "none" },
                   "&::after": { content: '""', position: "absolute", inset: 0 },
                 }}

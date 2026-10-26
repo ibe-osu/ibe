@@ -114,16 +114,19 @@ function toDirectoryAlum(row: AlumniQueryRow): DirectoryAlum {
 // more than the nav link being hidden while signed out. The query runs with
 // the member's own session, so RLS (migration 0005) is the second wall.
 export default async function AlumniDatabasePage() {
+  // The query starts before the membership check finishes (RLS limits it to
+  // members anyway); requireMember() is still awaited first, so it redirects.
+  const query = createClient().then((supabase) =>
+    supabase
+      .from("alumni")
+      .select(SELECT)
+      .order("last_name")
+      .order("first_name")
+      .overrideTypes<AlumniQueryRow[], { merge: false }>(),
+  );
+  query.catch(() => {}); // a redirect below would otherwise leave it unhandled
   await requireMember();
-  const supabase = await createClient();
-
-  const { data, error } = await supabase
-    .from("alumni")
-    .select(SELECT)
-    .order("last_name")
-    .order("first_name")
-    .overrideTypes<AlumniQueryRow[], { merge: false }>();
-
+  const { data, error } = await query;
   if (error) {
     console.error("alumni directory query failed:", error.code, error.message);
     return (
