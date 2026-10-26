@@ -72,6 +72,10 @@ const dateRange = (j: DirectoryJob) =>
 // Emails already fetched this visit, so reopening a profile doesn't ask again.
 const emails = new Map<string, string | null>();
 
+// Encoded so a stray ? or & in a stored address can't add cc/bcc/body
+// fields; the column's check allows exactly one @, which is put back.
+const mailto = (email: string) => `mailto:${encodeURIComponent(email).replace("%40", "@")}`;
+
 /**
  * Asks for the alum's email when their profile opens (see actions.ts). It
  * lives inside the per-person DialogContent, so each profile gets a fresh
@@ -92,7 +96,7 @@ function EmailButton({ id }: { id: string }) {
   return (
     <Button
       variant="outlined"
-      href={`mailto:${email}`}
+      href={mailto(email)}
       startIcon={<MailOutlineIcon />}
       size="small"
       title={email}

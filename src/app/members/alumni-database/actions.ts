@@ -16,6 +16,9 @@ export async function getAlumEmail(id: string): Promise<string | null> {
   );
   query.catch(() => {}); // a redirect below would otherwise leave it unhandled
   await requireMember();
-  const { data } = await query;
+  const { data, error } = await query;
+  // Throw rather than return null, so the profile doesn't remember a failed
+  // lookup as "no email".
+  if (error) throw new Error("email lookup failed");
   return data?.email ?? null;
 }
