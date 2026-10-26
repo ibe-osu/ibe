@@ -23,6 +23,9 @@ interface AlumniCardProps {
   onOpen: (id: string) => void;
 }
 
+/** The element that opens a profile: the card's name button, or a list row. */
+export const OPEN_CLASS = "alum-open";
+
 /** A person's (or a school's) name in the directory's serif. */
 export const nameSx = { fontFamily: serif, fontSize: "1.1rem", lineHeight: 1.3 } as const;
 
@@ -134,7 +137,7 @@ export const AlumniCard = memo(function AlumniCard({ alum, context, onOpen }: Al
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        "&:has(.alum-open.Mui-focusVisible)": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
+        [`&:has(.${OPEN_CLASS}.Mui-focusVisible)`]: { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
       }}
     >
       <Box sx={{ p: 2.5, pb: 2 }}>
@@ -143,7 +146,7 @@ export const AlumniCard = memo(function AlumniCard({ alum, context, onOpen }: Al
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 1 }}>
               <ButtonBase
-                className="alum-open"
+                className={OPEN_CLASS}
                 disableRipple
                 onClick={() => onOpen(alum.id)}
                 aria-label={`${fullName(alum)}, ${classLine(alum)}. Open profile`}
@@ -224,6 +227,7 @@ export const AlumniRow = memo(function AlumniRow({ alum, context, onOpen }: Alum
   return (
     <ButtonBase
       component="div"
+      className={OPEN_CLASS}
       onClick={() => onOpen(alum.id)}
       sx={{
         ...surfaceSx,

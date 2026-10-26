@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import {
   Autocomplete,
   Box,
@@ -37,7 +38,7 @@ import {
   type Suggestion,
 } from "@/lib/alumni/directory";
 import FilterPanel from "./FilterPanel";
-import { AlumniCard, AlumniRow } from "./AlumniCard";
+import { AlumniCard, AlumniRow, OPEN_CLASS } from "./AlumniCard";
 import AlumniProfileDialog from "./AlumniProfileDialog";
 import { HEADER_HEIGHT } from "@/theme/theme";
 
@@ -144,6 +145,14 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
   // observer is rebuilt per step, which is what makes it fire again while the
   // sentinel is still in view after a load.
   const sentinel = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  // From the button, also move keyboard focus to the first new card: the
+  // button vanishes after the last batch, which would drop focus to <body>.
+  const showMore = () => {
+    const firstNew = shown;
+    flushSync(more);
+    listRef.current?.children[firstNew]?.querySelector<HTMLElement>(`.${OPEN_CLASS}`)?.focus();
+  };
   useEffect(() => {
     const el = sentinel.current;
     if (!el) return;
@@ -361,6 +370,7 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
           ) : (
             <Box
               component="ul"
+              ref={listRef}
               aria-label="Alumni"
               sx={{
                 listStyle: "none",
@@ -378,7 +388,7 @@ export default function AlumniDirectory({ alumni, lastUpdated }: AlumniDirectory
           )}
           {shown < results.length && (
             <Box ref={sentinel} sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-              <Button variant="outlined" onClick={more}>
+              <Button variant="outlined" onClick={showMore}>
                 Show more ({results.length - shown} left)
               </Button>
             </Box>
