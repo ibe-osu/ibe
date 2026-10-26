@@ -1,7 +1,7 @@
 # Database and auth
 
 Supabase: hosted Postgres, Auth, and row-level security (RLS). The schema is
-five migrations in `supabase/migrations/`, applied in order. Nothing in the
+the numbered migrations in `supabase/migrations/`, applied in order. Nothing in the
 database is hand-edited that is not also in a migration, except the
 dashboard-only auth settings listed at the end.
 
@@ -18,10 +18,10 @@ dashboard-only auth settings listed at the end.
 Both are on the Free plan, which **pauses a project after 7 idle days**. A
 paused project does not resolve DNS, so logins fail with a vague error and
 `supabase link` says "project is paused". The keep-alive workflow
-(`.github/workflows/keepalive.yml`, Monday and Thursday) runs a real
-PostgREST query against `app_users` on both projects so they count as
-active. Restoring a paused project is a dashboard button
-(**Restore project**, about 3 minutes).
+(`.github/workflows/keepalive.yml`, Monday and Thursday) calls
+`rpc/is_active_member` on both projects so they count as active.
+Restoring a paused project is a dashboard button (**Restore project**,
+about 3 minutes).
 
 Free plan members: an organization can have several members with the
 Owner, Administrator, or Developer role. Read-only and project-scoped roles
@@ -71,9 +71,10 @@ Policies:
 - `alumni`, `alumni_jobs`, `alumni_education`: any active member selects;
   insert, update, and delete are admin only, one policy per command (a
   `for all` admin policy would be a second SELECT policy on every read).
-  On these three tables only, `anon` has no grants and `authenticated` has
-  no `truncate` (which ignores RLS). The older tables still carry
-  Supabase's default grants.
+- Grants (0006): `anon` has none on any `public` table; `authenticated`
+  has only `select`, `insert`, `update`, `delete`, which RLS filters. New
+  tables start this way, so they need no per-table `revoke`. Functions and
+  sequences still get Supabase's default grants.
 
 Why bcrypt and not SHA-256: a leaked table of unsalted hashes of short codes
 falls to a GPU in hours. Why the code is uppercase: the signup form
@@ -149,8 +150,8 @@ at onboarding (or reset under Project Settings → Database). Without the
 CLI, paste the migration into the project's SQL editor after checking the
 project name in the dashboard header.
 
-Existing migrations are numbered `0001` to `0005`. Keep the sequence when
-adding one (`0006_<topic>.sql`) so `db push` order stays obvious. Rules:
+Migrations are numbered `0001`, `0002`, and so on. Take the next number
+not already used on `main` or in an open PR so `db push` order stays obvious. Rules:
 
 - One concern per migration, with a header comment that says why.
 - Never edit a migration that has been pushed to staging. Add a new one.
