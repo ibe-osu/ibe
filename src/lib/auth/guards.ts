@@ -8,7 +8,9 @@ import { createClient } from "@/lib/supabase/server";
  * (see src/lib/supabase/middleware.ts and src/components/auth/AuthNav.tsx).
  *
  * Two independent checks, both required:
- *  1. getUser() — is there a real, verified session at all?
+ *  1. getClaims() — is there a real, verified session at all? Both projects
+ *     sign sessions with asymmetric (ES256) keys, so this checks the
+ *     signature locally instead of asking Supabase Auth over the network.
  *  2. app_users row, status = 'active' — is this account actually a member?
  *     (RLS also enforces this at the database level on every other table;
  *     this second check is what lets the *page* redirect with a clear
@@ -28,18 +30,17 @@ export async function requireMember() {
     redirect("/login");
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getClaims();
+  const userId = data?.claims.sub;
 
-  if (!user) {
+  if (!userId) {
     redirect("/login");
   }
 
   const { data: appUser } = await supabase
     .from("app_users")
     .select("role, status")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (!appUser || appUser.status !== "active") {
@@ -49,15 +50,15 @@ export async function requireMember() {
     redirect("/login?reason=inactive");
   }
 
-  return { user, role: appUser.role };
+  return { userId, role: appUser.role };
 }
 
 export async function requireAdmin() {
-  const { user, role } = await requireMember();
+  const { userId, role } = await requireMember();
 
   if (role !== "admin") {
     redirect("/members");
   }
 
-  return { user };
+  return { userId };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -53,12 +53,16 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const reason = searchParams.get("reason");
   const [formError, setFormError] = useState<string | null>(null);
+  // Stays true until /members has rendered, so the form doesn't flip back
+  // to "Log In" and look stuck while the server checks the session.
+  const [navigating, startNavigation] = useTransition();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  const busy = isSubmitting || navigating;
 
   async function onSubmit(values: FormValues) {
     setFormError(null);
@@ -83,8 +87,10 @@ export default function LoginForm() {
       return;
     }
 
-    router.push("/members");
-    router.refresh();
+    startNavigation(() => {
+      router.push("/members");
+      router.refresh();
+    });
   }
 
   return (
@@ -114,8 +120,8 @@ export default function LoginForm() {
           {...register("password")}
         />
 
-        <Button type="submit" size="large" disabled={isSubmitting} fullWidth>
-          {isSubmitting ? "Signing in…" : "Log In"}
+        <Button type="submit" size="large" disabled={busy} fullWidth>
+          {busy ? "Signing in…" : "Log In"}
         </Button>
 
         <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
