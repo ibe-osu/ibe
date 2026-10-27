@@ -319,6 +319,18 @@ const theme = createTheme({
         root: { borderRadius: 0 },
       },
     },
+    // Loading placeholders (members pages). MUI's pulse/wave animation has no
+    // reduced-motion fallback of its own.
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          "@media (prefers-reduced-motion: reduce)": {
+            animation: "none",
+            "&::after": { animation: "none" },
+          },
+        },
+      },
+    },
   },
 });
 
