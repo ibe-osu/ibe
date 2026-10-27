@@ -11,6 +11,7 @@ dashboard-only auth settings listed at the end.
 |---|---|---|
 | Ref | `bvpohtlczjqzasdhwgwe` | `ygofoziyvusykfykpdyy` |
 | URL | `https://bvpohtlczjqzasdhwgwe.supabase.co` | `https://ygofoziyvusykfykpdyy.supabase.co` |
+| Region | `us-west-2` | `us-west-2` (the site's functions run beside it in `pdx1`; see `vercel.json`) |
 | Used by | `npm run dev` (via `.env.local`), CI, every Vercel preview | ibeosu.com only |
 | Data | Throwaway. Reset freely. | Real member accounts. |
 | Who may write | Any officer with Developer access, from the SQL editor or CLI | The VP of Tech, after a staging rehearsal |

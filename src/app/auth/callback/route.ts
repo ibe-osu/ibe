@@ -2,10 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
-// Next to ibe-prod (us-west-2), like the members pages: every new account
-// comes through here. See src/app/members/layout.tsx.
-export const preferredRegion = "pdx1";
-
 /**
  * Where the confirmation link in a signup email lands. Two ways in:
  *
