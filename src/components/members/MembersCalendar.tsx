@@ -20,6 +20,7 @@ import {
   calendarEmbedUrl,
   type CalendarMode,
 } from "@/data/calendar";
+import { CALENDAR_FRAME_HEIGHT } from "./calendarFrame";
 
 // No Week view on purpose. It's the only view with an hour grid, Google's
 // embed always opens it scrolled to midnight with no parameter to hide the
@@ -30,16 +31,6 @@ const MODES: { value: CalendarMode; label: string }[] = [
   { value: "MONTH", label: "Month" },
   { value: "AGENDA", label: "Agenda" },
 ];
-
-/**
- * Everything on the page above the calendar frame, in px, on a desktop
- * viewport: sticky header (72) + page top padding (32) + title block
- * (~78 + 16 margin) + view toggle row (~36 + 12 margin) + the caption
- * below the frame (~28) + bottom breathing room (~16). The frame takes
- * whatever is left of the viewport, within sane bounds, so the whole
- * calendar sits on one screen instead of forcing a page scroll.
- */
-const DESKTOP_CHROME_PX = 290;
 
 /**
  * The IBE Google Calendar, embedded. Google's month grid is unreadable on a
@@ -138,13 +129,7 @@ export default function MembersCalendar() {
           border: "1px solid",
           borderColor: "grey.300",
           backgroundColor: "#fff",
-          // Viewport-relative so the grid fits on one screen; clamped so a
-          // short laptop window still gets a usable grid and a tall monitor
-          // doesn't stretch Google's layout past what it's designed for.
-          height: {
-            xs: "68svh",
-            md: `clamp(440px, calc(100svh - ${DESKTOP_CHROME_PX}px), 720px)`,
-          },
+          height: CALENDAR_FRAME_HEIGHT,
         }}
       >
         {mounted && (

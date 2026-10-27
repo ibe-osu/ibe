@@ -47,9 +47,10 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  // Do not remove or replace with getSession(): calling getUser() is what
-  // triggers the token refresh this function exists to perform.
-  await supabase.auth.getUser();
+  // Do not remove or replace with getSession(): getClaims() is what triggers
+  // the token refresh this function exists to perform (see guards.ts for why
+  // it's getClaims and not getUser).
+  await supabase.auth.getClaims();
 
   return supabaseResponse;
 }
