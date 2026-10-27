@@ -44,6 +44,7 @@ src/
     signup/page.tsx         /signup       noindex
     members/page.tsx        /members      gated by requireMember(), noindex
     members/alumni-database/page.tsx      gated alumni directory (server query + client search)
+    members/**/loading.tsx  Skeletons shown while a members page checks the session and loads
     auth/callback/route.ts  GET handler that finishes email confirmation
     sitemap.ts robots.ts manifest.ts      SEO + PWA metadata routes
     globals.css             CSS variables, resets, skip link, reduced-motion kill switch
@@ -53,7 +54,8 @@ src/
                             PageHero, Reveal, HeroPrefetch
     home/ about/ recruitment/ alumni/ student-life/   One folder per page, one file per section
     auth/                   LoginForm, SignupForm, AccountMenu, AuthNavLinks
-    members/                MembersCalendar; alumni/ holds the directory (AlumniDirectory,
+    members/                MembersCalendar, calendarFrame (frame height shared with its
+                            skeleton); alumni/ holds the directory (AlumniDirectory,
                             FilterPanel, AlumniCard, AlumniProfileDialog)
   data/
     calendar.ts             Google Calendar id + URL builders for /members
@@ -85,6 +87,7 @@ public/
   ci.yml                    verify job on PRs and on main
   keepalive.yml             Mon + Thu ping so the free-tier Supabase projects never pause
 docs/                       Runbooks. docs/agent/ is this folder.
+vercel.json                 Function region pdx1, beside Supabase (see DEPLOYMENT.md)
 ```
 
 Path alias: `@/*` maps to `src/*`. Prefer it over relative `../../..` imports

@@ -78,7 +78,13 @@ Managed in the Vercel dashboard under **Project → Settings**:
 - The **GitHub integration** posts the preview URL and deploy status on each
   PR automatically.
 
-In the repo, [`vercel.json`](../vercel.json) sets the **function region** to
+The legacy `prod` and `staging` branches are **not** used for deployment. They
+are stale leftovers and can be ignored or deleted; deleting them will not
+affect the live site.
+
+### Function region (set in the repo, not the dashboard)
+
+[`vercel.json`](../vercel.json) sets the **function region** to
 `pdx1` (Portland), overriding the dashboard's Function Region setting. Both
 Supabase projects are in `us-west-2` (see
 [`docs/agent/DATABASE.md`](agent/DATABASE.md)), and the members
@@ -86,7 +92,3 @@ pages make several database calls in a row; from Vercel's default `iad1`
 each one crossed the country. The Hobby plan runs every function in one
 region, so a per-route `preferredRegion` export is ignored. Change it here,
 not per page. Static pages are served from the CDN and aren't affected.
-
-The legacy `prod` and `staging` branches are **not** used for deployment. They
-are stale leftovers and can be ignored or deleted; deleting them will not
-affect the live site.
