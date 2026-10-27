@@ -11,7 +11,7 @@ import welcomeVerticalImg from "../../../public/welcome-vertical.jpeg";
 
 gsap.registerPlugin(useGSAP);
 
-const heroAlt = "IBE Honors Program students gathered on Ohio State's campus";
+const heroAlt = "IBE Honors Program students together at a program event";
 
 // Optimized srcsets for both art-directed crops; the raw <source> path used
 // to serve the full unoptimized JPEG on mobile.
@@ -62,19 +62,22 @@ export default function Welcome() {
         height: { xs: "calc(100svh - 64px)", md: "calc(100vh - 72px)" },
         minHeight: "480px",
         overflow: "hidden",
-      }}
-    >
-      <picture
-        style={{
+        "& > picture": {
           display: "block",
           width: "100%",
           height: "100%",
-          // Blurred inline preview paints instantly while the photo streams in
+          // Blurred inline preview of the matching crop paints instantly
+          // while the photo streams in
           backgroundImage: `url(${welcomeImg.blurDataURL})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-        }}
-      >
+          "@media (max-width:800px)": {
+            backgroundImage: `url(${welcomeVerticalImg.blurDataURL})`,
+          },
+        },
+      }}
+    >
+      <picture>
         <source media="(max-width:800px)" srcSet={mobileImg.srcSet} />
         <img
           {...desktopImg}
