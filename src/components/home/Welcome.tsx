@@ -13,6 +13,10 @@ gsap.registerPlugin(useGSAP);
 
 const heroAlt = "IBE Honors Program students together at a program event";
 
+// Faces sit in the upper third of the photo, so screens wider than the crop
+// trim mostly floor instead of heads.
+const HERO_FOCUS = "50% 30%";
+
 // Optimized srcsets for both art-directed crops; the raw <source> path used
 // to serve the full unoptimized JPEG on mobile.
 const { props: desktopImg } = getImageProps({
@@ -70,7 +74,7 @@ export default function Welcome() {
           // while the photo streams in
           backgroundImage: `url(${welcomeImg.blurDataURL})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: HERO_FOCUS,
           "@media (max-width:800px)": {
             backgroundImage: `url(${welcomeVerticalImg.blurDataURL})`,
           },
@@ -84,6 +88,7 @@ export default function Welcome() {
           alt={heroAlt}
           style={{
             objectFit: "cover",
+            objectPosition: HERO_FOCUS,
             pointerEvents: "none",
             width: "100%",
             height: "100%",

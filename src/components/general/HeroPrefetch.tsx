@@ -8,20 +8,22 @@ import aboutImg from "../../../public/about.jpg";
 import alumniImg from "../../../public/alumni.jpg";
 import recruitmentWelcomeImg from "../../../public/recruitment/welcome.jpeg";
 
+// The homepage swaps crops at 800px (Welcome.tsx's <picture>), so only the
+// one this screen would actually show is worth fetching.
 const heroes = [
-  welcomeImg,
-  welcomeVerticalImg,
-  aboutImg,
-  alumniImg,
-  recruitmentWelcomeImg,
-].map(
-  (src) =>
-    getImageProps({ src, alt: "", sizes: "100vw" }).props as {
-      src: string;
-      srcSet?: string;
-      sizes?: string;
-    },
-);
+  { src: welcomeImg, media: "not all and (max-width:800px)" },
+  { src: welcomeVerticalImg, media: "(max-width:800px)" },
+  { src: aboutImg },
+  { src: alumniImg },
+  { src: recruitmentWelcomeImg },
+].map(({ src, media }) => ({
+  media,
+  ...(getImageProps({ src, alt: "", sizes: "100vw" }).props as {
+    src: string;
+    srcSet?: string;
+    sizes?: string;
+  }),
+}));
 
 /**
  * Warms the browser cache for every page banner once the current page has
@@ -34,7 +36,8 @@ export default function HeroPrefetch() {
 
     const warm = () => {
       if (cancelled) return;
-      heroes.forEach(({ src, srcSet, sizes }) => {
+      heroes.forEach(({ media, src, srcSet, sizes }) => {
+        if (media && !window.matchMedia(media).matches) return;
         const img = new window.Image();
         if (sizes) img.sizes = sizes;
         if (srcSet) img.srcset = srcSet;
