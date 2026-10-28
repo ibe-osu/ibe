@@ -11,7 +11,7 @@ import recruitmentWelcomeImg from "../../../public/recruitment/welcome.jpeg";
 // The homepage swaps crops at 800px (Welcome.tsx's <picture>), so only the
 // one this screen would actually show is worth fetching.
 const heroes = [
-  { src: welcomeImg, media: "(min-width:801px)" },
+  { src: welcomeImg, media: "not all and (max-width:800px)" },
   { src: welcomeVerticalImg, media: "(max-width:800px)" },
   { src: aboutImg },
   { src: alumniImg },
