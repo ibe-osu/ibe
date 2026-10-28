@@ -24,7 +24,7 @@ export function looksLikeInviteCode(value: string) {
  * always makes an 8-character prefix, so the hyphens can go back by position.
  */
 export function normalizeInviteCode(value: string) {
-  const chars = value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-  const match = /^IBE([A-Z0-9]{8})([A-Z0-9]+)$/.exec(chars);
-  return match ? `IBE-${match[1]}-${match[2]}` : value.trim().toUpperCase();
+  const upper = value.trim().toUpperCase();
+  const match = /^IBE([A-Z0-9]{8})([A-Z0-9]+)$/.exec(upper.replace(/[^A-Z0-9]/g, ""));
+  return match ? `IBE-${match[1]}-${match[2]}` : upper;
 }
