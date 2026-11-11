@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IBE Honors Program — Website
 
-## Getting Started
+Marketing site for the Integrated Business & Engineering (IBE) Honors Program
+at The Ohio State University, live at [ibeosu.com](https://ibeosu.com).
 
-First, run the development server:
+**Stack:** Next.js 15 (App Router) · React 19 · MUI 7 + Emotion · GSAP,
+deployed on Vercel.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Before opening a pull request, both of these must pass:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm run build    # also type-checks
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
 
-## Learn More
+`main` is the production branch — every merge auto-deploys to ibeosu.com, and
+direct pushes to it are blocked. To make a change:
 
-To learn more about Next.js, take a look at the following resources:
+1. Branch off `main`, commit, and push
+2. Open a pull request — CI (lint + build) must pass
+3. Vercel posts a preview URL on the PR; check it before merging
+4. Merge → production deploys automatically
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the full flow, and
+[`PRODUCT.md`](PRODUCT.md) for the brand voice and design system this site
+follows.
