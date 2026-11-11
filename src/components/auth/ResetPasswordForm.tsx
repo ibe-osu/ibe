@@ -7,17 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import { createClient } from "@/lib/supabase/client";
+import {
+  PASSWORD_MIN_LENGTH,
+  newPassword,
+  passwordsMatch,
+} from "@/lib/auth/password";
 
 const schema = z
-  .object({
-    // Same minimum as SignupForm, which mirrors the Supabase dashboard setting.
-    password: z.string().min(10, "Password must be at least 10 characters."),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
-  });
+  .object({ password: newPassword, confirmPassword: z.string() })
+  .refine(...passwordsMatch);
 
 type FormValues = z.infer<typeof schema>;
 
@@ -60,11 +58,9 @@ export default function ResetPasswordForm() {
     }
 
     // The reset link already signed them in, so there's nothing to log
-    // in to; go straight to the members area.
-    startNavigation(() => {
-      router.push("/members");
-      router.refresh();
-    });
+    // in to; go straight to the members area. No refresh needed (unlike
+    // LoginForm): who's signed in hasn't changed.
+    startNavigation(() => router.push("/members"));
   }
 
   return (
@@ -78,7 +74,9 @@ export default function ResetPasswordForm() {
           autoComplete="new-password"
           fullWidth
           error={!!errors.password}
-          helperText={errors.password?.message ?? "At least 10 characters."}
+          helperText={
+            errors.password?.message ?? `At least ${PASSWORD_MIN_LENGTH} characters.`
+          }
           {...register("password")}
         />
         <TextField

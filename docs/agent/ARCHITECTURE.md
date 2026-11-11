@@ -47,7 +47,8 @@ src/
     members/page.tsx        /members      gated by requireMember(), noindex
     members/alumni-database/page.tsx      gated alumni directory (server query + client search)
     members/**/loading.tsx  Skeletons shown while a members page checks the session and loads
-    auth/callback/route.ts  GET handler that finishes email confirmation and password-reset links
+    auth/callback/route.ts  GET handler that finishes email confirmation
+    auth/reset/route.ts     GET handler that finishes password-reset links, then /reset-password
     sitemap.ts robots.ts manifest.ts      SEO + PWA metadata routes
     globals.css             CSS variables, resets, skip link, reduced-motion kill switch
     icon.png apple-icon.png favicon.ico   Generated icons
@@ -67,8 +68,10 @@ src/
     supabase/client.ts      Browser client (Client Components)
     supabase/server.ts      Server client (Server Components, route handlers)
     supabase/middleware.ts  updateSession(): refreshes the auth cookie, nothing else
-    auth/guards.ts          requireMember(), requireAdmin(): the real gate
+    supabase/emailLink.ts   verifyEmailLink(): signs in from a confirm or reset email link
+    auth/guards.ts          requireSession(), requireMember(), requireAdmin(): the real gate
     auth/inviteCode.ts      Client-side shape check for IBE-XXXX-XXXX codes
+    auth/password.ts        Password minimum and match rule shared by signup and reset
     auth/useAuthState.ts    Cosmetic signed-in state for the header
     alumni/directory.ts     Directory types, search, facets, suggestions (ported from ibe-connect)
     alumni/industry.ts      Industry inferred from the current role, for the filter

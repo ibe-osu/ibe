@@ -1,57 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
-import type { EmailOtpType } from "@supabase/supabase-js";
-import { createClient } from "@/lib/supabase/server";
+import { verifyEmailLink } from "@/lib/supabase/emailLink";
 
 /**
- * Where the confirmation link in a signup email lands. Two ways in:
- *
- *  1. `?token_hash=…&type=email` — the email template points here directly
- *     (Authentication → Email Templates → Confirm signup, using
- *     `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email`). Verifying
- *     the hash server-side works from ANY device or browser, which matters
- *     because most people sign up on a laptop and open the email on a phone.
- *
- *  2. `?code=…` — Supabase's default PKCE link. The exchange needs the
- *     code-verifier cookie that only the browser which submitted the signup
- *     form has, so it fails cross-device. Kept as the fallback for projects
- *     whose template hasn't been switched yet.
- *
- * Either way the session cookie is written via the server client's setAll
- * (src/lib/supabase/server.ts) and the member continues to /members.
- *
- * Password-reset emails land here too, as `type=recovery` (the Reset
- * Password template uses the same token_hash link), and continue to
- * /reset-password instead. The type decides that rather than a `?next=`,
- * because the template appends `?token_hash=` to the redirect URL and a
- * second `?` would break it.
+ * Where the confirmation link in a signup email lands (see verifyEmailLink
+ * for the two link shapes). On success the member continues to /members.
+ * Password-reset links go to the sibling /auth/reset instead.
  */
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
-  const tokenHash = searchParams.get("token_hash");
-  const type = searchParams.get("type") as EmailOtpType | null;
-  const code = searchParams.get("code");
-  const isRecovery = type === "recovery";
-  const next =
-    searchParams.get("next") ?? (isRecovery ? "/reset-password" : "/members");
+  const next = searchParams.get("next") ?? "/members";
 
-  if (tokenHash && type) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
-    }
-  } else if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
-    }
-  }
-
-  // A reset link that fails has expired or was already used; logging in
-  // won't help someone who has forgotten their password.
-  if (isRecovery) {
-    return NextResponse.redirect(`${origin}/forgot-password?reason=expired`);
+  if (await verifyEmailLink(searchParams)) {
+    return NextResponse.redirect(`${origin}${next}`);
   }
 
   // Supabase has usually already confirmed the email by the time a PKCE

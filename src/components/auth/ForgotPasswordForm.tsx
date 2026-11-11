@@ -15,14 +15,8 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-const REASON_MESSAGES: Record<string, string> = {
-  expired:
-    "That reset link has expired or was already used. Enter your email to get a new one.",
-};
-
 export default function ForgotPasswordForm() {
-  const searchParams = useSearchParams();
-  const reason = searchParams.get("reason");
+  const linkExpired = useSearchParams().get("reason") === "expired";
   const [formError, setFormError] = useState<string | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
 
@@ -46,11 +40,10 @@ export default function ForgotPasswordForm() {
       return;
     }
 
-    // Lands on /auth/callback as type=recovery, which signs them in and
-    // continues to /reset-password. No ?next= here: the email template
-    // appends its own query string to this URL.
+    // /auth/reset signs them in from the emailed link and continues to
+    // /reset-password.
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `${window.location.origin}/auth/reset`,
     });
 
     if (error) {
@@ -76,8 +69,11 @@ export default function ForgotPasswordForm() {
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
       <Stack spacing={2.5}>
-        {reason && REASON_MESSAGES[reason] && (
-          <Alert severity="info">{REASON_MESSAGES[reason]}</Alert>
+        {linkExpired && (
+          <Alert severity="info">
+            That reset link has expired or was already used. Enter your email
+            to get a new one.
+          </Alert>
         )}
         {formError && <Alert severity="error">{formError}</Alert>}
 

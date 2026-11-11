@@ -17,25 +17,7 @@ import { createClient } from "@/lib/supabase/server";
  *     reason instead of just silently rendering an empty page.)
  */
 export async function requireMember() {
-  // Deliberately outside the redirect calls below: redirect() works by
-  // throwing a special NEXT_REDIRECT error, so wrapping those in a
-  // try/catch would swallow them and break every redirect in this file.
-  let supabase;
-  try {
-    supabase = await createClient();
-  } catch {
-    // Supabase isn't configured in this environment. Nobody can be an
-    // authenticated member without an auth backend, so treat it exactly
-    // like a signed-out visitor — a redirect to /login, not a 500.
-    redirect("/login");
-  }
-
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims.sub;
-
-  if (!userId) {
-    redirect("/login");
-  }
+  const { supabase, userId } = await requireSession("/login");
 
   const { data: appUser } = await supabase
     .from("app_users")
@@ -51,6 +33,35 @@ export async function requireMember() {
   }
 
   return { userId, role: appUser.role };
+}
+
+/**
+ * Check 1 of requireMember() on its own: a verified session, member or not.
+ * For pages that only need someone signed in, like /reset-password, which
+ * the reset link signs into. `signedOut` is where everyone else goes.
+ */
+export async function requireSession(signedOut: string) {
+  // Deliberately outside the redirect calls below: redirect() works by
+  // throwing a special NEXT_REDIRECT error, so wrapping those in a
+  // try/catch would swallow them and break every redirect in this file.
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    // Supabase isn't configured in this environment. Nobody can be signed
+    // in without an auth backend, so treat it exactly like a signed-out
+    // visitor — a redirect, not a 500.
+    redirect(signedOut);
+  }
+
+  const { data } = await supabase.auth.getClaims();
+  const userId = data?.claims.sub;
+
+  if (!userId) {
+    redirect(signedOut);
+  }
+
+  return { supabase, userId };
 }
 
 export async function requireAdmin() {

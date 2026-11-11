@@ -142,18 +142,22 @@ future work:
 6. `/login` (`LoginForm.tsx`): `signInWithPassword`. Three errors get their
    own wording: unconfirmed email, unreachable backend (usually a paused
    project), and everything else kept vague so the form cannot enumerate
-   accounts. Signing up again with an email that already has an account
-   gets the same "Check your email" answer as a new signup but sends
-   nothing (Supabase hides which emails exist), so that screen points
-   returning members to log in or reset their password.
+   accounts. Signing up again with an email that already has a confirmed
+   account sends no email and doesn't use the code; Supabase returns a user
+   with empty `identities`, and `SignupForm` shows "You already have an
+   account" with links to log in or reset the password. (That API response
+   already reveals the account to anyone who calls it, so hiding it in the
+   UI would protect nothing.)
    - **Forgot password:** `/forgot-password` calls `resetPasswordForEmail`
-     with `redirectTo: <origin>/auth/callback`. The Reset Password template
-     must use `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery`,
-     like Confirm signup. The callback sends `type=recovery` to
-     `/reset-password` (or `/forgot-password?reason=expired` on failure),
-     which calls `updateUser({ password })`. With the default template the
-     link falls back to `?code=`, which only works in the requesting browser
-     and lands on `/members` instead of the reset form.
+     with `redirectTo: <origin>/auth/reset`. That route runs the same link
+     check as `/auth/callback` (`src/lib/supabase/emailLink.ts`) and goes to
+     `/reset-password`, or to `/forgot-password?reason=expired` on failure.
+     `/reset-password` needs the session the link created
+     (`requireSession`) and calls `updateUser({ password })`. Switch the
+     Reset Password template to
+     `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery` so the
+     link works from any device; the default `?code=` link only works in
+     the browser that asked for it.
 7. Every `/members` page calls `requireMember()` first. It verifies the
    session with `getUser()` (never `getSession()`, which trusts the cookie),
    then checks for an active `app_users` row, redirecting to `/login` or
