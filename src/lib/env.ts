@@ -1,5 +1,5 @@
 /**
- * The only two env vars this app reads. There is deliberately no
+ * The only two Supabase env vars this app reads. There is deliberately no
  * SUPABASE_SECRET_KEY here — that credential bypasses row-level security
  * entirely, so nothing in this Next.js app ever touches it. The one thing
  * that needs it (sending invites) is a Supabase Edge Function, where
