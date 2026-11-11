@@ -125,6 +125,10 @@ export default function LoginForm() {
         </Button>
 
         <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
+          <Link href="/forgot-password" style={{ color: "inherit", fontWeight: 600 }}>
+            Forgot your password?
+          </Link>
+          <br />
           New here?{" "}
           <Link href="/signup" style={{ color: "inherit", fontWeight: 600 }}>
             Create an account

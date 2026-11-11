@@ -18,6 +18,7 @@ import {
   looksLikeInviteCode,
   normalizeInviteCode,
 } from "@/lib/auth/inviteCode";
+import { newPassword, passwordsMatch } from "@/lib/auth/password";
 
 const schema = z
   .object({
@@ -29,22 +30,17 @@ const schema = z
         "That doesn't look like a valid code (IBE-XXXX-XXXX).",
       ),
     email: z.email("Enter a valid email address."),
-    // 10 to match the minimum configured in the Supabase dashboard — if
-    // that setting ever changes, update this too, or a rejected password
-    // will look like it passed client-side only to fail on submit.
-    password: z.string().min(10, "Password must be at least 10 characters."),
+    password: newPassword,
     confirmPassword: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
-  });
+  .refine(...passwordsMatch);
 
 type FormValues = z.infer<typeof schema>;
 
 export default function SignupForm() {
   const [formError, setFormError] = useState<string | null>(null);
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
 
   const {
     register,
@@ -66,7 +62,7 @@ export default function SignupForm() {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: values.email,
       password: values.password,
       options: {
@@ -88,7 +84,43 @@ export default function SignupForm() {
       return;
     }
 
+    // For an email that already has a confirmed account, Supabase answers
+    // like a new signup but sends no email and returns a user with no
+    // identities. That response is visible to anyone calling the API, so
+    // hiding it here protects nothing; say so plainly instead of leaving a
+    // returning member waiting for an email that won't come.
+    setAlreadyRegistered(data.user?.identities?.length === 0);
     setSubmittedEmail(values.email);
+  }
+
+  if (submittedEmail && alreadyRegistered) {
+    return (
+      <>
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography variant="h3" component="h1" sx={{ mb: 1 }}>
+            You already have an account
+          </Typography>
+        </Box>
+        <Alert severity="info">
+          <strong>{submittedEmail}</strong> is already signed up, so no new
+          email was sent and your membership code wasn&apos;t used.
+        </Alert>
+        <Stack spacing={1.5} sx={{ mt: 3 }}>
+          <Button component={Link} href="/login" size="large" fullWidth>
+            Log In
+          </Button>
+          <Button
+            component={Link}
+            href="/forgot-password"
+            variant="outlined"
+            size="large"
+            fullWidth
+          >
+            Reset Password
+          </Button>
+        </Stack>
+      </>
+    );
   }
 
   if (submittedEmail) {

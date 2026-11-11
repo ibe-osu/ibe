@@ -142,7 +142,22 @@ future work:
 6. `/login` (`LoginForm.tsx`): `signInWithPassword`. Three errors get their
    own wording: unconfirmed email, unreachable backend (usually a paused
    project), and everything else kept vague so the form cannot enumerate
-   accounts.
+   accounts. Signing up again with an email that already has a confirmed
+   account sends no email and doesn't use the code; Supabase returns a user
+   with empty `identities`, and `SignupForm` shows "You already have an
+   account" with links to log in or reset the password. (That API response
+   already reveals the account to anyone who calls it, so hiding it in the
+   UI would protect nothing.)
+   - **Forgot password:** `/forgot-password` calls `resetPasswordForEmail`
+     with `redirectTo: <origin>/auth/reset`. That route runs the same link
+     check as `/auth/callback` (`src/lib/supabase/emailLink.ts`) and goes to
+     `/reset-password`, or to `/forgot-password?reason=expired` on failure.
+     `/reset-password` needs the session the link created
+     (`requireSession`) and calls `updateUser({ password })`. Switch the
+     Reset Password template to
+     `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery` so the
+     link works from any device; the default `?code=` link only works in
+     the browser that asked for it.
 7. Every `/members` page calls `requireMember()` first. It verifies the
    session with `getUser()` (never `getSession()`, which trusts the cookie),
    then checks for an active `app_users` row, redirecting to `/login` or
@@ -195,6 +210,8 @@ has most of them, prod has none until it is restored and configured (see
   `https://ibeosu.com/**`, `https://www.ibeosu.com/**`).
 - Authentication → Hooks → Before User Created → `public.before_user_created`.
 - Authentication → Email Templates → Confirm signup → the `token_hash` link.
+- Authentication → Email Templates → Reset Password → the same link with
+  `type=recovery`.
 - Authentication → Rate Limits → emails sent per hour (30 with Resend).
 - Project Settings → Authentication → SMTP: `smtp.resend.com`, port 465,
   user `resend`, password = the Resend API key, sender `noreply@ibeosu.com`.
