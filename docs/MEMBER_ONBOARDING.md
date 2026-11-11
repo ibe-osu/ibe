@@ -33,6 +33,14 @@ link with:
 The site's `/auth/callback` understands both the new `token_hash` link and
 the old `code` link, so nothing breaks while you switch.
 
+Do the same for **Email Templates → Reset Password**, with `type=recovery`,
+so "Forgot your password?" works from any device and lands on the
+choose-a-new-password page:
+
+```html
+<p><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery">Reset password</a></p>
+```
+
 ## 2. Issue a membership code
 
 In **ibe-prod → SQL Editor**, run:

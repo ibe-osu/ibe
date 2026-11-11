@@ -103,6 +103,27 @@ export default function SignupForm() {
           Check <strong>{submittedEmail}</strong> for a confirmation link to
           finish creating your account.
         </Alert>
+        {/* Supabase answers a signup for an email that already has an
+            account exactly like a new one, but sends nothing, so it can't be
+            used to check who's a member. Say so for everyone rather than
+            leave a returning member waiting for an email that won't come. */}
+        <Typography
+          variant="body2"
+          sx={{ color: "text.secondary", textAlign: "center", mt: 3 }}
+        >
+          Already made an account with this email? No new email is sent.{" "}
+          <Link href="/login" style={{ color: "inherit", fontWeight: 600 }}>
+            Log in
+          </Link>{" "}
+          instead, or{" "}
+          <Link
+            href="/forgot-password"
+            style={{ color: "inherit", fontWeight: 600 }}
+          >
+            reset your password
+          </Link>
+          .
+        </Typography>
       </>
     );
   }

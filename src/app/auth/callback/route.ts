@@ -18,14 +18,21 @@ import { createClient } from "@/lib/supabase/server";
  *
  * Either way the session cookie is written via the server client's setAll
  * (src/lib/supabase/server.ts) and the member continues to /members.
+ *
+ * Password-reset emails land here too, as `type=recovery` (the Reset
+ * Password template uses the same token_hash link), and continue to
+ * /reset-password instead. The type decides that rather than a `?next=`,
+ * because the template appends `?token_hash=` to the redirect URL and a
+ * second `?` would break it.
  */
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
-  const next = searchParams.get("next") ?? "/members";
-
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const code = searchParams.get("code");
+  const isRecovery = type === "recovery";
+  const next =
+    searchParams.get("next") ?? (isRecovery ? "/reset-password" : "/members");
 
   if (tokenHash && type) {
     const supabase = await createClient();
@@ -39,6 +46,12 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
+  }
+
+  // A reset link that fails has expired or was already used; logging in
+  // won't help someone who has forgotten their password.
+  if (isRecovery) {
+    return NextResponse.redirect(`${origin}/forgot-password?reason=expired`);
   }
 
   // Supabase has usually already confirmed the email by the time a PKCE

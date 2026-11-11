@@ -42,10 +42,12 @@ src/
     student-life/page.tsx   /student-life
     login/page.tsx          /login        noindex
     signup/page.tsx         /signup       noindex
+    forgot-password/page.tsx  /forgot-password  noindex; emails a reset link
+    reset-password/page.tsx   /reset-password   noindex; needs the session the reset link creates
     members/page.tsx        /members      gated by requireMember(), noindex
     members/alumni-database/page.tsx      gated alumni directory (server query + client search)
     members/**/loading.tsx  Skeletons shown while a members page checks the session and loads
-    auth/callback/route.ts  GET handler that finishes email confirmation
+    auth/callback/route.ts  GET handler that finishes email confirmation and password-reset links
     sitemap.ts robots.ts manifest.ts      SEO + PWA metadata routes
     globals.css             CSS variables, resets, skip link, reduced-motion kill switch
     icon.png apple-icon.png favicon.ico   Generated icons
@@ -53,7 +55,7 @@ src/
     general/                Shared chrome: Header, Footer, NavButton, MobileMenuButton,
                             PageHero, Reveal, HeroPrefetch
     home/ about/ recruitment/ alumni/ student-life/   One folder per page, one file per section
-    auth/                   LoginForm, SignupForm, AccountMenu, AuthNavLinks
+    auth/                   LoginForm, SignupForm, ForgotPasswordForm, ResetPasswordForm, AccountMenu, AuthNavLinks
     members/                MembersCalendar, calendarFrame (frame height shared with its
                             skeleton); alumni/ holds the directory (AlumniDirectory,
                             FilterPanel, AlumniCard, AlumniProfileDialog)
